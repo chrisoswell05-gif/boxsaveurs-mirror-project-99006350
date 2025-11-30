@@ -77,7 +77,6 @@ const AdminQuizResponses = () => {
       'Préférence fromages',
       'Préférence lait',
       'Préférence chocolat',
-      'Score',
       'Box recommandée'
     ];
 
@@ -95,7 +94,6 @@ const AdminQuizResponses = () => {
         `"${response.fromage_preference || 'N/A'}"`,
         `"${response.lait_preference || 'N/A'}"`,
         `"${response.chocolat_preference || 'N/A'}"`,
-        response.score,
         `"${response.recommended_box || 'N/A'}"`
       ].join(','))
     ];
@@ -216,8 +214,7 @@ const AdminQuizResponses = () => {
                     </div>
 
                     <div className="mb-4">
-                      <p className="text-sm font-semibold mb-1">Score:</p>
-                      <Badge variant="outline">{response.score}/6</Badge>
+                      <p className="text-sm font-semibold mb-1">Box recommandée</p>
                     </div>
                   </div>
 
