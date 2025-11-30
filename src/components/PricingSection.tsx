@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import heroBox from "@/assets/hero-box.jpg";
 import ScrollReveal from "@/components/ScrollReveal";
 import SavingsCalculator from "@/components/SavingsCalculator";
+import { Star } from "lucide-react";
 
 const PricingSection = () => {
   const plans = [
@@ -12,6 +13,7 @@ const PricingSection = () => {
       engagement: "sans engagement",
       price: "34.99$",
       features: ["-3 produits inclus", "-livraison offerte"],
+      isBestOffer: false,
     },
     {
       title: "SAVEURS CACHÉES",
@@ -19,6 +21,7 @@ const PricingSection = () => {
       engagement: "3 mois",
       price: "29.99$",
       features: ["-3 produits inclus", "-livraison offerte", "-Économisez 5$/mois"],
+      isBestOffer: false,
     },
     {
       title: "L'ANNÉE GOURMANDE",
@@ -26,6 +29,7 @@ const PricingSection = () => {
       engagement: "",
       price: "24.99$",
       features: ["-3 produits inclus", "-livraison offerte", "-Économisez 10$/mois"],
+      isBestOffer: true,
     },
   ];
 
@@ -43,7 +47,22 @@ const PricingSection = () => {
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {plans.map((plan, index) => (
             <ScrollReveal key={index} delay={index * 0.15}>
-              <Card className="overflow-hidden hover-lift border-border/50 shadow-md hover:shadow-xl h-full">
+              <Card className={`overflow-visible hover-lift shadow-md hover:shadow-xl h-full relative ${
+                plan.isBestOffer 
+                  ? 'border-2 border-yellow shadow-yellow' 
+                  : 'border-border/50'
+              }`}>
+                {plan.isBestOffer && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
+                    <div className="bg-gradient-to-r from-yellow to-yellow/90 text-yellow-foreground px-6 py-2 rounded-full shadow-yellow flex items-center gap-2 whitespace-nowrap">
+                      <Star className="w-4 h-4 fill-current" />
+                      <span className="font-bold text-sm uppercase tracking-wide">
+                        Meilleure Offre
+                      </span>
+                      <Star className="w-4 h-4 fill-current" />
+                    </div>
+                  </div>
+                )}
                 <div className="p-6 space-y-4 h-full flex flex-col">
                   <h3 className="text-sm font-bold text-primary uppercase tracking-wide">
                     {plan.title}
