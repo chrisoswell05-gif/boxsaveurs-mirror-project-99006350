@@ -26,68 +26,68 @@ interface BoxRecommendation {
 const questions: Question[] = [
   {
     id: 1,
-    question: "Quelle est votre connaissance des fromages artisanaux du Québec ?",
+    question: "Avez-vous des allergies ou intolérances alimentaires ?",
     options: [
-      "Expert - Je connais bien les fromageries locales",
-      "Amateur - J'aime découvrir de nouveaux fromages",
-      "Débutant - Je commence à m'y intéresser",
-      "Curieux - Je veux tout découvrir"
+      "Aucune allergie",
+      "Intolérance au lactose",
+      "Allergie aux produits laitiers de vache",
+      "Autres restrictions alimentaires"
     ],
-    correctAnswer: 1,
-    explanation: "Nos box sont parfaites pour tous les niveaux de connaisseurs de fromages.",
-    tags: ["expert", "amateur", "debutant", "decouverte"]
+    correctAnswer: 0,
+    explanation: "Nous adaptons nos box selon vos besoins alimentaires pour garantir votre plaisir sans compromis.",
+    tags: ["aucune", "lactose", "vache", "restrictions"]
   },
   {
     id: 2,
-    question: "Quel type de fromage préférez-vous ?",
+    question: "Quel type de fromage préférez-vous dans votre box ?",
     options: [
-      "Fromages à pâte molle (Brie, Camembert)",
-      "Fromages à pâte ferme (Cheddar, Gouda)",
-      "Fromages à pâte persillée (Bleu, Roquefort)",
-      "Un assortiment varié de tous les types"
+      "Fromages doux et crémeux",
+      "Fromages corsés et affinés",
+      "Fromages persillés (bleus)",
+      "Un mélange de tous les types"
     ],
     correctAnswer: 3,
-    explanation: "Nos box offrent une belle variété de fromages pour satisfaire tous les goûts.",
-    tags: ["molle", "ferme", "bleu", "variete"]
+    explanation: "Nous composons nos box avec une variété équilibrée selon vos préférences.",
+    tags: ["doux", "corse", "bleu", "variete"]
   },
   {
     id: 3,
-    question: "Qu'est-ce qui vous attire le plus dans les produits laitiers artisanaux ?",
+    question: "Quelle taille de box vous conviendrait le mieux ?",
     options: [
-      "Le goût authentique et unique",
-      "La provenance locale et traçable",
-      "La découverte de nouvelles saveurs",
-      "La qualité supérieure des produits"
+      "Petite box (2-3 fromages) - Pour découvrir",
+      "Box moyenne (4-5 fromages) - Pour partager",
+      "Grande box (6+ fromages) - Pour les gourmands",
+      "Je ne sais pas encore"
     ],
-    correctAnswer: 0,
-    explanation: "Nos fromages artisanaux allient authenticité, traçabilité et qualité exceptionnelle.",
-    tags: ["authenticite", "tracabilite", "decouverte", "qualite"]
+    correctAnswer: 1,
+    explanation: "Nous proposons différents formats adaptés à chaque besoin et occasion.",
+    tags: ["petite", "moyenne", "grande", "flexible"]
   },
   {
     id: 4,
-    question: "Quelle quantité de fromage consommez-vous habituellement ?",
+    question: "Quelle fréquence de livraison préférez-vous ?",
     options: [
-      "Petit format - Pour découvrir plusieurs variétés",
-      "Format généreux - Pour partager en famille",
-      "Format dégustation - Pour des occasions spéciales",
-      "Selon mes envies du moment"
+      "Une fois par mois",
+      "Tous les deux mois",
+      "Livraison unique (cadeau)",
+      "Je verrai selon mes besoins"
     ],
-    correctAnswer: 3,
-    explanation: "Nous proposons différents formats de box pour répondre à tous les besoins.",
-    tags: ["decouverte", "famille", "occasion", "flexible"]
+    correctAnswer: 0,
+    explanation: "Nos abonnements sont flexibles et s'adaptent à votre rythme de consommation.",
+    tags: ["mensuel", "bimensuel", "unique", "flexible"]
   },
   {
     id: 5,
-    question: "Comment comptez-vous déguster nos fromages ?",
+    question: "Pour quelle occasion souhaitez-vous cette box ?",
     options: [
-      "En plateau pour l'apéro entre amis",
-      "Dans mes recettes du quotidien",
-      "Pour offrir en cadeau gourmand",
-      "Toutes ces occasions"
+      "Consommation personnelle régulière",
+      "Cadeau pour un proche",
+      "Recevoir des invités",
+      "Découvrir les produits du terroir"
     ],
-    correctAnswer: 3,
-    explanation: "Nos fromages se prêtent parfaitement à toutes vos occasions de dégustation.",
-    tags: ["aperitif", "cuisine", "cadeau", "polyvalent"]
+    correctAnswer: 0,
+    explanation: "Chaque box est soigneusement préparée pour s'adapter à toutes vos occasions.",
+    tags: ["personnel", "cadeau", "reception", "decouverte"]
   }
 ];
 
@@ -176,28 +176,51 @@ const Quiz = () => {
       
       // Algorithme de scoring basé sur les tags
       recommendations.forEach(box => {
-        if (selectedTag === "variete" || selectedTag === "polyvalent" || selectedTag === "flexible") {
-          if (box.name.includes("Découverte") || box.name.includes("Surprise")) {
+        // Taille de box
+        if (selectedTag === "petite" && box.name.includes("Découverte")) {
+          box.matchScore += 3;
+        }
+        if (selectedTag === "moyenne" && box.name.includes("Surprise")) {
+          box.matchScore += 3;
+        }
+        if (selectedTag === "grande" && box.name.includes("Gourmande")) {
+          box.matchScore += 3;
+        }
+        
+        // Type de fromages
+        if (selectedTag === "doux" && box.name.includes("Découverte")) {
+          box.matchScore += 2;
+        }
+        if (selectedTag === "corse" && box.name.includes("Gourmande")) {
+          box.matchScore += 2;
+        }
+        if (selectedTag === "variete" || selectedTag === "flexible") {
+          if (box.name.includes("Surprise")) {
             box.matchScore += 2;
           }
         }
-        if (selectedTag === "famille" || selectedTag === "occasion" || selectedTag === "expert") {
-          if (box.name.includes("Gourmande") || box.name.includes("Prestige")) {
-            box.matchScore += 2;
-          }
-        }
-        if (selectedTag === "cadeau" || selectedTag === "aperitif") {
+        
+        // Occasion
+        if (selectedTag === "cadeau") {
           if (box.name.includes("Cadeau") || box.name.includes("Saveurs")) {
-            box.matchScore += 2;
+            box.matchScore += 3;
           }
         }
-        if (selectedTag === "decouverte" || selectedTag === "amateur") {
-          if (box.name.includes("Surprise") || box.name.includes("Fromager")) {
-            box.matchScore += 2;
-          }
+        if (selectedTag === "reception" && box.name.includes("Prestige")) {
+          box.matchScore += 2;
         }
-        if (selectedTag === "authenticite" || selectedTag === "qualite" || selectedTag === "tracabilite") {
+        if (selectedTag === "personnel" || selectedTag === "decouverte") {
           box.matchScore += 1;
+        }
+        
+        // Fréquence
+        if (selectedTag === "unique" && box.name.includes("Cadeau")) {
+          box.matchScore += 2;
+        }
+        if (selectedTag === "mensuel" || selectedTag === "bimensuel") {
+          if (box.name.includes("Surprise") || box.name.includes("Découverte")) {
+            box.matchScore += 2;
+          }
         }
       });
     });
@@ -206,11 +229,7 @@ const Quiz = () => {
   };
 
   const getScoreMessage = () => {
-    const percentage = (score / questions.length) * 100;
-    if (percentage === 100) return "Parfait ! Vous êtes un expert des produits du terroir ! 🌟";
-    if (percentage >= 80) return "Excellent ! Vous connaissez bien nos produits ! 🎉";
-    if (percentage >= 60) return "Bien joué ! Vous êtes sur la bonne voie ! 👍";
-    return "Pas mal ! Découvrez nos box pour en apprendre plus ! 📦";
+    return "Merci pour vos réponses ! Voici nos recommandations personnalisées selon vos préférences.";
   };
 
   return (
@@ -224,10 +243,10 @@ const Quiz = () => {
           className="max-w-3xl mx-auto"
         >
           <h1 className="text-4xl md:text-5xl font-bold text-center mb-4 text-foreground">
-            Quiz Saveurs de Ferme
+            Trouvez Votre Box Idéale
           </h1>
           <p className="text-center text-muted-foreground mb-12">
-            Testez vos connaissances sur nos produits artisanaux du Québec
+            Répondez à quelques questions pour recevoir des recommandations personnalisées
           </p>
 
           <AnimatePresence mode="wait">
@@ -334,17 +353,13 @@ const Quiz = () => {
                     transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
                   >
                     <div className="text-6xl mb-6">
-                      {score === questions.length ? "🏆" : score >= 4 ? "🎉" : "📦"}
+                      🧀
                     </div>
                   </motion.div>
                   
                   <h2 className="text-3xl font-bold mb-4 text-foreground">
-                    Quiz terminé !
+                    Vos recommandations personnalisées
                   </h2>
-                  
-                  <div className="text-5xl font-bold text-primary mb-4">
-                    {score}/{questions.length}
-                  </div>
                   
                   <p className="text-xl mb-8 text-muted-foreground">
                     {getScoreMessage()}
