@@ -73,7 +73,7 @@ const PricingSection = () => {
           <h3 className="text-2xl font-bold text-foreground mb-4">
             Rejoignez l'aventure et recevez des produit artisanaux authentiques dans chaque box pour vous faire découvrir l'univers du terroir
           </h3>
-          <Button className="bg-coral text-coral-foreground hover:bg-coral/90 text-lg px-8 py-4">
+          <Button className="bg-yellow text-yellow-foreground hover:bg-yellow/90 text-lg px-8 py-4 font-semibold">
             Je rejoins ...
           </Button>
         </div>

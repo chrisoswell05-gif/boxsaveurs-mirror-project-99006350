@@ -42,13 +42,13 @@ export default {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
-        olive: {
-          DEFAULT: "hsl(var(--olive))",
-          foreground: "hsl(var(--olive-foreground))",
+        navy: {
+          DEFAULT: "hsl(var(--navy))",
+          foreground: "hsl(var(--navy-foreground))",
         },
-        coral: {
-          DEFAULT: "hsl(var(--coral))",
-          foreground: "hsl(var(--coral-foreground))",
+        yellow: {
+          DEFAULT: "hsl(var(--yellow))",
+          foreground: "hsl(var(--yellow-foreground))",
         },
         cream: {
           DEFAULT: "hsl(var(--cream))",
