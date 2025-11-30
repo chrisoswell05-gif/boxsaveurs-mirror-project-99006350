@@ -18,7 +18,6 @@ interface Question {
   id: number;
   question: string;
   options: string[];
-  correctAnswer: number;
   explanation: string;
   tags: string[];
   allowCustomInput?: boolean;
@@ -43,7 +42,6 @@ const questions: Question[] = [
       "Allergie aux noix ou fruits à coque",
       "Autre allergie (préciser ci-dessous)"
     ],
-    correctAnswer: 0,
     explanation: "Nous adaptons nos box selon vos besoins alimentaires pour garantir votre plaisir sans compromis.",
     tags: ["aucune", "lactose", "noix", "autre"],
     allowCustomInput: true,
@@ -58,7 +56,6 @@ const questions: Question[] = [
       "Yaourts avec saveurs variées (vanille, caramel, etc.)",
       "Un assortiment de tous les types"
     ],
-    correctAnswer: 3,
     explanation: "Nos yaourts artisanaux sont préparés avec soin et proposés dans une variété de saveurs délicieuses.",
     tags: ["nature", "fruits", "saveurs", "assortiment"],
     image: quizYaourts
@@ -72,7 +69,6 @@ const questions: Question[] = [
       "Peut-être, je veux découvrir",
       "Non, je préfère les fruits frais"
     ],
-    correctAnswer: 2,
     explanation: "Les fruits lyophilisés conservent toutes leurs saveurs et nutriments, parfaits pour accompagner vos produits laitiers.",
     tags: ["oui_lyophilise", "yaourt_topping", "decouverte", "non_lyophilise"],
     image: quizFruitsLyophilises
@@ -86,7 +82,6 @@ const questions: Question[] = [
       "Fromages à pâte persillée (bleus)",
       "Tous types de fromages artisanaux"
     ],
-    correctAnswer: 3,
     explanation: "Nos fromages artisanaux du terroir québécois offrent une palette de saveurs authentiques.",
     tags: ["doux", "affine", "bleu", "tous_fromages"],
     image: quizFromages
@@ -100,7 +95,6 @@ const questions: Question[] = [
       "Je veux découvrir la différence",
       "Non, je ne consomme pas de lait"
     ],
-    correctAnswer: 0,
     explanation: "Notre lait d'antan est produit de façon traditionnelle pour un goût authentique incomparable.",
     tags: ["oui_lait", "cuisine_lait", "decouverte_lait", "non_lait"],
     image: quizLait
@@ -114,7 +108,6 @@ const questions: Question[] = [
       "Uniquement du chocolat noir",
       "Non, je préfère d'autres produits"
     ],
-    correctAnswer: 0,
     explanation: "Nos chocolats artisanaux sont fabriqués localement avec des ingrédients de qualité supérieure.",
     tags: ["oui_chocolat", "peu_chocolat", "noir_uniquement", "non_chocolat"],
     image: quizChocolat
@@ -156,7 +149,6 @@ const Quiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
-  const [score, setScore] = useState(0);
   const [answeredQuestions, setAnsweredQuestions] = useState<boolean[]>(Array(questions.length).fill(false));
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
   const [customInputs, setCustomInputs] = useState<{[key: number]: string}>({});
@@ -182,10 +174,6 @@ const Quiz = () => {
     const newUserAnswers = [...userAnswers];
     newUserAnswers[currentQuestion] = answerIndex;
     setUserAnswers(newUserAnswers);
-    
-    if (answerIndex === questions[currentQuestion].correctAnswer) {
-      setScore(score + 1);
-    }
     
     const newAnswered = [...answeredQuestions];
     newAnswered[currentQuestion] = true;
@@ -216,7 +204,7 @@ const Quiz = () => {
         fromage_preference: questions[3].options[userAnswers[3]],
         lait_preference: questions[4].options[userAnswers[4]],
         chocolat_preference: questions[5].options[userAnswers[5]],
-        score: score,
+        score: null,
         recommended_box: topBox.name,
         user_agent: navigator.userAgent
       };
@@ -237,7 +225,6 @@ const Quiz = () => {
     setCurrentQuestion(0);
     setSelectedAnswer(null);
     setShowResult(false);
-    setScore(0);
     setAnsweredQuestions(Array(questions.length).fill(false));
     setUserAnswers([]);
     setCustomInputs({});
@@ -312,11 +299,7 @@ const Quiz = () => {
   };
 
   const getScoreMessage = () => {
-    const percentage = (score / questions.length) * 100;
-    if (percentage === 100) return "Parfait ! Vous êtes un expert des produits du terroir ! 🌟";
-    if (percentage >= 80) return "Excellent ! Vous connaissez bien nos produits ! 🎉";
-    if (percentage >= 60) return "Bien joué ! Vous êtes sur la bonne voie ! 👍";
-    return "Pas mal ! Découvrez nos box pour en apprendre plus ! 📦";
+    return "Merci pour vos réponses ! Voici nos recommandations personnalisées selon vos préférences.";
   };
 
   return (
@@ -330,10 +313,10 @@ const Quiz = () => {
           className="max-w-3xl mx-auto"
         >
           <h1 className="text-4xl md:text-5xl font-bold text-center mb-4 text-foreground">
-            Quiz Saveurs de Ferme
+            Trouvez Votre Box Idéale
           </h1>
           <p className="text-center text-muted-foreground mb-12">
-            Testez vos connaissances sur nos produits artisanaux du Québec
+            Répondez à quelques questions pour recevoir des recommandations personnalisées
           </p>
 
           <AnimatePresence mode="wait">
@@ -363,9 +346,6 @@ const Quiz = () => {
                     <div className="flex justify-between items-center mb-4">
                       <span className="text-sm font-medium text-muted-foreground">
                         Question {currentQuestion + 1} sur {questions.length}
-                      </span>
-                      <span className="text-sm font-medium text-primary">
-                        Score: {score}/{answeredQuestions.filter(Boolean).length}
                       </span>
                     </div>
                     <div className="w-full bg-muted rounded-full h-2 mb-6">
@@ -463,17 +443,13 @@ const Quiz = () => {
                     transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
                   >
                     <div className="text-6xl mb-6">
-                      {score === questions.length ? "🏆" : score >= 4 ? "🎉" : "📦"}
+                      🧀
                     </div>
                   </motion.div>
                   
                   <h2 className="text-3xl font-bold mb-4 text-foreground">
-                    Quiz terminé !
+                    Vos recommandations personnalisées
                   </h2>
-                  
-                  <div className="text-5xl font-bold text-primary mb-4">
-                    {score}/{questions.length}
-                  </div>
                   
                   <p className="text-xl mb-8 text-muted-foreground">
                     {getScoreMessage()}
