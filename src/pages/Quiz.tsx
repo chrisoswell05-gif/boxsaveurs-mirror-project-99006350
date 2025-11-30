@@ -116,31 +116,24 @@ const questions: Question[] = [
 
 const boxRecommendations: BoxRecommendation[] = [
   {
-    name: "Box Découverte Gourmande",
-    description: "Un assortiment complet pour découvrir tous nos produits",
-    products: ["3 yaourts avec saveurs", "1 fromage artisanal", "Fruits lyophilisés", "1 chocolat artisanal"],
-    price: "45$",
+    name: "LA BASE DU GOÛT",
+    description: "Box bimensuel sans engagement - Parfaite pour découvrir nos produits",
+    products: ["3 produits artisanaux inclus", "Yaourts avec saveurs", "Fromages du terroir", "Livraison offerte"],
+    price: "39.90€",
     matchScore: 0
   },
   {
-    name: "Box Laitière Traditionnelle",
-    description: "Focus sur nos produits laitiers d'exception",
-    products: ["4 yaourts saveurs variées", "1 lait d'antan", "2 fromages artisanaux", "Fruits lyophilisés"],
-    price: "55$",
+    name: "SAVEURS CACHÉES",
+    description: "Box mensuel avec engagement 3 mois - Pour les amateurs réguliers",
+    products: ["3 produits artisanaux inclus", "Sélection mensuelle variée", "Découverte de nouvelles saveurs", "Livraison offerte"],
+    price: "39.90€",
     matchScore: 0
   },
   {
-    name: "Box Plaisir Sucré",
-    description: "Pour les amateurs de douceurs artisanales",
-    products: ["3 yaourts aux fruits", "2 chocolats artisanaux", "Fruits lyophilisés", "1 fromage doux"],
-    price: "50$",
-    matchScore: 0
-  },
-  {
-    name: "Box Complète du Terroir",
-    description: "Notre sélection la plus complète",
-    products: ["5 yaourts variés", "2 fromages affinés", "1 lait d'antan", "2 chocolats", "Fruits lyophilisés"],
-    price: "75$",
+    name: "L'ANNÉE GOURMANDE",
+    description: "Box mensuel avec engagement 12 mois - Pour les vrais passionnés",
+    products: ["3 produits artisanaux inclus", "Engagement sur l'année", "Meilleur rapport qualité-prix", "Livraison offerte"],
+    price: "39.90€",
     matchScore: 0
   }
 ];
@@ -238,58 +231,46 @@ const Quiz = () => {
       const question = questions[questionIndex];
       const selectedTag = question.tags[answerIndex];
       
-      // Algorithme de scoring basé sur les tags
+      // Algorithme de scoring basé sur les tags et préférences
       recommendations.forEach(box => {
-        // Préférences yaourts
-        if (selectedTag === "saveurs" || selectedTag === "assortiment") {
-          if (box.name.includes("Découverte") || box.name.includes("Complète")) {
+        // Box bimensuelle (LA BASE DU GOÛT) - pour découverte sans engagement
+        if (box.name.includes("LA BASE")) {
+          if (selectedTag === "decouverte" || selectedTag === "non_lyophilise" || selectedTag === "non_lait" || selectedTag === "non_chocolat") {
             box.matchScore += 3;
           }
-        }
-        if (selectedTag === "fruits") {
-          if (box.name.includes("Plaisir")) {
+          if (selectedTag === "aucune") {
             box.matchScore += 2;
           }
         }
         
-        // Fruits lyophilisés
-        if (selectedTag === "oui_lyophilise" || selectedTag === "yaourt_topping") {
-          box.matchScore += 2; // Toutes les box en contiennent
-        }
-        
-        // Fromages
-        if (selectedTag === "tous_fromages" || selectedTag === "affine") {
-          if (box.name.includes("Complète") || box.name.includes("Laitière")) {
-            box.matchScore += 2;
-          }
-        }
-        if (selectedTag === "doux") {
-          if (box.name.includes("Plaisir") || box.name.includes("Découverte")) {
-            box.matchScore += 2;
-          }
-        }
-        
-        // Lait d'antan
-        if (selectedTag === "oui_lait" || selectedTag === "cuisine_lait") {
-          if (box.name.includes("Laitière") || box.name.includes("Complète")) {
+        // Box mensuelle 3 mois (SAVEURS CACHÉES) - pour amateurs réguliers
+        if (box.name.includes("SAVEURS CACHÉES")) {
+          if (selectedTag === "assortiment" || selectedTag === "yaourt_topping" || selectedTag === "tous_fromages") {
             box.matchScore += 3;
           }
-        }
-        
-        // Chocolat
-        if (selectedTag === "oui_chocolat") {
-          if (box.name.includes("Plaisir") || box.name.includes("Complète")) {
+          if (selectedTag === "oui_lyophilise" || selectedTag === "saveurs" || selectedTag === "fruits") {
             box.matchScore += 2;
           }
-        }
-        if (selectedTag === "peu_chocolat") {
-          if (box.name.includes("Découverte")) {
+          if (selectedTag === "aucune") {
             box.matchScore += 2;
           }
         }
         
-        // Pas de lactose - privilégier boxes avec alternatives
-        if (selectedTag === "lactose") {
+        // Box annuelle (L'ANNÉE GOURMANDE) - pour passionnés engagés
+        if (box.name.includes("L'ANNÉE")) {
+          if (selectedTag === "oui_chocolat" || selectedTag === "oui_lait" || selectedTag === "cuisine_lait") {
+            box.matchScore += 3;
+          }
+          if (selectedTag === "affine" || selectedTag === "decouverte_lait") {
+            box.matchScore += 2;
+          }
+          if (selectedTag === "aucune") {
+            box.matchScore += 2;
+          }
+        }
+        
+        // Pénalité pour intolérances/allergies
+        if (selectedTag === "lactose" || selectedTag === "noix") {
           box.matchScore -= 1;
         }
       });
