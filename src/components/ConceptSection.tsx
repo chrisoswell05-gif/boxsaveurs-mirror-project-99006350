@@ -19,26 +19,55 @@ const ConceptSection = () => {
             </p>
             <div className="space-y-3">
               <p className="font-semibold text-foreground">Vous trouverez dans votre box :</p>
-              <ul className="space-y-2 text-foreground">
-                <li className="flex items-start">
-                  <span className="text-primary mr-2">•</span>
-                  <span>Du yaourt de ferme</span>
+              <ul className="space-y-3 text-foreground">
+                <li className="flex items-start gap-3">
+                  <span className="text-2xl">🥛</span>
+                  <div>
+                    <strong>Yaourts artisanaux</strong>
+                    <p className="text-sm text-muted-foreground">Nature, fruité à la fraise, à l'érable... Des saveurs authentiques et variées</p>
+                  </div>
                 </li>
-                <li className="flex items-start">
-                  <span className="text-primary mr-2">•</span>
-                  <span>Du frommage</span>
+                <li className="flex items-start gap-3">
+                  <span className="text-2xl">🧀</span>
+                  <div>
+                    <strong>Fromage du terroir</strong>
+                    <p className="text-sm text-muted-foreground">Sélection de fromages artisanaux locaux</p>
+                  </div>
                 </li>
-                <li className="flex items-start">
-                  <span className="text-primary mr-2">•</span>
-                  <span>Des fruits lyophilise</span>
+                <li className="flex items-start gap-3">
+                  <span className="text-2xl">🥛</span>
+                  <div>
+                    <strong>Lait d'antan ou au chocolat</strong>
+                    <p className="text-sm text-muted-foreground">Souvent avec crème onctueuse pour plus de gourmandise</p>
+                  </div>
                 </li>
-                <li className="flex items-start">
-                  <span className="text-primary mr-2">•</span>
-                  <span>Un guide de recette</span>
+                <li className="flex items-start gap-3">
+                  <span className="text-2xl">🍓</span>
+                  <div>
+                    <strong>Fruits lyophilisés</strong>
+                    <p className="text-sm text-muted-foreground">Pour sublimer vos créations culinaires</p>
+                  </div>
                 </li>
-                <li className="flex items-start">
-                  <span className="text-primary mr-2">•</span>
-                  <span>Du lait</span>
+                <li className="flex items-start gap-3">
+                  <span className="text-2xl">📖</span>
+                  <div>
+                    <strong>Guide de recettes</strong>
+                    <p className="text-sm text-muted-foreground">Découvrez de nouvelles façons de savourer nos produits</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-2xl">🥄</span>
+                  <div>
+                    <strong>Cuillère bambou ou inox</strong>
+                    <p className="text-sm text-muted-foreground">Un accessoire durable et élégant</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-2xl">🎁</span>
+                  <div>
+                    <strong>Petit cadeau surprise</strong>
+                    <p className="text-sm text-muted-foreground">Une petite attention pour égayer votre dégustation</p>
+                  </div>
                 </li>
               </ul>
               <p className="text-foreground font-medium pt-2">
