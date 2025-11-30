@@ -35,6 +35,63 @@ export type Database = {
         }
         Relationships: []
       }
+      quiz_responses: {
+        Row: {
+          allergies: string | null
+          chocolat_preference: string | null
+          created_at: string
+          custom_allergies: string | null
+          email: string | null
+          fromage_preference: string | null
+          fruits_lyophilises: string | null
+          id: string
+          ip_address: unknown
+          lait_preference: string | null
+          name: string | null
+          phone: string | null
+          recommended_box: string | null
+          score: number | null
+          user_agent: string | null
+          yaourt_preference: string | null
+        }
+        Insert: {
+          allergies?: string | null
+          chocolat_preference?: string | null
+          created_at?: string
+          custom_allergies?: string | null
+          email?: string | null
+          fromage_preference?: string | null
+          fruits_lyophilises?: string | null
+          id?: string
+          ip_address?: unknown
+          lait_preference?: string | null
+          name?: string | null
+          phone?: string | null
+          recommended_box?: string | null
+          score?: number | null
+          user_agent?: string | null
+          yaourt_preference?: string | null
+        }
+        Update: {
+          allergies?: string | null
+          chocolat_preference?: string | null
+          created_at?: string
+          custom_allergies?: string | null
+          email?: string | null
+          fromage_preference?: string | null
+          fruits_lyophilises?: string | null
+          id?: string
+          ip_address?: unknown
+          lait_preference?: string | null
+          name?: string | null
+          phone?: string | null
+          recommended_box?: string | null
+          score?: number | null
+          user_agent?: string | null
+          yaourt_preference?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -5,6 +5,8 @@ import { Card } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { CheckCircle2, XCircle } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import quizAllergies from "@/assets/quiz-allergies.jpg";
 import quizYaourts from "@/assets/quiz-yaourts.jpg";
 import quizFruitsLyophilises from "@/assets/quiz-fruits-lyophilises.jpg";
@@ -196,7 +198,38 @@ const Quiz = () => {
       setSelectedAnswer(null);
       setShowCustomInput(false);
     } else {
+      saveQuizResponses();
       setShowResult(true);
+    }
+  };
+
+  const saveQuizResponses = async () => {
+    try {
+      const recommendations = getRecommendations();
+      const topBox = recommendations[0];
+      
+      const response = {
+        allergies: questions[0].options[userAnswers[0]],
+        custom_allergies: customInputs[0] || null,
+        yaourt_preference: questions[1].options[userAnswers[1]],
+        fruits_lyophilises: questions[2].options[userAnswers[2]],
+        fromage_preference: questions[3].options[userAnswers[3]],
+        lait_preference: questions[4].options[userAnswers[4]],
+        chocolat_preference: questions[5].options[userAnswers[5]],
+        score: score,
+        recommended_box: topBox.name,
+        user_agent: navigator.userAgent
+      };
+
+      const { error } = await supabase
+        .from('quiz_responses')
+        .insert([response]);
+
+      if (error) {
+        console.error('Erreur lors de la sauvegarde:', error);
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
     }
   };
 
