@@ -1,7 +1,36 @@
 import { Search, User, ShoppingCart } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { User as SupabaseUser } from "@supabase/supabase-js";
 import logo from "@/assets/logo.png";
 
 const Navigation = () => {
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check current session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleUserClick = () => {
+    if (user) {
+      navigate("/profile");
+    } else {
+      navigate("/auth");
+    }
+  };
+
   return (
     <nav className="bg-background border-b border-border py-4 px-6">
       <div className="container mx-auto flex items-center justify-between">
@@ -21,7 +50,10 @@ const Navigation = () => {
           <button className="p-2 hover:bg-muted rounded-full transition-all duration-300 hover:scale-110 active:scale-95">
             <Search className="w-5 h-5 text-foreground" />
           </button>
-          <button className="p-2 hover:bg-muted rounded-full transition-all duration-300 hover:scale-110 active:scale-95">
+          <button 
+            onClick={handleUserClick}
+            className={`p-2 hover:bg-muted rounded-full transition-all duration-300 hover:scale-110 active:scale-95 ${user ? 'bg-yellow/20' : ''}`}
+          >
             <User className="w-5 h-5 text-foreground" />
           </button>
           <button className="p-2 hover:bg-muted rounded-full transition-all duration-300 hover:scale-110 active:scale-95">
