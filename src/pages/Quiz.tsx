@@ -26,97 +26,97 @@ interface BoxRecommendation {
 const questions: Question[] = [
   {
     id: 1,
-    question: "Quelle est la principale caractéristique des produits Saveurs de Ferme ?",
+    question: "Quelle est votre connaissance des fromages artisanaux du Québec ?",
     options: [
-      "Produits importés",
-      "Produits locaux et artisanaux",
-      "Produits industriels",
-      "Produits surgelés"
+      "Expert - Je connais bien les fromageries locales",
+      "Amateur - J'aime découvrir de nouveaux fromages",
+      "Débutant - Je commence à m'y intéresser",
+      "Curieux - Je veux tout découvrir"
     ],
     correctAnswer: 1,
-    explanation: "Nos produits sont 100% locaux et artisanaux, directement des fermes du Québec.",
-    tags: ["local", "artisanal", "qualite"]
+    explanation: "Nos box sont parfaites pour tous les niveaux de connaisseurs de fromages.",
+    tags: ["expert", "amateur", "debutant", "decouverte"]
   },
   {
     id: 2,
-    question: "Quel type de produits préférez-vous découvrir ?",
+    question: "Quel type de fromage préférez-vous ?",
     options: [
-      "Fromages et produits laitiers",
-      "Confitures et produits sucrés",
-      "Viandes et charcuteries",
-      "Un peu de tout"
+      "Fromages à pâte molle (Brie, Camembert)",
+      "Fromages à pâte ferme (Cheddar, Gouda)",
+      "Fromages à pâte persillée (Bleu, Roquefort)",
+      "Un assortiment varié de tous les types"
     ],
     correctAnswer: 3,
-    explanation: "Nos box offrent une variété équilibrée de tous ces délices du terroir.",
-    tags: ["fromages", "sucre", "viandes", "variete"]
+    explanation: "Nos box offrent une belle variété de fromages pour satisfaire tous les goûts.",
+    tags: ["molle", "ferme", "bleu", "variete"]
   },
   {
     id: 3,
-    question: "Quelle est votre priorité lors du choix de produits ?",
+    question: "Qu'est-ce qui vous attire le plus dans les produits laitiers artisanaux ?",
     options: [
-      "Le goût authentique",
-      "La traçabilité et l'origine",
-      "La découverte de nouveautés",
-      "Le rapport qualité-prix"
+      "Le goût authentique et unique",
+      "La provenance locale et traçable",
+      "La découverte de nouvelles saveurs",
+      "La qualité supérieure des produits"
     ],
     correctAnswer: 0,
-    explanation: "Nos produits privilégient le goût authentique, directement de nos producteurs passionnés.",
-    tags: ["authenticite", "tracabilite", "decouverte", "prix"]
+    explanation: "Nos fromages artisanaux allient authenticité, traçabilité et qualité exceptionnelle.",
+    tags: ["authenticite", "tracabilite", "decouverte", "qualite"]
   },
   {
     id: 4,
-    question: "Quel format de box vous intéresse le plus ?",
+    question: "Quelle quantité de fromage consommez-vous habituellement ?",
     options: [
-      "Box découverte (petite quantité, grande variété)",
-      "Box gourmande (quantités généreuses)",
-      "Box thématique (focus sur un type de produit)",
-      "Box surprise (sélection du chef)"
+      "Petit format - Pour découvrir plusieurs variétés",
+      "Format généreux - Pour partager en famille",
+      "Format dégustation - Pour des occasions spéciales",
+      "Selon mes envies du moment"
     ],
     correctAnswer: 3,
-    explanation: "Nous proposons différents formats pour répondre à tous les besoins.",
-    tags: ["decouverte", "gourmande", "thematique", "surprise"]
+    explanation: "Nous proposons différents formats de box pour répondre à tous les besoins.",
+    tags: ["decouverte", "famille", "occasion", "flexible"]
   },
   {
     id: 5,
-    question: "Pour quelle occasion souhaitez-vous utiliser la box ?",
+    question: "Comment comptez-vous déguster nos fromages ?",
     options: [
-      "Consommation personnelle régulière",
-      "Offrir en cadeau",
-      "Recevoir des invités",
+      "En plateau pour l'apéro entre amis",
+      "Dans mes recettes du quotidien",
+      "Pour offrir en cadeau gourmand",
       "Toutes ces occasions"
     ],
     correctAnswer: 3,
-    explanation: "Nos box sont parfaites pour toutes les occasions grâce à leur présentation soignée.",
-    tags: ["personnel", "cadeau", "reception", "polyvalent"]
+    explanation: "Nos fromages se prêtent parfaitement à toutes vos occasions de dégustation.",
+    tags: ["aperitif", "cuisine", "cadeau", "polyvalent"]
   }
 ];
 
 const boxRecommendations: BoxRecommendation[] = [
   {
-    name: "Box Découverte du Terroir",
-    description: "Parfaite pour découvrir la diversité de nos producteurs locaux",
-    products: ["3 fromages artisanaux", "2 confitures maison", "1 miel local", "1 charcuterie"],
+    name: "Box Découverte Fromagère",
+    description: "Parfaite pour découvrir la diversité de nos fromages artisanaux",
+    products: ["4 fromages artisanaux variés", "1 beurre de ferme", "1 crème fraîche", "Guide de dégustation"],
     price: "45$",
     matchScore: 0
   },
   {
-    name: "Box Gourmande Premium",
-    description: "Pour les vrais amateurs de produits d'exception",
-    products: ["5 fromages affinés", "3 terrines artisanales", "2 miels rares", "1 bouteille de cidre"],
+    name: "Box Gourmande Prestige",
+    description: "Pour les vrais connaisseurs de fromages d'exception",
+    products: ["5 fromages affinés premium", "1 yogourt artisanal", "1 fromage frais aux herbes", "Accompagnements suggérés"],
     price: "75$",
     matchScore: 0
   },
   {
-    name: "Box Cadeau Prestige",
-    description: "Une sélection raffinée pour faire plaisir",
-    products: ["Panier cadeau", "4 fromages premium", "3 confitures artisanales", "1 sirop d'érable"],
+    name: "Box Cadeau Saveurs Lactées",
+    description: "Une sélection raffinée de nos meilleurs produits laitiers",
+    products: ["4 fromages signature", "1 beurre d'exception", "1 crème épaisse", "Emballage cadeau soigné"],
     price: "65$",
     matchScore: 0
   },
   {
-    name: "Box Surprise du Chef",
-    description: "Laissez-vous surprendre par notre sélection mensuelle",
-    products: ["Sélection variée du mois", "Produits de saison", "Nouveautés exclusives"],
+    name: "Box Surprise du Fromager",
+    description: "Laissez-vous surprendre par la sélection du mois de notre maître fromager",
+    products: ["Sélection mensuelle de fromages", "Produits laitiers de saison", "Nouveautés exclusives de nos fermes"],
     price: "55$",
     matchScore: 0
   }
@@ -176,27 +176,27 @@ const Quiz = () => {
       
       // Algorithme de scoring basé sur les tags
       recommendations.forEach(box => {
-        if (selectedTag === "variete" || selectedTag === "polyvalent") {
+        if (selectedTag === "variete" || selectedTag === "polyvalent" || selectedTag === "flexible") {
           if (box.name.includes("Découverte") || box.name.includes("Surprise")) {
             box.matchScore += 2;
           }
         }
-        if (selectedTag === "gourmande" || selectedTag === "reception") {
-          if (box.name.includes("Gourmande") || box.name.includes("Premium")) {
+        if (selectedTag === "famille" || selectedTag === "occasion" || selectedTag === "expert") {
+          if (box.name.includes("Gourmande") || box.name.includes("Prestige")) {
             box.matchScore += 2;
           }
         }
-        if (selectedTag === "cadeau") {
-          if (box.name.includes("Cadeau") || box.name.includes("Prestige")) {
+        if (selectedTag === "cadeau" || selectedTag === "aperitif") {
+          if (box.name.includes("Cadeau") || box.name.includes("Saveurs")) {
             box.matchScore += 2;
           }
         }
-        if (selectedTag === "decouverte" || selectedTag === "surprise") {
-          if (box.name.includes("Surprise")) {
+        if (selectedTag === "decouverte" || selectedTag === "amateur") {
+          if (box.name.includes("Surprise") || box.name.includes("Fromager")) {
             box.matchScore += 2;
           }
         }
-        if (selectedTag === "authenticite" || selectedTag === "local") {
+        if (selectedTag === "authenticite" || selectedTag === "qualite" || selectedTag === "tracabilite") {
           box.matchScore += 1;
         }
       });
