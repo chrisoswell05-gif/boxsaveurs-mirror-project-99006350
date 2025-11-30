@@ -357,30 +357,13 @@ const Quiz = () => {
                           selectedAnswer === null
                             ? "border-border hover:border-primary hover:bg-primary/5"
                             : selectedAnswer === index
-                            ? index === questions[currentQuestion].correctAnswer
-                              ? "border-green-500 bg-green-50 dark:bg-green-950/20"
-                              : "border-red-500 bg-red-50 dark:bg-red-950/20"
-                            : index === questions[currentQuestion].correctAnswer
-                            ? "border-green-500 bg-green-50 dark:bg-green-950/20"
+                            ? "border-primary bg-primary/10"
                             : "border-border opacity-50"
                         }`}
                         whileHover={selectedAnswer === null ? { scale: 1.02 } : {}}
                         whileTap={selectedAnswer === null ? { scale: 0.98 } : {}}
                       >
-                        <div className="flex items-center justify-between">
-                          <span className="font-medium">{option}</span>
-                          {selectedAnswer !== null && (
-                            <>
-                              {index === questions[currentQuestion].correctAnswer && (
-                                <CheckCircle2 className="w-6 h-6 text-green-600" />
-                              )}
-                              {selectedAnswer === index &&
-                                index !== questions[currentQuestion].correctAnswer && (
-                                  <XCircle className="w-6 h-6 text-red-600" />
-                                )}
-                            </>
-                          )}
-                        </div>
+                        <span className="font-medium">{option}</span>
                       </motion.button>
                     ))}
                   </div>
