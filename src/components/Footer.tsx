@@ -140,13 +140,6 @@ const Footer = () => {
             </a>
           </div>
         </div>
-        <div className="border-t border-yellow/30 pt-8">
-          <div className="flex flex-wrap gap-4 justify-center text-navy-foreground text-sm">
-            <span>PARFAIT POUR OFFRIR</span>
-            <span className="text-yellow">•</span>
-            <span>FRAICHEUR GARANTIE</span>
-          </div>
-        </div>
       </div>
     </footer>
   );
