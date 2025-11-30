@@ -3,9 +3,13 @@ import { Button } from "@/components/ui/button";
 import heroBox from "@/assets/hero-box.jpg";
 import ScrollReveal from "@/components/ScrollReveal";
 import SavingsCalculator from "@/components/SavingsCalculator";
+import PromoCodeInput from "@/components/PromoCodeInput";
+import { usePromoCode } from "@/hooks/usePromoCode";
 import { Star } from "lucide-react";
 
 const PricingSection = () => {
+  const { appliedPromo, isValidating, validatePromoCode, removePromoCode, calculateDiscountedPrice } = usePromoCode();
+  
   const plans = [
     {
       title: "LA BASE DU GOÛT",
@@ -75,7 +79,27 @@ const PricingSection = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-navy/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
-                  <p className="text-2xl font-bold text-foreground">{plan.price}</p>
+                  <div>
+                    <p className="text-2xl font-bold text-foreground">
+                      {appliedPromo ? (
+                        <>
+                          <span className="line-through text-muted-foreground text-lg mr-2">
+                            {plan.price}
+                          </span>
+                          <span className="text-yellow">
+                            {calculateDiscountedPrice(parseFloat(plan.price.replace('$', ''))).toFixed(2)}$
+                          </span>
+                        </>
+                      ) : (
+                        plan.price
+                      )}
+                    </p>
+                    {appliedPromo && (
+                      <p className="text-xs text-yellow font-semibold mt-1">
+                        Code {appliedPromo.code} appliqué
+                      </p>
+                    )}
+                  </div>
                   <p className="font-semibold text-foreground">{plan.subtitle}</p>
                   {plan.engagement && (
                     <p className="text-sm text-muted-foreground">{plan.engagement}</p>
@@ -97,6 +121,15 @@ const PricingSection = () => {
             </ScrollReveal>
           ))}
         </div>
+        
+        <ScrollReveal delay={0.3} className="max-w-md mx-auto mt-12">
+          <PromoCodeInput
+            onValidate={validatePromoCode}
+            onRemove={removePromoCode}
+            appliedCode={appliedPromo?.code || null}
+            isValidating={isValidating}
+          />
+        </ScrollReveal>
         
         <SavingsCalculator />
         
