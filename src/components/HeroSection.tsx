@@ -43,8 +43,8 @@ const HeroSection = () => {
             Chaque box, une nouvelle expérience gourmande
           </p>
           <p className="text-2xl text-white mb-8 drop-shadow-lg">
-            Une découverte sans engagement<br />
-            <span className="text-3xl font-bold text-yellow">29,99$/mois</span>
+            Découvrez nos produits fermiers authentiques<br />
+            <span className="text-3xl font-bold text-yellow">À partir de 24,99$/mois</span>
           </p>
           <div className="flex gap-4">
             <Button className="bg-navy text-navy-foreground hover:bg-navy/90 text-lg px-8 py-6 transition-all duration-300 hover:scale-105 hover:shadow-xl active:scale-95">

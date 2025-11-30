@@ -9,22 +9,22 @@ const PricingSection = () => {
       title: "LA BASE DU GOÛT",
       subtitle: "Box bimensuel",
       engagement: "sans engagement",
-      price: "29.99$",
+      price: "34.99$",
       features: ["-3 produits inclus", "-livraison offerte"],
     },
     {
       title: "SAVEURS CACHÉES",
       subtitle: "Box mensuel engagement",
       engagement: "3 mois",
-      price: "24.99$",
-      features: ["-3 produits inclus", "-livraison offerte"],
+      price: "29.99$",
+      features: ["-3 produits inclus", "-livraison offerte", "-Économisez 5$/mois"],
     },
     {
       title: "L'ANNÉE GOURMANDE",
       subtitle: "Box mensuel engagement 12 mois",
       engagement: "",
-      price: "19.99$",
-      features: ["-3 produits inclus", "-livraison offerte"],
+      price: "24.99$",
+      features: ["-3 produits inclus", "-livraison offerte", "-Économisez 10$/mois"],
     },
   ];
 
