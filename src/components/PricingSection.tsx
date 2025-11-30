@@ -67,6 +67,13 @@ const PricingSection = () => {
                     </div>
                   </div>
                 )}
+                {plan.engagement !== "sans engagement" && (
+                  <div className="absolute -top-2 -right-2 z-10">
+                    <div className="bg-gradient-to-br from-navy to-navy/90 text-navy-foreground px-3 py-1 rounded-full shadow-navy text-xs font-semibold">
+                      Éligible parrainage
+                    </div>
+                  </div>
+                )}
                 <div className="p-6 space-y-4 h-full flex flex-col">
                   <h3 className="text-sm font-bold text-primary uppercase tracking-wide">
                     {plan.title}
@@ -83,20 +90,27 @@ const PricingSection = () => {
                     <p className="text-2xl font-bold text-foreground">
                       {appliedPromo ? (
                         <>
-                          <span className="line-through text-muted-foreground text-lg mr-2">
+                          <span className={calculateDiscountedPrice(parseFloat(plan.price.replace('$', '')), plan.title) !== parseFloat(plan.price.replace('$', '')) ? "line-through text-muted-foreground text-lg mr-2" : ""}>
                             {plan.price}
                           </span>
-                          <span className="text-yellow">
-                            {calculateDiscountedPrice(parseFloat(plan.price.replace('$', ''))).toFixed(2)}$
-                          </span>
+                          {calculateDiscountedPrice(parseFloat(plan.price.replace('$', '')), plan.title) !== parseFloat(plan.price.replace('$', '')) && (
+                            <span className="text-yellow">
+                              {calculateDiscountedPrice(parseFloat(plan.price.replace('$', '')), plan.title).toFixed(2)}$
+                            </span>
+                          )}
                         </>
                       ) : (
                         plan.price
                       )}
                     </p>
-                    {appliedPromo && (
+                    {appliedPromo && calculateDiscountedPrice(parseFloat(plan.price.replace('$', '')), plan.title) !== parseFloat(plan.price.replace('$', '')) && (
                       <p className="text-xs text-yellow font-semibold mt-1">
                         Code {appliedPromo.code} appliqué
+                      </p>
+                    )}
+                    {appliedPromo && appliedPromo.code.startsWith('REF') && plan.title === 'LA BASE DU GOÛT' && (
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Code non applicable à cette formule
                       </p>
                     )}
                   </div>
@@ -124,11 +138,14 @@ const PricingSection = () => {
         
         <ScrollReveal delay={0.3} className="max-w-md mx-auto mt-12">
           <PromoCodeInput
-            onValidate={validatePromoCode}
+            onValidate={(code) => validatePromoCode(code)}
             onRemove={removePromoCode}
             appliedCode={appliedPromo?.code || null}
             isValidating={isValidating}
           />
+          <p className="text-xs text-center text-muted-foreground mt-3">
+            💡 Les codes de parrainage sont valables uniquement pour les formules avec engagement (3 mois et 12 mois)
+          </p>
         </ScrollReveal>
         
         <SavingsCalculator />

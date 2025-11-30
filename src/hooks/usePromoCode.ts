@@ -73,10 +73,18 @@ export const usePromoCode = () => {
         description: data.description,
       });
 
-      toast({
-        title: "Code appliqué !",
-        description: data.description || `Réduction de ${data.discount_type === 'percentage' ? data.discount_value + '%' : data.discount_value + '$'} appliquée`,
-      });
+      // Special message for referral codes
+      if (data.code.startsWith('REF')) {
+        toast({
+          title: "Code de parrainage appliqué ! 🎉",
+          description: "Ce code s'applique uniquement aux formules SAVEURS CACHÉES (3 mois) et L'ANNÉE GOURMANDE (12 mois)",
+        });
+      } else {
+        toast({
+          title: "Code appliqué !",
+          description: data.description || `Réduction de ${data.discount_type === 'percentage' ? data.discount_value + '%' : data.discount_value + '$'} appliquée`,
+        });
+      }
 
       setIsValidating(false);
       return true;
@@ -100,8 +108,13 @@ export const usePromoCode = () => {
     });
   };
 
-  const calculateDiscountedPrice = (originalPrice: number): number => {
+  const calculateDiscountedPrice = (originalPrice: number, planTitle: string): number => {
     if (!appliedPromo) return originalPrice;
+
+    // If it's a referral code and the plan is "LA BASE DU GOÛT", don't apply discount
+    if (appliedPromo.code.startsWith('REF') && planTitle === 'LA BASE DU GOÛT') {
+      return originalPrice;
+    }
 
     if (appliedPromo.discount_type === "percentage") {
       return originalPrice - (originalPrice * appliedPromo.discount_value) / 100;
