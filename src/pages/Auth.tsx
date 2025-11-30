@@ -125,6 +125,32 @@ const Auth = () => {
           return;
         }
 
+        // Send welcome email in background
+        if (data.user) {
+          setTimeout(async () => {
+            try {
+              // Fetch the user's profile to get referral code
+              const { data: profile } = await supabase
+                .from('profiles')
+                .select('referral_code')
+                .eq('id', data.user!.id)
+                .single();
+
+              if (profile) {
+                await supabase.functions.invoke('send-welcome-email', {
+                  body: {
+                    email: email,
+                    fullName: fullName || email.split('@')[0],
+                    referralCode: profile.referral_code,
+                  },
+                });
+              }
+            } catch (emailError) {
+              console.error("Error sending welcome email:", emailError);
+            }
+          }, 2000);
+        }
+
         // Apply referral bonus if code provided
         if (referralCode.trim() && data.user) {
           try {
