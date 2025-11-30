@@ -17,10 +17,10 @@ const HeroSection = () => {
             <span className="text-2xl font-bold">24,99$/mois</span>
           </p>
           <div className="flex gap-4 pt-4">
-            <Button className="bg-navy text-navy-foreground hover:bg-navy/90 text-lg px-8 py-6">
+            <Button className="bg-navy text-navy-foreground hover:bg-navy/90 text-lg px-8 py-6 transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95">
               J'essaie
             </Button>
-            <Button className="bg-yellow text-yellow-foreground hover:bg-yellow/90 text-lg px-8 py-6">
+            <Button className="bg-yellow text-yellow-foreground hover:bg-yellow/90 text-lg px-8 py-6 transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95">
               J'offre
             </Button>
           </div>

@@ -28,7 +28,7 @@ const ReviewsSection = () => {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {reviews.map((review, index) => (
-            <Card key={index} className="p-6 bg-card space-y-4">
+            <Card key={index} className="p-6 bg-card space-y-4 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer">
               <Avatar className="w-16 h-16">
                 <AvatarFallback className="bg-primary text-primary-foreground text-xl">
                   {review.name.split(' ').map(n => n[0]).join('')}
@@ -40,7 +40,7 @@ const ReviewsSection = () => {
           ))}
         </div>
         <div className="text-center mt-8">
-          <a href="#" className="text-primary hover:underline font-medium">
+          <a href="#" className="text-primary font-medium relative inline-block after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left">
             Voir tous les avis
           </a>
         </div>

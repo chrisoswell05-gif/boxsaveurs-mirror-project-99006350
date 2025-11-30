@@ -10,30 +10,30 @@ const Footer = () => {
             <p className="text-navy-foreground font-semibold">saveurs de ferme</p>
           </div>
           <div className="space-y-3">
-            <a href="#contact" className="block text-navy-foreground hover:text-yellow transition-colors">
+            <a href="#contact" className="block text-navy-foreground hover:text-yellow transition-all duration-300 hover:translate-x-2">
               Email: contact@boxsaveursdeferme.ca
             </a>
-            <a href="#offrir" className="block text-navy-foreground hover:text-yellow transition-colors">
+            <a href="#offrir" className="block text-navy-foreground hover:text-yellow transition-all duration-300 hover:translate-x-2">
               Offrir
             </a>
-            <a href="#abonner" className="block text-navy-foreground hover:text-yellow transition-colors">
+            <a href="#abonner" className="block text-navy-foreground hover:text-yellow transition-all duration-300 hover:translate-x-2">
               S'abonner
             </a>
           </div>
           <div className="space-y-3 text-navy-foreground">
-            <a href="#cgv" className="block hover:underline">
+            <a href="#cgv" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
               Conditions générales de vente
             </a>
-            <a href="#confidentialite" className="block hover:underline">
+            <a href="#confidentialite" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
               Politique de confidentialité
             </a>
-            <a href="#livraison" className="block hover:underline">
+            <a href="#livraison" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
               Conditions de Livraison
             </a>
-            <a href="#mentions" className="block hover:underline">
+            <a href="#mentions" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
               Mentions légales
             </a>
-            <a href="#remboursement" className="block hover:underline">
+            <a href="#remboursement" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
               Remboursement
             </a>
           </div>
