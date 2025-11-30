@@ -1,4 +1,4 @@
-import { Search, User, ShoppingCart } from "lucide-react";
+import { Search, User, ShoppingCart, Shield } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,21 +7,41 @@ import logo from "@/assets/logo.png";
 
 const Navigation = () => {
   const [user, setUser] = useState<SupabaseUser | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     // Check current session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        checkAdminStatus(session.user.id);
+      }
     });
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        checkAdminStatus(session.user.id);
+      } else {
+        setIsAdmin(false);
+      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const checkAdminStatus = async (userId: string) => {
+    const { data } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId)
+      .eq("role", "admin")
+      .maybeSingle();
+    
+    setIsAdmin(!!data);
+  };
 
   const handleUserClick = () => {
     if (user) {
@@ -47,6 +67,15 @@ const Navigation = () => {
           </ul>
         </div>
         <div className="flex items-center gap-4">
+          {isAdmin && (
+            <button 
+              onClick={() => navigate("/admin/referrals")}
+              className="p-2 hover:bg-muted rounded-full transition-all duration-300 hover:scale-110 active:scale-95 bg-primary/20"
+              title="Administration"
+            >
+              <Shield className="w-5 h-5 text-primary" />
+            </button>
+          )}
           <button className="p-2 hover:bg-muted rounded-full transition-all duration-300 hover:scale-110 active:scale-95">
             <Search className="w-5 h-5 text-foreground" />
           </button>
