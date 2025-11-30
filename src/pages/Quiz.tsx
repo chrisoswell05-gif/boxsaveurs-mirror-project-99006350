@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import { CheckCircle2, XCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { OrderDialog } from "@/components/OrderDialog";
 import quizAllergies from "@/assets/quiz-allergies.jpg";
 import quizYaourts from "@/assets/quiz-yaourts.jpg";
 import quizFruitsLyophilises from "@/assets/quiz-fruits-lyophilises.jpg";
@@ -146,6 +147,9 @@ const Quiz = () => {
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
   const [customInputs, setCustomInputs] = useState<{[key: number]: string}>({});
   const [showCustomInput, setShowCustomInput] = useState(false);
+  const [quizResponseId, setQuizResponseId] = useState<string | undefined>();
+  const [orderDialogOpen, setOrderDialogOpen] = useState(false);
+  const [selectedBox, setSelectedBox] = useState<BoxRecommendation | null>(null);
 
   const handleAnswer = (answerIndex: number) => {
     if (selectedAnswer !== null) return;
@@ -202,16 +206,25 @@ const Quiz = () => {
         user_agent: navigator.userAgent
       };
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('quiz_responses')
-        .insert([response]);
+        .insert([response])
+        .select()
+        .single();
 
       if (error) {
         console.error('Erreur lors de la sauvegarde:', error);
+      } else if (data) {
+        setQuizResponseId(data.id);
       }
     } catch (error) {
       console.error('Erreur:', error);
     }
+  };
+
+  const handleOrderClick = (box: BoxRecommendation) => {
+    setSelectedBox(box);
+    setOrderDialogOpen(true);
   };
 
   const resetQuiz = () => {
@@ -502,7 +515,7 @@ const Quiz = () => {
                           </div>
                           {index === 0 && (
                             <Button
-                              onClick={() => window.location.href = "/#offrir"}
+                              onClick={() => handleOrderClick(box)}
                               className="w-full bg-primary hover:bg-primary/90"
                             >
                               Commander cette box
@@ -537,6 +550,17 @@ const Quiz = () => {
       </div>
 
       <Footer />
+
+      {selectedBox && (
+        <OrderDialog
+          open={orderDialogOpen}
+          onOpenChange={setOrderDialogOpen}
+          boxName={selectedBox.name}
+          boxPrice={selectedBox.price}
+          boxDescription={selectedBox.description}
+          quizResponseId={quizResponseId}
+        />
+      )}
     </div>
   );
 };

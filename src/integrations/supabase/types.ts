@@ -35,6 +35,75 @@ export type Database = {
         }
         Relationships: []
       }
+      orders: {
+        Row: {
+          address_line1: string
+          address_line2: string | null
+          admin_notes: string | null
+          box_name: string
+          box_price: string
+          city: string
+          country: string
+          created_at: string
+          customer_email: string
+          customer_name: string
+          customer_notes: string | null
+          customer_phone: string | null
+          id: string
+          ip_address: unknown
+          payment_status: string
+          postal_code: string
+          quiz_response_id: string | null
+          status: string
+          subscription_type: string
+          user_agent: string | null
+        }
+        Insert: {
+          address_line1: string
+          address_line2?: string | null
+          admin_notes?: string | null
+          box_name: string
+          box_price: string
+          city: string
+          country?: string
+          created_at?: string
+          customer_email: string
+          customer_name: string
+          customer_notes?: string | null
+          customer_phone?: string | null
+          id?: string
+          ip_address?: unknown
+          payment_status?: string
+          postal_code: string
+          quiz_response_id?: string | null
+          status?: string
+          subscription_type: string
+          user_agent?: string | null
+        }
+        Update: {
+          address_line1?: string
+          address_line2?: string | null
+          admin_notes?: string | null
+          box_name?: string
+          box_price?: string
+          city?: string
+          country?: string
+          created_at?: string
+          customer_email?: string
+          customer_name?: string
+          customer_notes?: string | null
+          customer_phone?: string | null
+          id?: string
+          ip_address?: unknown
+          payment_status?: string
+          postal_code?: string
+          quiz_response_id?: string | null
+          status?: string
+          subscription_type?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       quiz_responses: {
         Row: {
           allergies: string | null
