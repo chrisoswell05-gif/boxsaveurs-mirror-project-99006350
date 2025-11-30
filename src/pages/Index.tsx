@@ -7,6 +7,7 @@ import ConceptSection from "@/components/ConceptSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import PricingSection from "@/components/PricingSection";
 import GallerySection from "@/components/GallerySection";
+import VideoTestimonialsSection from "@/components/VideoTestimonialsSection";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -20,6 +21,7 @@ const Index = () => {
       <ConceptSection />
       <HowItWorksSection />
       <GallerySection />
+      <VideoTestimonialsSection />
       <PricingSection />
       <Footer />
     </div>
