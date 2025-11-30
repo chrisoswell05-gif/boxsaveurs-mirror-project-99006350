@@ -20,7 +20,7 @@ const HeroSection = () => {
         style={{ y, opacity }}
         className="absolute inset-0 z-0"
       >
-        <div className="absolute inset-0 bg-navy/60 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy/80 via-navy/70 to-navy/60 z-10" />
         <img 
           src={heroBackground} 
           alt="Box Saveurs de Ferme avec produits artisanaux" 
