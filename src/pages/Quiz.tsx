@@ -8,8 +8,6 @@ import { Input } from "@/components/ui/input";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import AnnouncementBar from "@/components/AnnouncementBar";
-import ScrollingBanner from "@/components/ScrollingBanner";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { OrderDialog } from "@/components/OrderDialog";
@@ -275,7 +273,6 @@ const Quiz = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <AnnouncementBar />
       <Navigation />
 
       {/* Quiz Content */}
@@ -438,9 +435,7 @@ const Quiz = () => {
                   </Card>
                 )}
 
-                <ScrollingBanner />
-
-                <div className="text-center mt-6">
+                <div className="text-center">
                   <Button
                     variant="ghost"
                     onClick={resetQuiz}
