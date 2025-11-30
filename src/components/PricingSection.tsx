@@ -38,7 +38,7 @@ const PricingSection = () => {
         </p>
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {plans.map((plan, index) => (
-            <Card key={index} className="overflow-hidden">
+            <Card key={index} className="overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl">
               <div className="p-6 space-y-4">
                 <h3 className="text-sm font-bold text-primary uppercase tracking-wide">
                   {plan.title}
@@ -58,7 +58,7 @@ const PricingSection = () => {
                     <li key={idx} className="text-foreground">{feature}</li>
                   ))}
                 </ul>
-                <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+                <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 hover:scale-105 active:scale-95">
                   {plan.engagement === "sans engagement" 
                     ? "Sans engagement" 
                     : plan.engagement === "3 mois"
@@ -73,7 +73,7 @@ const PricingSection = () => {
           <h3 className="text-2xl font-bold text-foreground mb-4">
             Rejoignez l'aventure et recevez des produit artisanaux authentiques dans chaque box pour vous faire découvrir l'univers du terroir
           </h3>
-          <Button className="bg-yellow text-yellow-foreground hover:bg-yellow/90 text-lg px-8 py-4 font-semibold">
+          <Button className="bg-yellow text-yellow-foreground hover:bg-yellow/90 text-lg px-8 py-4 font-semibold transition-all duration-300 hover:scale-110 hover:shadow-xl active:scale-95">
             Je rejoins ...
           </Button>
         </div>
