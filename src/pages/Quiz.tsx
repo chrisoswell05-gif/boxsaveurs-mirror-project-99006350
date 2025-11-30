@@ -27,112 +27,112 @@ interface BoxRecommendation {
 const questions: Question[] = [
   {
     id: 1,
-    question: "Quelle est la principale caractéristique des produits Saveurs de Ferme ?",
-    options: [
-      "Produits importés",
-      "Produits locaux et artisanaux",
-      "Produits industriels",
-      "Produits surgelés"
-    ],
-    correctAnswer: 1,
-    explanation: "Nos produits sont 100% locaux et artisanaux, directement des fermes du Québec.",
-    tags: ["importe", "local", "industriel", "surgele"]
-  },
-  {
-    id: 2,
     question: "Avez-vous des allergies ou intolérances alimentaires ?",
     options: [
       "Aucune allergie",
       "Intolérance au lactose",
-      "Allergie aux produits laitiers",
+      "Allergie aux noix ou fruits à coque",
       "Autre allergie (préciser ci-dessous)"
     ],
     correctAnswer: 0,
-    explanation: "Nous adaptons nos box selon vos besoins alimentaires.",
-    tags: ["aucune", "lactose", "laitier", "autre"],
+    explanation: "Nous adaptons nos box selon vos besoins alimentaires pour garantir votre plaisir sans compromis.",
+    tags: ["aucune", "lactose", "noix", "autre"],
     allowCustomInput: true
   },
   {
-    id: 3,
-    question: "Quel type de produits préférez-vous découvrir ?",
+    id: 2,
+    question: "Quels types de yaourts préférez-vous ?",
     options: [
-      "Fromages et produits laitiers",
-      "Confitures et produits sucrés",
-      "Viandes et charcuteries",
-      "Un peu de tout"
+      "Yaourts nature classiques",
+      "Yaourts aux fruits",
+      "Yaourts avec saveurs variées (vanille, caramel, etc.)",
+      "Un assortiment de tous les types"
     ],
     correctAnswer: 3,
-    explanation: "Nos box offrent une variété équilibrée de tous ces délices du terroir.",
-    tags: ["fromages", "sucre", "viandes", "variete"]
+    explanation: "Nos yaourts artisanaux sont préparés avec soin et proposés dans une variété de saveurs délicieuses.",
+    tags: ["nature", "fruits", "saveurs", "assortiment"]
+  },
+  {
+    id: 3,
+    question: "Êtes-vous intéressé par les fruits lyophilisés ?",
+    options: [
+      "Oui, j'adore les fruits lyophilisés",
+      "Oui, pour les ajouter à mes yaourts",
+      "Peut-être, je veux découvrir",
+      "Non, je préfère les fruits frais"
+    ],
+    correctAnswer: 2,
+    explanation: "Les fruits lyophilisés conservent toutes leurs saveurs et nutriments, parfaits pour accompagner vos produits laitiers.",
+    tags: ["oui_lyophilise", "yaourt_topping", "decouverte", "non_lyophilise"]
   },
   {
     id: 4,
-    question: "Quelle est votre priorité lors du choix de produits ?",
+    question: "Quel type de fromage vous intéresse ?",
     options: [
-      "Le goût authentique",
-      "La traçabilité et l'origine",
-      "La découverte de nouveautés",
-      "Le rapport qualité-prix"
+      "Fromages doux (type brie, camembert)",
+      "Fromages affinés (type cheddar, comté)",
+      "Fromages à pâte persillée (bleus)",
+      "Tous types de fromages artisanaux"
     ],
-    correctAnswer: 0,
-    explanation: "Nos produits privilégient le goût authentique, directement de nos producteurs passionnés.",
-    tags: ["authenticite", "tracabilite", "decouverte", "prix"]
+    correctAnswer: 3,
+    explanation: "Nos fromages artisanaux du terroir québécois offrent une palette de saveurs authentiques.",
+    tags: ["doux", "affine", "bleu", "tous_fromages"]
   },
   {
     id: 5,
-    question: "Quel format de box vous intéresse le mieux ?",
+    question: "Seriez-vous intéressé par le lait d'antan traditionnel ?",
     options: [
-      "Box découverte (petite quantité, grande variété)",
-      "Box gourmande (quantités généreuses)",
-      "Box thématique (focus sur un type de produit)",
-      "Box surprise (sélection du chef)"
+      "Oui, j'aime le lait traditionnel",
+      "Oui, pour cuisiner et faire des recettes",
+      "Je veux découvrir la différence",
+      "Non, je ne consomme pas de lait"
     ],
-    correctAnswer: 3,
-    explanation: "Nous proposons différents formats pour répondre à tous les besoins.",
-    tags: ["decouverte", "gourmande", "thematique", "surprise"]
+    correctAnswer: 0,
+    explanation: "Notre lait d'antan est produit de façon traditionnelle pour un goût authentique incomparable.",
+    tags: ["oui_lait", "cuisine_lait", "decouverte_lait", "non_lait"]
   },
   {
     id: 6,
-    question: "Pour quelle occasion souhaitez-vous utiliser la box ?",
+    question: "Aimez-vous le chocolat artisanal dans votre box ?",
     options: [
-      "Consommation personnelle régulière",
-      "Offrir en cadeau",
-      "Recevoir des invités",
-      "Toutes ces occasions"
+      "Oui, j'adore le chocolat !",
+      "Oui, mais en petite quantité",
+      "Uniquement du chocolat noir",
+      "Non, je préfère d'autres produits"
     ],
-    correctAnswer: 3,
-    explanation: "Nos box sont parfaites pour toutes les occasions grâce à leur présentation soignée.",
-    tags: ["personnel", "cadeau", "reception", "polyvalent"]
+    correctAnswer: 0,
+    explanation: "Nos chocolats artisanaux sont fabriqués localement avec des ingrédients de qualité supérieure.",
+    tags: ["oui_chocolat", "peu_chocolat", "noir_uniquement", "non_chocolat"]
   }
 ];
 
 const boxRecommendations: BoxRecommendation[] = [
   {
-    name: "Box Découverte du Terroir",
-    description: "Parfaite pour découvrir la diversité de nos producteurs locaux",
-    products: ["3 fromages artisanaux", "2 confitures maison", "1 miel local", "1 charcuterie"],
+    name: "Box Découverte Gourmande",
+    description: "Un assortiment complet pour découvrir tous nos produits",
+    products: ["3 yaourts avec saveurs", "1 fromage artisanal", "Fruits lyophilisés", "1 chocolat artisanal"],
     price: "45$",
     matchScore: 0
   },
   {
-    name: "Box Gourmande Premium",
-    description: "Pour les vrais amateurs de produits d'exception",
-    products: ["5 fromages affinés", "3 terrines artisanales", "2 miels rares", "1 bouteille de cidre"],
-    price: "75$",
-    matchScore: 0
-  },
-  {
-    name: "Box Cadeau Prestige",
-    description: "Une sélection raffinée pour faire plaisir",
-    products: ["Panier cadeau", "4 fromages premium", "3 confitures artisanales", "1 sirop d'érable"],
-    price: "65$",
-    matchScore: 0
-  },
-  {
-    name: "Box Surprise du Chef",
-    description: "Laissez-vous surprendre par notre sélection mensuelle",
-    products: ["Sélection variée du mois", "Produits de saison", "Nouveautés exclusives"],
+    name: "Box Laitière Traditionnelle",
+    description: "Focus sur nos produits laitiers d'exception",
+    products: ["4 yaourts saveurs variées", "1 lait d'antan", "2 fromages artisanaux", "Fruits lyophilisés"],
     price: "55$",
+    matchScore: 0
+  },
+  {
+    name: "Box Plaisir Sucré",
+    description: "Pour les amateurs de douceurs artisanales",
+    products: ["3 yaourts aux fruits", "2 chocolats artisanaux", "Fruits lyophilisés", "1 fromage doux"],
+    price: "50$",
+    matchScore: 0
+  },
+  {
+    name: "Box Complète du Terroir",
+    description: "Notre sélection la plus complète",
+    products: ["5 yaourts variés", "2 fromages affinés", "1 lait d'antan", "2 chocolats", "Fruits lyophilisés"],
+    price: "75$",
     matchScore: 0
   }
 ];
@@ -207,31 +207,57 @@ const Quiz = () => {
       
       // Algorithme de scoring basé sur les tags
       recommendations.forEach(box => {
-        if (selectedTag === "variete" || selectedTag === "polyvalent") {
-          if (box.name.includes("Découverte") || box.name.includes("Surprise")) {
+        // Préférences yaourts
+        if (selectedTag === "saveurs" || selectedTag === "assortiment") {
+          if (box.name.includes("Découverte") || box.name.includes("Complète")) {
+            box.matchScore += 3;
+          }
+        }
+        if (selectedTag === "fruits") {
+          if (box.name.includes("Plaisir")) {
             box.matchScore += 2;
           }
         }
-        if (selectedTag === "gourmande") {
-          if (box.name.includes("Gourmande") || box.name.includes("Premium")) {
+        
+        // Fruits lyophilisés
+        if (selectedTag === "oui_lyophilise" || selectedTag === "yaourt_topping") {
+          box.matchScore += 2; // Toutes les box en contiennent
+        }
+        
+        // Fromages
+        if (selectedTag === "tous_fromages" || selectedTag === "affine") {
+          if (box.name.includes("Complète") || box.name.includes("Laitière")) {
             box.matchScore += 2;
           }
         }
-        if (selectedTag === "cadeau") {
-          if (box.name.includes("Cadeau") || box.name.includes("Prestige")) {
+        if (selectedTag === "doux") {
+          if (box.name.includes("Plaisir") || box.name.includes("Découverte")) {
             box.matchScore += 2;
           }
         }
-        if (selectedTag === "decouverte" || selectedTag === "surprise") {
-          if (box.name.includes("Surprise") || box.name.includes("Découverte")) {
+        
+        // Lait d'antan
+        if (selectedTag === "oui_lait" || selectedTag === "cuisine_lait") {
+          if (box.name.includes("Laitière") || box.name.includes("Complète")) {
+            box.matchScore += 3;
+          }
+        }
+        
+        // Chocolat
+        if (selectedTag === "oui_chocolat") {
+          if (box.name.includes("Plaisir") || box.name.includes("Complète")) {
             box.matchScore += 2;
           }
         }
-        if (selectedTag === "authenticite" || selectedTag === "local") {
-          box.matchScore += 1;
+        if (selectedTag === "peu_chocolat") {
+          if (box.name.includes("Découverte")) {
+            box.matchScore += 2;
+          }
         }
-        if (selectedTag === "thematique") {
-          box.matchScore += 1;
+        
+        // Pas de lactose - privilégier boxes avec alternatives
+        if (selectedTag === "lactose") {
+          box.matchScore -= 1;
         }
       });
     });
