@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -25,11 +26,39 @@ interface Question {
   id: number;
   question: string;
   options: QuestionOption[];
+  allowCustomInput?: boolean;
 }
 
 const questions: Question[] = [
   {
     id: 1,
+    question: "Avez-vous des allergies ou intolérances alimentaires liées aux produits laitiers?",
+    options: [
+      { 
+        value: "none", 
+        label: "Aucune allergie", 
+        score: { base: 2, cachees: 2, annee: 2 } 
+      },
+      { 
+        value: "lactose", 
+        label: "Intolérance au lactose", 
+        score: { base: 3, cachees: 1, annee: 1 } 
+      },
+      { 
+        value: "nuts", 
+        label: "Allergie aux noix ou fruits à coque", 
+        score: { base: 2, cachees: 2, annee: 1 } 
+      },
+      { 
+        value: "other", 
+        label: "Autre allergie (préciser ci-dessous)", 
+        score: { base: 2, cachees: 1, annee: 1 } 
+      }
+    ],
+    allowCustomInput: true
+  },
+  {
+    id: 2,
     question: "À quelle fréquence consommez-vous des produits laitiers?",
     options: [
       { 
@@ -50,7 +79,7 @@ const questions: Question[] = [
     ]
   },
   {
-    id: 2,
+    id: 3,
     question: "Quel type de yaourt préférez-vous?",
     options: [
       { 
@@ -71,7 +100,7 @@ const questions: Question[] = [
     ]
   },
   {
-    id: 3,
+    id: 4,
     question: "Combien de personnes dans votre foyer?",
     options: [
       { 
@@ -92,7 +121,7 @@ const questions: Question[] = [
     ]
   },
   {
-    id: 4,
+    id: 5,
     question: "Qu'est-ce qui vous attire le plus?",
     options: [
       { 
@@ -150,6 +179,7 @@ const Quiz = () => {
   const [quizResponseId, setQuizResponseId] = useState<string | undefined>();
   const [orderDialogOpen, setOrderDialogOpen] = useState(false);
   const [selectedBox, setSelectedBox] = useState<BoxRecommendation | null>(null);
+  const [customAllergy, setCustomAllergy] = useState("");
 
   const calculateResult = (): string => {
     const scores = { base: 0, cachees: 0, annee: 0 };
@@ -196,11 +226,12 @@ const Quiz = () => {
       
       // Map answers to database columns
       const response = {
-        allergies: null, // Not asked in scoring quiz
-        yaourt_preference: answers[1] ? questions[1].options.find(o => o.value === answers[1])?.label : null,
+        allergies: answers[0] ? questions[0].options.find(o => o.value === answers[0])?.label : null,
+        custom_allergies: answers[0] === 'other' ? customAllergy : null,
+        yaourt_preference: answers[2] ? questions[2].options.find(o => o.value === answers[2])?.label : null,
         fruits_lyophilises: null,
         fromage_preference: null,
-        lait_preference: answers[0] ? questions[0].options.find(o => o.value === answers[0])?.label : null,
+        lait_preference: answers[1] ? questions[1].options.find(o => o.value === answers[1])?.label : null,
         chocolat_preference: null,
         score: null,
         recommended_box: recommendedBox.name,
@@ -234,6 +265,7 @@ const Quiz = () => {
     setAnswers([]);
     setShowResult(false);
     setQuizResponseId(undefined);
+    setCustomAllergy("");
   };
 
   const recommendedPlan = showResult ? calculateResult() : null;
@@ -291,6 +323,27 @@ const Quiz = () => {
                         </div>
                       ))}
                     </RadioGroup>
+
+                    {/* Custom allergy input */}
+                    {questions[currentQuestion].allowCustomInput && 
+                     answers[currentQuestion] === 'other' && (
+                      <div className="mt-6 space-y-2">
+                        <Label htmlFor="customAllergy">
+                          Précisez votre allergie :
+                        </Label>
+                        <Input
+                          id="customAllergy"
+                          type="text"
+                          value={customAllergy}
+                          onChange={(e) => setCustomAllergy(e.target.value)}
+                          placeholder="Décrivez votre allergie alimentaire..."
+                          maxLength={200}
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          Maximum 200 caractères
+                        </p>
+                      </div>
+                    )}
 
                     <div className="flex justify-between mt-8">
                       <Button
