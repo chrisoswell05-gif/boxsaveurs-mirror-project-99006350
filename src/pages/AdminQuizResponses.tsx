@@ -4,8 +4,10 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Calendar, User, Package, AlertCircle } from "lucide-react";
+import { Calendar, User, Package, AlertCircle, Download } from "lucide-react";
+import { toast } from "sonner";
 
 interface QuizResponse {
   id: string;
@@ -57,6 +59,68 @@ const AdminQuizResponses = () => {
     });
   };
 
+  const exportToCSV = () => {
+    if (responses.length === 0) {
+      toast.error("Aucune donnée à exporter");
+      return;
+    }
+
+    // En-têtes du CSV
+    const headers = [
+      'Date',
+      'Nom',
+      'Email',
+      'Allergies',
+      'Allergies personnalisées',
+      'Préférence yaourts',
+      'Fruits lyophilisés',
+      'Préférence fromages',
+      'Préférence lait',
+      'Préférence chocolat',
+      'Score',
+      'Box recommandée'
+    ];
+
+    // Convertir les données en lignes CSV
+    const csvRows = [
+      headers.join(','), // Ligne d'en-tête
+      ...responses.map(response => [
+        `"${formatDate(response.created_at)}"`,
+        `"${response.name || 'N/A'}"`,
+        `"${response.email || 'N/A'}"`,
+        `"${response.allergies || 'N/A'}"`,
+        `"${response.custom_allergies || 'N/A'}"`,
+        `"${response.yaourt_preference || 'N/A'}"`,
+        `"${response.fruits_lyophilises || 'N/A'}"`,
+        `"${response.fromage_preference || 'N/A'}"`,
+        `"${response.lait_preference || 'N/A'}"`,
+        `"${response.chocolat_preference || 'N/A'}"`,
+        response.score,
+        `"${response.recommended_box || 'N/A'}"`
+      ].join(','))
+    ];
+
+    // Créer le contenu CSV
+    const csvContent = csvRows.join('\n');
+    
+    // Créer un Blob avec encodage UTF-8 avec BOM pour Excel
+    const BOM = '\uFEFF';
+    const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+    
+    // Créer un lien de téléchargement
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `quiz-responses-${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast.success(`${responses.length} réponse(s) exportée(s) avec succès`);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
@@ -79,16 +143,32 @@ const AdminQuizResponses = () => {
           animate={{ opacity: 1, y: 0 }}
           className="mb-12"
         >
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Réponses au Quiz
-          </h1>
-          <p className="text-muted-foreground">
-            Consultez les préférences des clients pour personnaliser leurs box
-          </p>
-          <div className="mt-4">
-            <Badge variant="secondary" className="text-lg px-4 py-2">
-              {responses.length} réponse{responses.length !== 1 ? 's' : ''}
-            </Badge>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h1 className="text-4xl font-bold text-foreground mb-4">
+                Réponses au Quiz
+              </h1>
+              <p className="text-muted-foreground">
+                Consultez les préférences des clients pour personnaliser leurs box
+              </p>
+              <div className="mt-4">
+                <Badge variant="secondary" className="text-lg px-4 py-2">
+                  {responses.length} réponse{responses.length !== 1 ? 's' : ''}
+                </Badge>
+              </div>
+            </div>
+            
+            <div>
+              <Button
+                onClick={exportToCSV}
+                disabled={responses.length === 0}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+                size="lg"
+              >
+                <Download className="w-5 h-5 mr-2" />
+                Exporter en CSV
+              </Button>
+            </div>
           </div>
         </motion.div>
 
