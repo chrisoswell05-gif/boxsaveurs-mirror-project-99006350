@@ -5,6 +5,12 @@ import { Card } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { CheckCircle2, XCircle } from "lucide-react";
+import quizAllergies from "@/assets/quiz-allergies.jpg";
+import quizYaourts from "@/assets/quiz-yaourts.jpg";
+import quizFruitsLyophilises from "@/assets/quiz-fruits-lyophilises.jpg";
+import quizFromages from "@/assets/quiz-fromages.jpg";
+import quizLait from "@/assets/quiz-lait.jpg";
+import quizChocolat from "@/assets/quiz-chocolat.jpg";
 
 interface Question {
   id: number;
@@ -13,7 +19,8 @@ interface Question {
   correctAnswer: number;
   explanation: string;
   tags: string[];
-  allowCustomInput?: boolean; // Pour permettre un champ texte libre
+  allowCustomInput?: boolean;
+  image?: string;
 }
 
 interface BoxRecommendation {
@@ -37,7 +44,8 @@ const questions: Question[] = [
     correctAnswer: 0,
     explanation: "Nous adaptons nos box selon vos besoins alimentaires pour garantir votre plaisir sans compromis.",
     tags: ["aucune", "lactose", "noix", "autre"],
-    allowCustomInput: true
+    allowCustomInput: true,
+    image: quizAllergies
   },
   {
     id: 2,
@@ -50,7 +58,8 @@ const questions: Question[] = [
     ],
     correctAnswer: 3,
     explanation: "Nos yaourts artisanaux sont préparés avec soin et proposés dans une variété de saveurs délicieuses.",
-    tags: ["nature", "fruits", "saveurs", "assortiment"]
+    tags: ["nature", "fruits", "saveurs", "assortiment"],
+    image: quizYaourts
   },
   {
     id: 3,
@@ -63,7 +72,8 @@ const questions: Question[] = [
     ],
     correctAnswer: 2,
     explanation: "Les fruits lyophilisés conservent toutes leurs saveurs et nutriments, parfaits pour accompagner vos produits laitiers.",
-    tags: ["oui_lyophilise", "yaourt_topping", "decouverte", "non_lyophilise"]
+    tags: ["oui_lyophilise", "yaourt_topping", "decouverte", "non_lyophilise"],
+    image: quizFruitsLyophilises
   },
   {
     id: 4,
@@ -76,7 +86,8 @@ const questions: Question[] = [
     ],
     correctAnswer: 3,
     explanation: "Nos fromages artisanaux du terroir québécois offrent une palette de saveurs authentiques.",
-    tags: ["doux", "affine", "bleu", "tous_fromages"]
+    tags: ["doux", "affine", "bleu", "tous_fromages"],
+    image: quizFromages
   },
   {
     id: 5,
@@ -89,7 +100,8 @@ const questions: Question[] = [
     ],
     correctAnswer: 0,
     explanation: "Notre lait d'antan est produit de façon traditionnelle pour un goût authentique incomparable.",
-    tags: ["oui_lait", "cuisine_lait", "decouverte_lait", "non_lait"]
+    tags: ["oui_lait", "cuisine_lait", "decouverte_lait", "non_lait"],
+    image: quizLait
   },
   {
     id: 6,
@@ -102,7 +114,8 @@ const questions: Question[] = [
     ],
     correctAnswer: 0,
     explanation: "Nos chocolats artisanaux sont fabriqués localement avec des ingrédients de qualité supérieure.",
-    tags: ["oui_chocolat", "peu_chocolat", "noir_uniquement", "non_chocolat"]
+    tags: ["oui_chocolat", "peu_chocolat", "noir_uniquement", "non_chocolat"],
+    image: quizChocolat
   }
 ];
 
@@ -300,6 +313,19 @@ const Quiz = () => {
                 transition={{ duration: 0.3 }}
               >
                 <Card className="p-8">
+                  {questions[currentQuestion].image && (
+                    <div className="mb-6 overflow-hidden rounded-lg">
+                      <motion.img
+                        initial={{ opacity: 0, scale: 1.1 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
+                        src={questions[currentQuestion].image}
+                        alt={questions[currentQuestion].question}
+                        className="w-full h-64 object-cover"
+                      />
+                    </div>
+                  )}
+                  
                   <div className="mb-6">
                     <div className="flex justify-between items-center mb-4">
                       <span className="text-sm font-medium text-muted-foreground">
