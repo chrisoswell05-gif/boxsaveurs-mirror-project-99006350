@@ -9,6 +9,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnnouncementBar from "@/components/AnnouncementBar";
+import ScrollingBanner from "@/components/ScrollingBanner";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { OrderDialog } from "@/components/OrderDialog";
@@ -437,7 +438,9 @@ const Quiz = () => {
                   </Card>
                 )}
 
-                <div className="text-center">
+                <ScrollingBanner />
+
+                <div className="text-center mt-6">
                   <Button
                     variant="ghost"
                     onClick={resetQuiz}
