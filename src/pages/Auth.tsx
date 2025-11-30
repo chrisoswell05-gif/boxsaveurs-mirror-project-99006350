@@ -134,6 +134,32 @@ const Auth = () => {
             });
 
             if (!referralError) {
+              // Send notification email to referrer
+              setTimeout(async () => {
+                try {
+                  // Fetch referrer profile
+                  const { data: referrerProfile } = await supabase
+                    .from('profiles')
+                    .select('email, full_name')
+                    .eq('referral_code', referralCode.toUpperCase())
+                    .single();
+
+                  if (referrerProfile) {
+                    await supabase.functions.invoke('send-referral-notification', {
+                      body: {
+                        referrerEmail: referrerProfile.email,
+                        referrerName: referrerProfile.full_name || 'Parrain',
+                        referredName: fullName || email.split('@')[0],
+                        referralCode: referralCode.toUpperCase(),
+                        bonusAmount: 10,
+                      },
+                    });
+                  }
+                } catch (emailError) {
+                  console.error("Error sending referral email:", emailError);
+                }
+              }, 1000);
+
               toast({
                 title: "🎉 Bonus de parrainage !",
                 description: "Vous et votre parrain avez reçu 10$ de crédit chacun !",
