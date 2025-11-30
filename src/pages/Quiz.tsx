@@ -12,7 +12,8 @@ interface Question {
   options: string[];
   correctAnswer: number;
   explanation: string;
-  tags: string[]; // Tags pour la recommandation
+  tags: string[];
+  allowCustomInput?: boolean; // Pour permettre un champ texte libre
 }
 
 interface BoxRecommendation {
@@ -26,19 +27,34 @@ interface BoxRecommendation {
 const questions: Question[] = [
   {
     id: 1,
-    question: "Avez-vous des allergies ou intolérances alimentaires ?",
+    question: "Avez-vous des allergies ou intolérances aux produits laitiers ?",
     options: [
       "Aucune allergie",
       "Intolérance au lactose",
       "Allergie aux produits laitiers de vache",
-      "Autres restrictions alimentaires"
+      "Autre (préciser ci-dessous)"
     ],
     correctAnswer: 0,
     explanation: "Nous adaptons nos box selon vos besoins alimentaires pour garantir votre plaisir sans compromis.",
-    tags: ["aucune", "lactose", "vache", "restrictions"]
+    tags: ["aucune", "lactose", "vache", "autre"],
+    allowCustomInput: true
   },
   {
     id: 2,
+    question: "Avez-vous des allergies à certains fruits (souvent présents dans les confitures et accompagnements) ?",
+    options: [
+      "Aucune allergie aux fruits",
+      "Allergie aux fruits à coque (noix, amandes, noisettes)",
+      "Allergie aux fruits rouges (fraises, framboises)",
+      "Autre allergie aux fruits (préciser ci-dessous)"
+    ],
+    correctAnswer: 0,
+    explanation: "Certaines de nos box peuvent contenir des confitures ou accompagnements aux fruits. Nous prenons en compte vos allergies.",
+    tags: ["aucune_fruits", "noix", "fruits_rouges", "autre_fruits"],
+    allowCustomInput: true
+  },
+  {
+    id: 3,
     question: "Quel type de fromage préférez-vous dans votre box ?",
     options: [
       "Fromages doux et crémeux",
@@ -51,7 +67,7 @@ const questions: Question[] = [
     tags: ["doux", "corse", "bleu", "variete"]
   },
   {
-    id: 3,
+    id: 4,
     question: "Quelle taille de box vous conviendrait le mieux ?",
     options: [
       "Petite box (2-3 fromages) - Pour découvrir",
@@ -64,7 +80,7 @@ const questions: Question[] = [
     tags: ["petite", "moyenne", "grande", "flexible"]
   },
   {
-    id: 4,
+    id: 5,
     question: "Quelle fréquence de livraison préférez-vous ?",
     options: [
       "Une fois par mois",
@@ -77,7 +93,7 @@ const questions: Question[] = [
     tags: ["mensuel", "bimensuel", "unique", "flexible"]
   },
   {
-    id: 5,
+    id: 6,
     question: "Pour quelle occasion souhaitez-vous cette box ?",
     options: [
       "Consommation personnelle régulière",
@@ -129,11 +145,24 @@ const Quiz = () => {
   const [score, setScore] = useState(0);
   const [answeredQuestions, setAnsweredQuestions] = useState<boolean[]>(Array(questions.length).fill(false));
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
+  const [customInputs, setCustomInputs] = useState<{[key: number]: string}>({});
+  const [showCustomInput, setShowCustomInput] = useState(false);
 
   const handleAnswer = (answerIndex: number) => {
     if (selectedAnswer !== null) return;
     
     setSelectedAnswer(answerIndex);
+    
+    // Vérifier si c'est une option "Autre" qui nécessite un champ personnalisé
+    const currentQ = questions[currentQuestion];
+    const isLastOption = answerIndex === currentQ.options.length - 1;
+    const hasCustomInput = currentQ.allowCustomInput;
+    
+    if (hasCustomInput && isLastOption) {
+      setShowCustomInput(true);
+    } else {
+      setShowCustomInput(false);
+    }
     
     // Enregistrer la réponse de l'utilisateur
     const newUserAnswers = [...userAnswers];
@@ -153,6 +182,7 @@ const Quiz = () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
+      setShowCustomInput(false);
     } else {
       setShowResult(true);
     }
@@ -165,6 +195,8 @@ const Quiz = () => {
     setScore(0);
     setAnsweredQuestions(Array(questions.length).fill(false));
     setUserAnswers([]);
+    setCustomInputs({});
+    setShowCustomInput(false);
   };
 
   const getRecommendations = (): BoxRecommendation[] => {
@@ -330,6 +362,33 @@ const Quiz = () => {
                     </motion.div>
                   )}
 
+                  {showCustomInput && selectedAnswer !== null && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mb-6"
+                    >
+                      <label className="block text-sm font-medium mb-2 text-foreground">
+                        Veuillez préciser votre allergie :
+                      </label>
+                      <input
+                        type="text"
+                        value={customInputs[currentQuestion] || ""}
+                        onChange={(e) => {
+                          const newInputs = {...customInputs};
+                          newInputs[currentQuestion] = e.target.value;
+                          setCustomInputs(newInputs);
+                        }}
+                        placeholder="Décrivez votre allergie alimentaire..."
+                        className="w-full px-4 py-2 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                        maxLength={200}
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Maximum 200 caractères
+                      </p>
+                    </motion.div>
+                  )}
+
                   {selectedAnswer !== null && (
                     <Button
                       onClick={handleNext}
@@ -369,6 +428,27 @@ const Quiz = () => {
                     <h3 className="text-2xl font-bold mb-6 text-foreground">
                       Nos recommandations pour vous
                     </h3>
+                    
+                    {Object.keys(customInputs).length > 0 && (
+                      <div className="mb-6 p-4 bg-accent/10 border border-accent/20 rounded-lg">
+                        <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                          <span className="text-accent">⚠️</span> Vos allergies alimentaires :
+                        </h4>
+                        <div className="space-y-1">
+                          {Object.entries(customInputs).map(([questionIndex, value]) => (
+                            value && (
+                              <p key={questionIndex} className="text-sm text-muted-foreground">
+                                • {value}
+                              </p>
+                            )
+                          ))}
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-2 italic">
+                          Nous prendrons en compte vos allergies lors de la préparation de votre box
+                        </p>
+                      </div>
+                    )}
+                    
                     <div className="space-y-4">
                       {getRecommendations().slice(0, 3).map((box, index) => (
                         <motion.div
