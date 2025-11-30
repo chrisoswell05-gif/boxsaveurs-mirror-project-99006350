@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import heroBox from "@/assets/hero-box.jpg";
 import ScrollReveal from "@/components/ScrollReveal";
+import SavingsCalculator from "@/components/SavingsCalculator";
 
 const PricingSection = () => {
   const plans = [
@@ -77,6 +78,9 @@ const PricingSection = () => {
             </ScrollReveal>
           ))}
         </div>
+        
+        <SavingsCalculator />
+        
         <ScrollReveal delay={0.5} className="text-center mt-12">
           <h3 className="text-2xl font-bold text-foreground mb-4">
             Rejoignez l'aventure et recevez des produit artisanaux authentiques dans chaque box pour vous faire découvrir l'univers du terroir
