@@ -10,49 +10,50 @@ const HeroSection = () => {
     offset: ["start start", "end start"]
   });
   
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 0.3]);
 
   return (
-    <section ref={ref} className="bg-background py-16 px-6 relative overflow-hidden">
-      <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center">
+    <section ref={ref} className="relative min-h-[90vh] flex items-center overflow-hidden">
+      {/* Background Image with Parallax */}
+      <motion.div 
+        style={{ y, opacity }}
+        className="absolute inset-0 z-0"
+      >
+        <div className="absolute inset-0 bg-navy/60 z-10" />
+        <img 
+          src={heroBox} 
+          alt="Box Saveurs de Ferme avec produits artisanaux" 
+          className="w-full h-full object-cover"
+        />
+      </motion.div>
+
+      {/* Content */}
+      <div className="container mx-auto px-6 relative z-20">
         <motion.div 
-          className="space-y-6 z-10 relative"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
+          className="max-w-3xl"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg">
             Authenticité, Plaisir, Découverte
           </h1>
-          <p className="text-2xl md:text-3xl text-primary font-semibold">
+          <p className="text-3xl md:text-4xl text-yellow font-semibold mb-4 drop-shadow-lg">
             Chaque box, une nouvelle expérience gourmande
           </p>
-          <p className="text-xl text-foreground">
+          <p className="text-2xl text-white mb-8 drop-shadow-lg">
             Une découverte sans engagement<br />
-            <span className="text-2xl font-bold">24,99$/mois</span>
+            <span className="text-3xl font-bold text-yellow">24,99$/mois</span>
           </p>
-          <div className="flex gap-4 pt-4">
-            <Button className="bg-navy text-navy-foreground hover:bg-navy/90 text-lg px-8 py-6 transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95">
+          <div className="flex gap-4">
+            <Button className="bg-navy text-navy-foreground hover:bg-navy/90 text-lg px-8 py-6 transition-all duration-300 hover:scale-105 hover:shadow-xl active:scale-95">
               J'essaie
             </Button>
-            <Button className="bg-yellow text-yellow-foreground hover:bg-yellow/90 text-lg px-8 py-6 transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95">
+            <Button className="bg-yellow text-yellow-foreground hover:bg-yellow/90 text-lg px-8 py-6 transition-all duration-300 hover:scale-105 hover:shadow-xl active:scale-95">
               J'offre
             </Button>
           </div>
-        </motion.div>
-        <motion.div 
-          style={{ y, opacity }}
-          className="relative z-0"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-        >
-          <img 
-            src={heroBox} 
-            alt="Box Saveurs de Ferme avec produits artisanaux" 
-            className="rounded-lg shadow-2xl w-full"
-          />
         </motion.div>
       </div>
     </section>
