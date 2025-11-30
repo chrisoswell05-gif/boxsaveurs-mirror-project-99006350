@@ -16,7 +16,13 @@ const PricingSection = () => {
       subtitle: "Box bimensuel",
       engagement: "sans engagement",
       price: "34.99$",
-      features: ["-3 produits inclus", "-livraison offerte"],
+      features: [
+        "Yaourts artisanaux aux saveurs variées",
+        "Fromage + Lait du terroir",
+        "Fruits lyophilisés",
+        "Guide recettes + Cuillère + Surprise",
+        "Livraison offerte"
+      ],
       isBestOffer: false,
     },
     {
@@ -24,7 +30,14 @@ const PricingSection = () => {
       subtitle: "Box mensuel engagement",
       engagement: "3 mois",
       price: "29.99$",
-      features: ["-3 produits inclus", "-livraison offerte", "-Économisez 5$/mois"],
+      features: [
+        "Yaourts artisanaux aux saveurs variées",
+        "Fromage + Lait du terroir",
+        "Fruits lyophilisés",
+        "Guide recettes + Cuillère + Surprise",
+        "Livraison offerte",
+        "Économisez 5$/mois"
+      ],
       isBestOffer: false,
     },
     {
@@ -32,7 +45,14 @@ const PricingSection = () => {
       subtitle: "Box mensuel engagement 12 mois",
       engagement: "",
       price: "24.99$",
-      features: ["-3 produits inclus", "-livraison offerte", "-Économisez 10$/mois"],
+      features: [
+        "Yaourts artisanaux aux saveurs variées",
+        "Fromage + Lait du terroir",
+        "Fruits lyophilisés",
+        "Guide recettes + Cuillère + Surprise",
+        "Livraison offerte",
+        "Économisez 10$/mois"
+      ],
       isBestOffer: true,
     },
   ];

@@ -84,17 +84,17 @@ const questions: Question[] = [
     options: [
       { 
         value: "nature", 
-        label: "Nature et simple", 
+        label: "Nature - saveur pure et authentique", 
         score: { base: 2, cachees: 2, annee: 2 } 
       },
       { 
         value: "fruity", 
-        label: "Aux fruits (mangue, fraise, pêche)", 
+        label: "Fruité à la fraise - gourmand et rafraîchissant", 
         score: { base: 2, cachees: 3, annee: 2 } 
       },
       { 
         value: "maple", 
-        label: "À l'érable (saveur du terroir)", 
+        label: "À l'érable - saveur du terroir québécois", 
         score: { base: 1, cachees: 2, annee: 3 } 
       }
     ]
@@ -154,19 +154,19 @@ interface BoxRecommendation {
 const boxDetails: Record<string, BoxRecommendation> = {
   base: {
     name: "LA BASE DU GOÛT",
-    description: "Box bimensuelle sans engagement - Parfaite pour découvrir nos produits à votre rythme",
+    description: "Box bimensuelle sans engagement - Yaourts artisanaux (nature, fraise, érable), fromage du terroir, lait d'antan ou au chocolat, fruits lyophilisés + guide recettes, cuillère et surprise",
     price: "39.90€",
     type: 'base'
   },
   cachees: {
     name: "SAVEURS CACHÉES",
-    description: "Box mensuelle avec engagement 3 mois - L'équilibre idéal entre régularité et découverte",
+    description: "Box mensuelle engagement 3 mois - Yaourts artisanaux variés, fromage, lait avec crème, fruits lyophilisés + extras (guide, cuillère, cadeau). L'équilibre parfait entre régularité et découverte",
     price: "39.90€",
     type: 'cachees'
   },
   annee: {
     name: "L'ANNÉE GOURMANDE",
-    description: "Box mensuelle avec engagement 12 mois - La meilleure valeur pour les passionnés du terroir",
+    description: "Box mensuelle engagement 12 mois - Toutes les saveurs du terroir: yaourts, fromages, lait gourmand, fruits lyophilisés + tous les extras. La meilleure valeur pour les passionnés",
     price: "39.90€",
     type: 'annee'
   }
