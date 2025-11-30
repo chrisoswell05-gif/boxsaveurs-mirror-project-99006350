@@ -1,4 +1,4 @@
-import heroBox from "@/assets/hero-box.jpg";
+import heroBackground from "@/assets/hero-background.png";
 import { Button } from "@/components/ui/button";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
@@ -22,7 +22,7 @@ const HeroSection = () => {
       >
         <div className="absolute inset-0 bg-navy/60 z-10" />
         <img 
-          src={heroBox} 
+          src={heroBackground} 
           alt="Box Saveurs de Ferme avec produits artisanaux" 
           className="w-full h-full object-cover"
         />
