@@ -18,9 +18,11 @@ const PricingSection = () => {
       price: "34.99$",
       features: [
         "Yaourts artisanaux (nature, érable, fraise, mangue, bleuet, pêche)",
-        "Fromage + Lait du terroir",
+        "Fromage du terroir",
+        "Lait d'antan",
         "Fruits lyophilisés",
-        "Guide recettes + Cuillère + Surprise",
+        "Guide recettes",
+        "Cuillère réutilisable",
         "Livraison offerte"
       ],
       isBestOffer: false,
@@ -32,9 +34,12 @@ const PricingSection = () => {
       price: "29.99$",
       features: [
         "Yaourts artisanaux (nature, érable, fraise, mangue, bleuet, pêche)",
-        "Fromage + Lait du terroir",
+        "Fromage du terroir",
+        "Lait d'antan",
         "Fruits lyophilisés",
-        "Guide recettes + Cuillère + Surprise",
+        "Guide recettes",
+        "Cuillère réutilisable",
+        "Cadeau surprise unique",
         "Livraison offerte",
         "Économisez 5$/mois"
       ],
@@ -47,9 +52,12 @@ const PricingSection = () => {
       price: "24.99$",
       features: [
         "Yaourts artisanaux (nature, érable, fraise, mangue, bleuet, pêche)",
-        "Fromage + Lait du terroir",
+        "Fromage du terroir",
+        "Lait d'antan",
         "Fruits lyophilisés",
-        "Guide recettes + Cuillère + Surprise",
+        "Guide recettes",
+        "Cuillère réutilisable",
+        "Cadeau surprise unique",
         "Livraison offerte",
         "Économisez 10$/mois"
       ],
@@ -140,7 +148,10 @@ const PricingSection = () => {
                   )}
                   <ul className="space-y-2 flex-grow">
                     {plan.features.map((feature, idx) => (
-                      <li key={idx} className="text-foreground">{feature}</li>
+                      <li key={idx} className="text-foreground flex items-start gap-2">
+                        <span className="text-yellow mt-1">•</span>
+                        <span className="text-sm">{feature}</span>
+                      </li>
                     ))}
                   </ul>
                   <Button variant="premium" className="w-full">
