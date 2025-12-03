@@ -17,7 +17,7 @@ const PricingSection = () => {
       engagement: "sans engagement",
       price: "34.99$",
       features: [
-        "Yaourts artisanaux aux saveurs variées",
+        "Yaourts artisanaux (nature, érable, fraise, mangue, bleuet, pêche)",
         "Fromage + Lait du terroir",
         "Fruits lyophilisés",
         "Guide recettes + Cuillère + Surprise",
@@ -31,7 +31,7 @@ const PricingSection = () => {
       engagement: "3 mois",
       price: "29.99$",
       features: [
-        "Yaourts artisanaux aux saveurs variées",
+        "Yaourts artisanaux (nature, érable, fraise, mangue, bleuet, pêche)",
         "Fromage + Lait du terroir",
         "Fruits lyophilisés",
         "Guide recettes + Cuillère + Surprise",
@@ -46,7 +46,7 @@ const PricingSection = () => {
       engagement: "",
       price: "24.99$",
       features: [
-        "Yaourts artisanaux aux saveurs variées",
+        "Yaourts artisanaux (nature, érable, fraise, mangue, bleuet, pêche)",
         "Fromage + Lait du terroir",
         "Fruits lyophilisés",
         "Guide recettes + Cuillère + Surprise",

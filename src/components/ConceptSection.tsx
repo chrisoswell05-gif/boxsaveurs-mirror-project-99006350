@@ -24,7 +24,7 @@ const ConceptSection = () => {
                   <span className="text-2xl">🥛</span>
                   <div>
                     <strong>Yaourts artisanaux</strong>
-                    <p className="text-sm text-muted-foreground">Nature, fruité à la fraise, à l'érable... Des saveurs authentiques et variées</p>
+                    <p className="text-sm text-muted-foreground">Nature, fruité (fraise, mangue, bleuet, pêche), à l'érable... Des saveurs authentiques et variées</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
