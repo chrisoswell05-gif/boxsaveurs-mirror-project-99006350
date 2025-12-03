@@ -89,7 +89,7 @@ const questions: Question[] = [
       },
       { 
         value: "fruity", 
-        label: "Fruité à la fraise - gourmand et rafraîchissant", 
+        label: "Fruité (fraise, mangue, bleuet, pêche) - gourmand et rafraîchissant", 
         score: { base: 2, cachees: 3, annee: 2 } 
       },
       { 
