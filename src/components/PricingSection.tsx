@@ -17,12 +17,11 @@ const PricingSection = () => {
       engagement: "sans engagement",
       price: "34.99$",
       features: [
-        "Yaourts artisanaux (nature, érable, fraise, mangue, bleuet, pêche)",
-        "Fromage du terroir",
-        "Lait d'antan",
+        "3 produits inclus",
+        "Yaourt de ferme",
+        "Fromage artisanal",
         "Fruits lyophilisés",
-        "Guide recettes",
-        "Cuillère réutilisable",
+        "Guide de recettes",
         "Livraison offerte"
       ],
       isBestOffer: false,
