@@ -33,15 +33,13 @@ const PricingSection = () => {
       engagement: "3 mois",
       price: "29.99$",
       features: [
-        "Yaourts artisanaux (nature, érable, fraise, mangue, bleuet, pêche)",
-        "Fromage du terroir",
-        "Lait d'antan",
+        "3 produits inclus",
+        "Yaourt de ferme",
+        "Fromage artisanal",
         "Fruits lyophilisés",
-        "Guide recettes",
-        "Cuillère réutilisable",
-        "Cadeau surprise unique",
-        "Livraison offerte",
-        "Économisez 5$/mois"
+        "Lait authentique",
+        "Guide de recettes",
+        "Livraison offerte"
       ],
       isBestOffer: false,
     },
