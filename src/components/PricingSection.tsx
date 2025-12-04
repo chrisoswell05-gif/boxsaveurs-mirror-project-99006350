@@ -6,6 +6,7 @@ import heroBox from "@/assets/hero-box.jpg";
 import ScrollReveal from "@/components/ScrollReveal";
 import SavingsCalculator from "@/components/SavingsCalculator";
 import PromoCodeInput from "@/components/PromoCodeInput";
+import GiftMessageForm from "@/components/GiftMessageForm";
 import { usePromoCode } from "@/hooks/usePromoCode";
 import { Star, Gift } from "lucide-react";
 
@@ -301,13 +302,17 @@ const PricingSection = () => {
               ))}
             </div>
 
-            <ScrollReveal delay={0.3} className="text-center mt-12 max-w-2xl mx-auto">
+            <ScrollReveal delay={0.3} className="mt-12 max-w-2xl mx-auto">
+              <GiftMessageForm />
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.4} className="text-center mt-8 max-w-2xl mx-auto">
               <div className="bg-muted/50 rounded-lg p-6">
                 <h4 className="text-lg font-semibold text-foreground mb-2">
                   🎁 Comment ça marche ?
                 </h4>
                 <p className="text-muted-foreground text-sm">
-                  Choisissez votre coffret, ajoutez un message personnalisé, et nous nous occupons du reste ! 
+                  Choisissez votre coffret, personnalisez votre message ci-dessus, et nous nous occupons du reste ! 
                   Le destinataire recevra sa box avec une belle carte cadeau à la date de votre choix.
                 </p>
               </div>
