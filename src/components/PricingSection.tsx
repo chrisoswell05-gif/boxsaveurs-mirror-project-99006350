@@ -25,6 +25,8 @@ const PricingSection = () => {
         "Livraison offerte"
       ],
       isBestOffer: false,
+      badge: "Flexible",
+      badgeColor: "bg-muted text-muted-foreground",
     },
     {
       title: "SAVEURS CACHÉES",
@@ -41,6 +43,8 @@ const PricingSection = () => {
         "Livraison offerte"
       ],
       isBestOffer: false,
+      badge: "Populaire",
+      badgeColor: "bg-primary text-primary-foreground",
     },
     {
       title: "L'ANNÉE GOURMANDE",
@@ -58,6 +62,8 @@ const PricingSection = () => {
         "Cadeaux surprises"
       ],
       isBestOffer: true,
+      badge: "Meilleure valeur",
+      badgeColor: "bg-yellow text-yellow-foreground",
     },
   ];
 
@@ -99,9 +105,14 @@ const PricingSection = () => {
                   </div>
                 )}
                 <div className="p-6 space-y-4 h-full flex flex-col">
-                  <h3 className="text-sm font-bold text-primary uppercase tracking-wide">
-                    {plan.title}
-                  </h3>
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-bold text-primary uppercase tracking-wide">
+                      {plan.title}
+                    </h3>
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${plan.badgeColor}`}>
+                      {plan.badge}
+                    </span>
+                  </div>
                   <div className="relative overflow-hidden rounded-lg group">
                     <img 
                       src={heroBox} 
