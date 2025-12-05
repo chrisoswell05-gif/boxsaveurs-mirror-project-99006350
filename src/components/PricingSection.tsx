@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -6,11 +7,31 @@ import ScrollReveal from "@/components/ScrollReveal";
 import SavingsCalculator from "@/components/SavingsCalculator";
 import PromoCodeInput from "@/components/PromoCodeInput";
 import GiftMessageForm from "@/components/GiftMessageForm";
+import { OrderDialog } from "@/components/OrderDialog";
 import { usePromoCode } from "@/hooks/usePromoCode";
 import { Star, Gift } from "lucide-react";
 
 const PricingSection = () => {
   const { appliedPromo, isValidating, validatePromoCode, removePromoCode, calculateDiscountedPrice } = usePromoCode();
+  const [orderDialogOpen, setOrderDialogOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<{
+    title: string;
+    price: string;
+    features: string[];
+  } | null>(null);
+
+  const handleSelectPlan = (plan: typeof plans[0]) => {
+    const finalPrice = appliedPromo 
+      ? calculateDiscountedPrice(parseFloat(plan.price.replace('$', '')), plan.title).toFixed(2) + '$'
+      : plan.price;
+    
+    setSelectedPlan({
+      title: plan.title,
+      price: finalPrice,
+      features: plan.features
+    });
+    setOrderDialogOpen(true);
+  };
   
   const plans = [
     {
@@ -176,7 +197,11 @@ const PricingSection = () => {
                           </li>
                         ))}
                       </ul>
-                      <Button variant="premium" className="w-full">
+                      <Button 
+                        variant="premium" 
+                        className="w-full"
+                        onClick={() => handleSelectPlan(plan)}
+                      >
                         {plan.engagement === "sans engagement" 
                           ? "Sans engagement" 
                           : plan.engagement === "3 mois"
@@ -232,6 +257,16 @@ const PricingSection = () => {
           </Button>
         </ScrollReveal>
       </div>
+
+      {selectedPlan && (
+        <OrderDialog
+          open={orderDialogOpen}
+          onOpenChange={setOrderDialogOpen}
+          boxName={selectedPlan.title}
+          boxPrice={selectedPlan.price}
+          boxDescription={selectedPlan.features.join(', ')}
+        />
+      )}
     </section>
   );
 };
