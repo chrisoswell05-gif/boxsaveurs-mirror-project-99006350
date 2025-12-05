@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -67,51 +66,6 @@ const PricingSection = () => {
       isBestOffer: true,
       badge: "Meilleure valeur",
       badgeColor: "bg-yellow text-yellow-foreground",
-    },
-  ];
-
-  const giftOptions = [
-    {
-      title: "BOX DÉCOUVERTE",
-      subtitle: "Cadeau unique",
-      price: "39.99$",
-      features: [
-        "1 box complète",
-        "Yaourt de ferme",
-        "Fromage artisanal",
-        "Fruits lyophilisés",
-        "Guide de recettes",
-        "Carte cadeau personnalisée",
-        "Livraison offerte"
-      ],
-    },
-    {
-      title: "COFFRET 3 MOIS",
-      subtitle: "3 box livrées mensuellement",
-      price: "99.99$",
-      features: [
-        "3 box complètes",
-        "Produits variés chaque mois",
-        "Guide de recettes",
-        "Carte cadeau personnalisée",
-        "Emballage cadeau premium",
-        "Livraison offerte"
-      ],
-      isBestGift: true,
-    },
-    {
-      title: "COFFRET 6 MOIS",
-      subtitle: "6 box livrées mensuellement",
-      price: "179.99$",
-      features: [
-        "6 box complètes",
-        "Produits variés chaque mois",
-        "Guide de recettes exclusif",
-        "Carte cadeau personnalisée",
-        "Emballage cadeau premium",
-        "Surprise exclusive",
-        "Livraison offerte"
-      ],
     },
   ];
 
@@ -251,68 +205,17 @@ const PricingSection = () => {
           </TabsContent>
 
           <TabsContent value="gift">
-            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {giftOptions.map((gift, index) => (
-                <ScrollReveal key={index} delay={index * 0.15}>
-                  <Card className={`overflow-visible hover-lift shadow-md hover:shadow-xl h-full relative ${
-                    gift.isBestGift 
-                      ? 'border-2 border-yellow shadow-yellow' 
-                      : 'border-border/50'
-                  }`}>
-                    {gift.isBestGift && (
-                      <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
-                        <div className="bg-gradient-to-r from-yellow to-yellow/90 text-yellow-foreground px-6 py-2 rounded-full shadow-yellow flex items-center gap-2 whitespace-nowrap">
-                          <Gift className="w-4 h-4" />
-                          <span className="font-bold text-sm uppercase tracking-wide">
-                            Cadeau idéal
-                          </span>
-                          <Gift className="w-4 h-4" />
-                        </div>
-                      </div>
-                    )}
-                    <div className="p-6 space-y-4 h-full flex flex-col">
-                      <h3 className="text-sm font-bold text-primary uppercase tracking-wide">
-                        {gift.title}
-                      </h3>
-                      <div className="relative overflow-hidden rounded-lg group">
-                        <img 
-                          src={heroBox} 
-                          alt="Box Cadeau Saveurs de Ferme" 
-                          className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-navy/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      </div>
-                      <p className="text-2xl font-bold text-foreground">{gift.price}</p>
-                      <p className="font-semibold text-foreground">{gift.subtitle}</p>
-                      <ul className="space-y-2 flex-grow">
-                        {gift.features.map((feature, idx) => (
-                          <li key={idx} className="text-foreground flex items-start gap-2">
-                            <span className="text-yellow mt-1">•</span>
-                            <span className="text-sm">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      <Button variant="premium" className="w-full">
-                        <Gift className="w-4 h-4 mr-2" />
-                        Offrir ce cadeau
-                      </Button>
-                    </div>
-                  </Card>
-                </ScrollReveal>
-              ))}
-            </div>
-
-            <ScrollReveal delay={0.3} className="mt-12 max-w-2xl mx-auto">
+            <ScrollReveal className="max-w-2xl mx-auto">
               <GiftMessageForm />
             </ScrollReveal>
 
-            <ScrollReveal delay={0.4} className="text-center mt-8 max-w-2xl mx-auto">
+            <ScrollReveal delay={0.2} className="text-center mt-8 max-w-2xl mx-auto">
               <div className="bg-muted/50 rounded-lg p-6">
                 <h4 className="text-lg font-semibold text-foreground mb-2">
                   🎁 Comment ça marche ?
                 </h4>
                 <p className="text-muted-foreground text-sm">
-                  Choisissez votre coffret, personnalisez votre message ci-dessus, et nous nous occupons du reste ! 
+                  Choisissez votre coffret, personnalisez votre message, et nous nous occupons du reste ! 
                   Le destinataire recevra sa box avec une belle carte cadeau à la date de votre choix.
                 </p>
               </div>

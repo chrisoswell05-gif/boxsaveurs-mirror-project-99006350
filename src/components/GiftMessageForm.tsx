@@ -4,11 +4,35 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Gift, Heart, Calendar, Send } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Gift, Heart, Calendar, Check } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 
+const giftOptions = [
+  {
+    id: "discovery",
+    title: "BOX DÉCOUVERTE",
+    subtitle: "1 box unique",
+    price: "39.99$",
+  },
+  {
+    id: "3months",
+    title: "COFFRET 3 MOIS",
+    subtitle: "3 box livrées mensuellement",
+    price: "99.99$",
+    isBestGift: true,
+  },
+  {
+    id: "6months",
+    title: "COFFRET 6 MOIS",
+    subtitle: "6 box livrées mensuellement",
+    price: "179.99$",
+  },
+];
+
 const giftMessageSchema = z.object({
+  selectedGift: z.string().min(1, "Veuillez sélectionner un coffret"),
   recipientName: z.string().trim().min(1, "Le nom du destinataire est requis").max(100),
   recipientEmail: z.string().trim().email("Email invalide").max(255),
   senderName: z.string().trim().min(1, "Votre nom est requis").max(100),
@@ -20,6 +44,7 @@ type GiftMessageFormData = z.infer<typeof giftMessageSchema>;
 
 const GiftMessageForm = () => {
   const [formData, setFormData] = useState<GiftMessageFormData>({
+    selectedGift: "",
     recipientName: "",
     recipientEmail: "",
     senderName: "",
@@ -34,7 +59,6 @@ const GiftMessageForm = () => {
     if (field === "message") {
       setCharCount(value.length);
     }
-    // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: undefined }));
     }
@@ -55,12 +79,12 @@ const GiftMessageForm = () => {
       return;
     }
 
-    toast.success("Message cadeau enregistré !", {
-      description: "Votre message personnalisé sera ajouté à la carte cadeau.",
+    const selectedGiftOption = giftOptions.find(g => g.id === formData.selectedGift);
+    toast.success("Commande cadeau enregistrée !", {
+      description: `${selectedGiftOption?.title} - ${selectedGiftOption?.price}`,
     });
   };
 
-  // Get minimum date (today)
   const today = new Date().toISOString().split("T")[0];
 
   return (
@@ -71,83 +95,138 @@ const GiftMessageForm = () => {
         </div>
         <div>
           <h4 className="text-lg font-semibold text-foreground">
-            Personnalisez votre carte cadeau
+            Offrez une box Saveurs de Ferme
           </h4>
           <p className="text-sm text-muted-foreground">
-            Ajoutez un message personnel pour rendre ce cadeau unique
+            Sélectionnez votre coffret et personnalisez votre message
           </p>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="recipientName" className="text-foreground">
-              Nom du destinataire *
-            </Label>
-            <Input
-              id="recipientName"
-              placeholder="Marie Dupont"
-              value={formData.recipientName}
-              onChange={(e) => handleChange("recipientName", e.target.value)}
-              className={errors.recipientName ? "border-destructive" : ""}
-            />
-            {errors.recipientName && (
-              <p className="text-xs text-destructive">{errors.recipientName}</p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="recipientEmail" className="text-foreground">
-              Email du destinataire *
-            </Label>
-            <Input
-              id="recipientEmail"
-              type="email"
-              placeholder="marie@exemple.com"
-              value={formData.recipientEmail}
-              onChange={(e) => handleChange("recipientEmail", e.target.value)}
-              className={errors.recipientEmail ? "border-destructive" : ""}
-            />
-            {errors.recipientEmail && (
-              <p className="text-xs text-destructive">{errors.recipientEmail}</p>
-            )}
-          </div>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Gift Selection */}
+        <div className="space-y-3">
+          <Label className="text-foreground font-semibold">
+            Choisissez votre coffret cadeau *
+          </Label>
+          <RadioGroup
+            value={formData.selectedGift}
+            onValueChange={(value) => handleChange("selectedGift", value)}
+            className="grid gap-3"
+          >
+            {giftOptions.map((gift) => (
+              <Label
+                key={gift.id}
+                htmlFor={gift.id}
+                className={`flex items-center justify-between p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                  formData.selectedGift === gift.id
+                    ? "border-yellow bg-yellow/10"
+                    : "border-border/50 hover:border-yellow/50"
+                } ${gift.isBestGift ? "ring-1 ring-yellow/30" : ""}`}
+              >
+                <div className="flex items-center gap-3">
+                  <RadioGroupItem value={gift.id} id={gift.id} className="sr-only" />
+                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                    formData.selectedGift === gift.id
+                      ? "border-yellow bg-yellow"
+                      : "border-muted-foreground"
+                  }`}>
+                    {formData.selectedGift === gift.id && (
+                      <Check className="w-3 h-3 text-yellow-foreground" />
+                    )}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-foreground">{gift.title}</span>
+                      {gift.isBestGift && (
+                        <span className="text-xs bg-yellow text-yellow-foreground px-2 py-0.5 rounded-full">
+                          Populaire
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-sm text-muted-foreground">{gift.subtitle}</span>
+                  </div>
+                </div>
+                <span className="font-bold text-foreground">{gift.price}</span>
+              </Label>
+            ))}
+          </RadioGroup>
+          {errors.selectedGift && (
+            <p className="text-xs text-destructive">{errors.selectedGift}</p>
+          )}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="senderName" className="text-foreground">
-              Votre nom *
-            </Label>
-            <Input
-              id="senderName"
-              placeholder="Jean Martin"
-              value={formData.senderName}
-              onChange={(e) => handleChange("senderName", e.target.value)}
-              className={errors.senderName ? "border-destructive" : ""}
-            />
-            {errors.senderName && (
-              <p className="text-xs text-destructive">{errors.senderName}</p>
-            )}
+        <div className="border-t border-border/50 pt-6">
+          <h5 className="font-semibold text-foreground mb-4">Informations de livraison</h5>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="recipientName" className="text-foreground">
+                Nom du destinataire *
+              </Label>
+              <Input
+                id="recipientName"
+                placeholder="Marie Dupont"
+                value={formData.recipientName}
+                onChange={(e) => handleChange("recipientName", e.target.value)}
+                className={errors.recipientName ? "border-destructive" : ""}
+              />
+              {errors.recipientName && (
+                <p className="text-xs text-destructive">{errors.recipientName}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="recipientEmail" className="text-foreground">
+                Email du destinataire *
+              </Label>
+              <Input
+                id="recipientEmail"
+                type="email"
+                placeholder="marie@exemple.com"
+                value={formData.recipientEmail}
+                onChange={(e) => handleChange("recipientEmail", e.target.value)}
+                className={errors.recipientEmail ? "border-destructive" : ""}
+              />
+              {errors.recipientEmail && (
+                <p className="text-xs text-destructive">{errors.recipientEmail}</p>
+              )}
+            </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="deliveryDate" className="text-foreground flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              Date de livraison souhaitée *
-            </Label>
-            <Input
-              id="deliveryDate"
-              type="date"
-              min={today}
-              value={formData.deliveryDate}
-              onChange={(e) => handleChange("deliveryDate", e.target.value)}
-              className={errors.deliveryDate ? "border-destructive" : ""}
-            />
-            {errors.deliveryDate && (
-              <p className="text-xs text-destructive">{errors.deliveryDate}</p>
-            )}
+          <div className="grid md:grid-cols-2 gap-4 mt-4">
+            <div className="space-y-2">
+              <Label htmlFor="senderName" className="text-foreground">
+                Votre nom *
+              </Label>
+              <Input
+                id="senderName"
+                placeholder="Jean Martin"
+                value={formData.senderName}
+                onChange={(e) => handleChange("senderName", e.target.value)}
+                className={errors.senderName ? "border-destructive" : ""}
+              />
+              {errors.senderName && (
+                <p className="text-xs text-destructive">{errors.senderName}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="deliveryDate" className="text-foreground flex items-center gap-2">
+                <Calendar className="w-4 h-4" />
+                Date de livraison souhaitée *
+              </Label>
+              <Input
+                id="deliveryDate"
+                type="date"
+                min={today}
+                value={formData.deliveryDate}
+                onChange={(e) => handleChange("deliveryDate", e.target.value)}
+                className={errors.deliveryDate ? "border-destructive" : ""}
+              />
+              {errors.deliveryDate && (
+                <p className="text-xs text-destructive">{errors.deliveryDate}</p>
+              )}
+            </div>
           </div>
         </div>
 
@@ -177,10 +256,16 @@ const GiftMessageForm = () => {
           </div>
         </div>
 
-        <div className="pt-4">
-          <Button type="submit" variant="premium" className="w-full">
-            <Send className="w-4 h-4 mr-2" />
-            Enregistrer le message
+        <div className="pt-4 border-t border-border/50">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-muted-foreground">Total</span>
+            <span className="text-xl font-bold text-foreground">
+              {giftOptions.find(g => g.id === formData.selectedGift)?.price || "—"}
+            </span>
+          </div>
+          <Button type="submit" variant="premium" className="w-full" disabled={!formData.selectedGift}>
+            <Gift className="w-4 h-4 mr-2" />
+            Commander ce coffret cadeau
           </Button>
         </div>
       </form>
