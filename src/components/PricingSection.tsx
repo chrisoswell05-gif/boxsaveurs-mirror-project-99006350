@@ -1,92 +1,30 @@
-import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import heroBox from "@/assets/hero-box.jpg";
 import ScrollReveal from "@/components/ScrollReveal";
-import SavingsCalculator from "@/components/SavingsCalculator";
-import PromoCodeInput from "@/components/PromoCodeInput";
-import GiftMessageForm from "@/components/GiftMessageForm";
-import { OrderDialog } from "@/components/OrderDialog";
-import { usePromoCode } from "@/hooks/usePromoCode";
-import { Star, Gift } from "lucide-react";
+import { Star, Gift, Package, ArrowRight } from "lucide-react";
 
 const PricingSection = () => {
-  const { appliedPromo, isValidating, validatePromoCode, removePromoCode, calculateDiscountedPrice } = usePromoCode();
-  const [orderDialogOpen, setOrderDialogOpen] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<{
-    title: string;
-    price: string;
-    features: string[];
-  } | null>(null);
-
-  const handleSelectPlan = (plan: typeof plans[0]) => {
-    const finalPrice = appliedPromo 
-      ? calculateDiscountedPrice(parseFloat(plan.price.replace('$', '')), plan.title).toFixed(2) + '$'
-      : plan.price;
-    
-    setSelectedPlan({
-      title: plan.title,
-      price: finalPrice,
-      features: plan.features
-    });
-    setOrderDialogOpen(true);
-  };
-  
   const plans = [
     {
       title: "LA BASE DU GOÛT",
-      subtitle: "Box bimensuel",
-      engagement: "sans engagement",
       price: "34.99$",
-      features: [
-        "3 produits inclus",
-        "Yaourt de ferme",
-        "Fromage artisanal",
-        "Fruits lyophilisés",
-        "Guide de recettes",
-        "Livraison offerte"
-      ],
-      isBestOffer: false,
       badge: "Flexible",
       badgeColor: "bg-muted text-muted-foreground",
     },
     {
       title: "SAVEURS CACHÉES",
-      subtitle: "Box mensuel engagement",
-      engagement: "3 mois",
       price: "29.99$",
-      features: [
-        "3 produits inclus",
-        "Yaourt de ferme",
-        "Fromage artisanal",
-        "Fruits lyophilisés",
-        "Lait authentique",
-        "Guide de recettes",
-        "Livraison offerte"
-      ],
-      isBestOffer: false,
       badge: "Populaire",
       badgeColor: "bg-primary text-primary-foreground",
     },
     {
       title: "L'ANNÉE GOURMANDE",
-      subtitle: "Box mensuel engagement 12 mois",
-      engagement: "",
       price: "24.99$",
-      features: [
-        "3 produits inclus",
-        "Yaourt de ferme",
-        "Fromage artisanal premium",
-        "Fruits lyophilisés",
-        "Lait authentique",
-        "Guide de recettes exclusif",
-        "Livraison offerte",
-        "Cadeaux surprises"
-      ],
-      isBestOffer: true,
       badge: "Meilleure valeur",
       badgeColor: "bg-yellow text-yellow-foreground",
+      isBestOffer: true,
     },
   ];
 
@@ -97,176 +35,69 @@ const PricingSection = () => {
           <h2 className="text-3xl font-bold text-center text-foreground mb-2">
             Nos formules
           </h2>
-          <p className="text-center text-foreground mb-8">
-            Choisissez votre abonnement et bénéficiez de nos offres exclusives
+          <p className="text-center text-muted-foreground mb-10">
+            Découvrez nos box et choisissez l'offre qui vous convient
           </p>
         </ScrollReveal>
 
-        <Tabs defaultValue="subscription" className="w-full">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-10">
-            <TabsTrigger value="subscription" className="text-sm font-semibold">
-              Les box Saveurs de Ferme
-            </TabsTrigger>
-            <TabsTrigger value="gift" className="text-sm font-semibold">
-              <Gift className="w-4 h-4 mr-2" />
-              Offrir une box
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="subscription">
-            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {plans.map((plan, index) => (
-                <ScrollReveal key={index} delay={index * 0.15}>
-                  <Card className={`overflow-visible hover-lift shadow-md hover:shadow-xl h-full relative ${
-                    plan.isBestOffer 
-                      ? 'border-2 border-yellow shadow-yellow' 
-                      : 'border-border/50'
-                  }`}>
-                    {plan.isBestOffer && (
-                      <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
-                        <div className="bg-gradient-to-r from-yellow to-yellow/90 text-yellow-foreground px-6 py-2 rounded-full shadow-yellow flex items-center gap-2 whitespace-nowrap">
-                          <Star className="w-4 h-4 fill-current" />
-                          <span className="font-bold text-sm uppercase tracking-wide">
-                            Meilleure Offre
-                          </span>
-                          <Star className="w-4 h-4 fill-current" />
-                        </div>
-                      </div>
-                    )}
-                    {plan.engagement !== "sans engagement" && (
-                      <div className="absolute -top-2 -right-2 z-10">
-                        <div className="bg-gradient-to-br from-navy to-navy/90 text-navy-foreground px-3 py-1 rounded-full shadow-navy text-xs font-semibold">
-                          Éligible parrainage
-                        </div>
-                      </div>
-                    )}
-                    <div className="p-6 space-y-4 h-full flex flex-col">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-bold text-primary uppercase tracking-wide">
-                          {plan.title}
-                        </h3>
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${plan.badgeColor}`}>
-                          {plan.badge}
-                        </span>
-                      </div>
-                      <div className="relative overflow-hidden rounded-lg group">
-                        <img 
-                          src={heroBox} 
-                          alt="Box Saveurs de Ferme" 
-                          className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-navy/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      </div>
-                      <div>
-                        <p className="text-2xl font-bold text-foreground">
-                          {appliedPromo ? (
-                            <>
-                              <span className={calculateDiscountedPrice(parseFloat(plan.price.replace('$', '')), plan.title) !== parseFloat(plan.price.replace('$', '')) ? "line-through text-muted-foreground text-lg mr-2" : ""}>
-                                {plan.price}
-                              </span>
-                              {calculateDiscountedPrice(parseFloat(plan.price.replace('$', '')), plan.title) !== parseFloat(plan.price.replace('$', '')) && (
-                                <span className="text-yellow">
-                                  {calculateDiscountedPrice(parseFloat(plan.price.replace('$', '')), plan.title).toFixed(2)}$
-                                </span>
-                              )}
-                            </>
-                          ) : (
-                            plan.price
-                          )}
-                        </p>
-                        {appliedPromo && calculateDiscountedPrice(parseFloat(plan.price.replace('$', '')), plan.title) !== parseFloat(plan.price.replace('$', '')) && (
-                          <p className="text-xs text-yellow font-semibold mt-1">
-                            Code {appliedPromo.code} appliqué
-                          </p>
-                        )}
-                        {appliedPromo && appliedPromo.code.startsWith('REF') && plan.title === 'LA BASE DU GOÛT' && (
-                          <p className="text-xs text-muted-foreground mt-1">
-                            Code non applicable à cette formule
-                          </p>
-                        )}
-                      </div>
-                      <p className="font-semibold text-foreground">{plan.subtitle}</p>
-                      {plan.engagement && (
-                        <p className="text-sm text-muted-foreground">{plan.engagement}</p>
-                      )}
-                      <ul className="space-y-2 flex-grow">
-                        {plan.features.map((feature, idx) => (
-                          <li key={idx} className="text-foreground flex items-start gap-2">
-                            <span className="text-yellow mt-1">•</span>
-                            <span className="text-sm">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      <Button 
-                        variant="premium" 
-                        className="w-full"
-                        onClick={() => handleSelectPlan(plan)}
-                      >
-                        {plan.engagement === "sans engagement" 
-                          ? "Sans engagement" 
-                          : plan.engagement === "3 mois"
-                          ? "Abonnement 3 mois"
-                          : "Abonnement 12 mois"}
-                      </Button>
+        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-10">
+          {plans.map((plan, index) => (
+            <ScrollReveal key={index} delay={index * 0.15}>
+              <Card className={`p-6 text-center relative hover-lift ${
+                plan.isBestOffer 
+                  ? 'border-2 border-yellow shadow-yellow' 
+                  : 'border-border/50'
+              }`}>
+                {plan.isBestOffer && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <div className="bg-yellow text-yellow-foreground px-4 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                      <Star className="w-3 h-3 fill-current" />
+                      Meilleure Offre
                     </div>
-                  </Card>
-                </ScrollReveal>
-              ))}
-            </div>
-            
-            <ScrollReveal delay={0.3} className="max-w-md mx-auto mt-12">
-              <PromoCodeInput
-                onValidate={(code) => validatePromoCode(code)}
-                onRemove={removePromoCode}
-                appliedCode={appliedPromo?.code || null}
-                isValidating={isValidating}
-              />
-              <p className="text-xs text-center text-muted-foreground mt-3">
-                💡 Les codes de parrainage sont valables uniquement pour les formules avec engagement (3 mois et 12 mois)
-              </p>
+                  </div>
+                )}
+                <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 ${plan.badgeColor}`}>
+                  {plan.badge}
+                </span>
+                <h3 className="text-sm font-bold text-primary uppercase tracking-wide mb-2">
+                  {plan.title}
+                </h3>
+                <p className="text-2xl font-bold text-foreground">{plan.price}</p>
+                <p className="text-sm text-muted-foreground">/mois</p>
+              </Card>
             </ScrollReveal>
-            
-            <SavingsCalculator />
-          </TabsContent>
+          ))}
+        </div>
 
-          <TabsContent value="gift">
-            <ScrollReveal className="max-w-2xl mx-auto">
-              <GiftMessageForm />
-            </ScrollReveal>
+        <ScrollReveal delay={0.3}>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link to="/nos-box/commande">
+              <Button variant="premium" size="lg" className="gap-2">
+                <Package className="w-5 h-5" />
+                S'abonner
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+            <Link to="/nos-box/cadeau">
+              <Button variant="outline" size="lg" className="gap-2 border-yellow text-yellow hover:bg-yellow/10">
+                <Gift className="w-5 h-5" />
+                Offrir une box
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
+        </ScrollReveal>
 
-            <ScrollReveal delay={0.2} className="text-center mt-8 max-w-2xl mx-auto">
-              <div className="bg-muted/50 rounded-lg p-6">
-                <h4 className="text-lg font-semibold text-foreground mb-2">
-                  🎁 Comment ça marche ?
-                </h4>
-                <p className="text-muted-foreground text-sm">
-                  Choisissez votre coffret, personnalisez votre message, et nous nous occupons du reste ! 
-                  Le destinataire recevra sa box avec une belle carte cadeau à la date de votre choix.
-                </p>
-              </div>
-            </ScrollReveal>
-          </TabsContent>
-        </Tabs>
-        
         <ScrollReveal delay={0.5} className="text-center mt-12">
           <h3 className="text-2xl font-bold text-foreground mb-4">
-            Rejoignez l'aventure et recevez des produit artisanaux authentiques dans chaque box pour vous faire découvrir l'univers du terroir
+            Rejoignez l'aventure et recevez des produits artisanaux authentiques
           </h3>
-          <Button variant="accent" className="text-lg px-8 py-4 font-semibold">
-            Je rejoins ...
-          </Button>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Chaque box vous fait découvrir l'univers du terroir avec des yaourts de ferme, 
+            fromages artisanaux, fruits lyophilisés et bien plus encore !
+          </p>
         </ScrollReveal>
       </div>
-
-      {selectedPlan && (
-        <OrderDialog
-          open={orderDialogOpen}
-          onOpenChange={setOrderDialogOpen}
-          boxName={selectedPlan.title}
-          boxPrice={selectedPlan.price}
-          boxDescription={selectedPlan.features.join(', ')}
-        />
-      )}
     </section>
   );
 };
