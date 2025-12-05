@@ -4,7 +4,7 @@ const AboutSection = () => {
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row items-center gap-8 max-w-4xl mx-auto">
           <div className="flex-shrink-0">
-            <img alt="Chris Oswell" className="w-48 h-48 rounded-full object-cover shadow-xl border-4 border-yellow" src="/lovable-uploads/ab4e1ab4-273b-4dbf-870c-b827938c5ed2.jpg" />
+            <img alt="Chris Oswell" className="w-48 h-48 rounded-full object-cover shadow-xl border-4 border-yellow" src="/lovable-uploads/8fc08bef-2fdf-489e-aa15-7eafd90e318b.jpg" />
           </div>
           <div className="text-navy-foreground space-y-4">
             <p className="text-lg leading-relaxed">
