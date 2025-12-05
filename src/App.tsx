@@ -2,8 +2,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
+import NosBox from "./pages/NosBox";
+import OrderPage from "./pages/OrderPage";
+import GiftOrderPage from "./pages/GiftOrderPage";
 import AdminQuizResponses from "./pages/AdminQuizResponses";
 import AdminReferrals from "./pages/AdminReferrals";
 import Auth from "./pages/Auth";
@@ -20,6 +23,11 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/nos-box" element={<NosBox />}>
+            <Route index element={<Navigate to="/nos-box/commande" replace />} />
+            <Route path="commande" element={<OrderPage />} />
+            <Route path="cadeau" element={<GiftOrderPage />} />
+          </Route>
           <Route path="/auth" element={<Auth />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/admin/quiz-responses" element={<AdminQuizResponses />} />
