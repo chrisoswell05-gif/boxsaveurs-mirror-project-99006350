@@ -1,57 +1,108 @@
 import ScrollReveal from "@/components/ScrollReveal";
 import GiftMessageForm from "@/components/GiftMessageForm";
-import { Gift } from "lucide-react";
+import { Gift, Heart, Package, Truck } from "lucide-react";
+import { motion } from "framer-motion";
 
 const GiftOrderPage = () => {
+  const steps = [
+    {
+      icon: Package,
+      number: "1",
+      title: "Choisissez",
+      description: "Sélectionnez le coffret idéal pour votre proche"
+    },
+    {
+      icon: Heart,
+      number: "2",
+      title: "Personnalisez",
+      description: "Ajoutez un message personnel touchant"
+    },
+    {
+      icon: Truck,
+      number: "3",
+      title: "On livre",
+      description: "À la date de votre choix, avec amour"
+    }
+  ];
+
   return (
     <>
       <ScrollReveal>
-        <h2 className="text-3xl font-bold text-center text-foreground mb-2">
-          Offrez un coffret cadeau
-        </h2>
-        <p className="text-center text-muted-foreground mb-10">
-          Faites plaisir à vos proches avec une box de produits artisanaux
-        </p>
-      </ScrollReveal>
-
-      <ScrollReveal className="max-w-2xl mx-auto">
-        <GiftMessageForm />
-      </ScrollReveal>
-
-      <ScrollReveal delay={0.2} className="text-center mt-8 max-w-2xl mx-auto">
-        <div className="bg-muted/50 rounded-lg p-6">
-          <h4 className="text-lg font-semibold text-foreground mb-2">
-            🎁 Comment ça marche ?
-          </h4>
-          <p className="text-muted-foreground text-sm">
-            Choisissez votre coffret, personnalisez votre message, et nous nous occupons du reste ! 
-            Le destinataire recevra sa box avec une belle carte cadeau à la date de votre choix.
+        <div className="text-center mb-12">
+          <motion.div 
+            className="inline-flex items-center gap-2 bg-yellow/10 text-yellow-foreground px-4 py-2 rounded-full mb-6"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <Gift className="w-4 h-4 text-yellow" />
+            <span className="text-sm font-medium text-foreground">Idée cadeau originale</span>
+          </motion.div>
+          
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            Offrez un coffret cadeau
+          </h2>
+          <p className="text-muted-foreground max-w-xl mx-auto">
+            Faites plaisir à vos proches avec une sélection de produits artisanaux de nos fermes locales
           </p>
         </div>
       </ScrollReveal>
 
-      <ScrollReveal delay={0.3} className="mt-8 max-w-2xl mx-auto">
-        <div className="grid md:grid-cols-3 gap-4">
-          <div className="bg-card border border-border/50 rounded-lg p-4 text-center">
-            <div className="w-10 h-10 bg-yellow/20 rounded-full flex items-center justify-center mx-auto mb-3">
-              <span className="text-lg">1</span>
+      {/* Steps Section */}
+      <ScrollReveal delay={0.1}>
+        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
+          {steps.map((step, index) => (
+            <motion.div
+              key={index}
+              className="relative group"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 + index * 0.1 }}
+            >
+              <div className="bg-card border border-border/50 rounded-2xl p-6 text-center transition-all duration-300 hover:shadow-lg hover:border-yellow/30 h-full">
+                <div className="relative inline-flex mb-4">
+                  <div className="w-14 h-14 bg-gradient-to-br from-yellow/20 to-yellow/10 rounded-xl flex items-center justify-center">
+                    <step.icon className="w-6 h-6 text-yellow" />
+                  </div>
+                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-navy text-navy-foreground rounded-full flex items-center justify-center text-xs font-bold">
+                    {step.number}
+                  </div>
+                </div>
+                <h5 className="font-semibold text-foreground mb-2">{step.title}</h5>
+                <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
+              </div>
+              
+              {/* Connector Line */}
+              {index < steps.length - 1 && (
+                <div className="hidden md:block absolute top-1/2 -right-3 w-6 border-t-2 border-dashed border-border" />
+              )}
+            </motion.div>
+          ))}
+        </div>
+      </ScrollReveal>
+
+      {/* Form Section */}
+      <ScrollReveal delay={0.2} className="max-w-2xl mx-auto">
+        <GiftMessageForm />
+      </ScrollReveal>
+
+      {/* Info Section */}
+      <ScrollReveal delay={0.3} className="mt-12 max-w-2xl mx-auto">
+        <div className="bg-gradient-to-br from-navy/5 to-navy/10 rounded-2xl p-8 border border-navy/10">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 bg-navy/10 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Gift className="w-6 h-6 text-navy" />
             </div>
-            <h5 className="font-semibold text-foreground mb-1">Choisissez</h5>
-            <p className="text-sm text-muted-foreground">Sélectionnez le coffret idéal</p>
-          </div>
-          <div className="bg-card border border-border/50 rounded-lg p-4 text-center">
-            <div className="w-10 h-10 bg-yellow/20 rounded-full flex items-center justify-center mx-auto mb-3">
-              <span className="text-lg">2</span>
+            <div>
+              <h4 className="text-lg font-semibold text-foreground mb-2">
+                Une expérience cadeau inoubliable
+              </h4>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                Votre proche recevra un email élégant le jour de la livraison avec votre message personnalisé. 
+                La box sera livrée avec une belle carte cadeau imprimée et un emballage soigné. 
+                Un cadeau qui fait plaisir et qui a du sens !
+              </p>
             </div>
-            <h5 className="font-semibold text-foreground mb-1">Personnalisez</h5>
-            <p className="text-sm text-muted-foreground">Ajoutez votre message</p>
-          </div>
-          <div className="bg-card border border-border/50 rounded-lg p-4 text-center">
-            <div className="w-10 h-10 bg-yellow/20 rounded-full flex items-center justify-center mx-auto mb-3">
-              <span className="text-lg">3</span>
-            </div>
-            <h5 className="font-semibold text-foreground mb-1">On livre</h5>
-            <p className="text-sm text-muted-foreground">À la date de votre choix</p>
           </div>
         </div>
       </ScrollReveal>
