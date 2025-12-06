@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import NosBox from "./pages/NosBox";
 import OrderPage from "./pages/OrderPage";
 import GiftOrderPage from "./pages/GiftOrderPage";
+import AboutPage from "./pages/AboutPage";
 import AdminQuizResponses from "./pages/AdminQuizResponses";
 import AdminReferrals from "./pages/AdminReferrals";
 import Auth from "./pages/Auth";
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="commande" element={<OrderPage />} />
             <Route path="cadeau" element={<GiftOrderPage />} />
           </Route>
+          <Route path="/a-propos" element={<AboutPage />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/admin/quiz-responses" element={<AdminQuizResponses />} />
