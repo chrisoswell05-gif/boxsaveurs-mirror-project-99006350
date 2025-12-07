@@ -1,12 +1,72 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, CheckCircle2 } from "lucide-react";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+const orderSchema = z.object({
+  customerName: z
+    .string()
+    .trim()
+    .min(2, { message: "Le nom doit contenir au moins 2 caractères" })
+    .max(100, { message: "Le nom ne peut pas dépasser 100 caractères" }),
+  customerEmail: z
+    .string()
+    .trim()
+    .email({ message: "Veuillez entrer une adresse email valide" })
+    .max(255, { message: "L'email ne peut pas dépasser 255 caractères" }),
+  customerPhone: z
+    .string()
+    .max(20, { message: "Le téléphone ne peut pas dépasser 20 caractères" })
+    .optional()
+    .or(z.literal("")),
+  addressLine1: z
+    .string()
+    .trim()
+    .min(5, { message: "L'adresse doit contenir au moins 5 caractères" })
+    .max(200, { message: "L'adresse ne peut pas dépasser 200 caractères" }),
+  addressLine2: z
+    .string()
+    .max(200, { message: "Le complément ne peut pas dépasser 200 caractères" })
+    .optional()
+    .or(z.literal("")),
+  city: z
+    .string()
+    .trim()
+    .min(2, { message: "La ville doit contenir au moins 2 caractères" })
+    .max(100, { message: "La ville ne peut pas dépasser 100 caractères" }),
+  postalCode: z
+    .string()
+    .trim()
+    .min(3, { message: "Le code postal doit contenir au moins 3 caractères" })
+    .max(10, { message: "Le code postal ne peut pas dépasser 10 caractères" }),
+  country: z
+    .string()
+    .trim()
+    .min(2, { message: "Le pays doit contenir au moins 2 caractères" })
+    .max(100, { message: "Le pays ne peut pas dépasser 100 caractères" }),
+  customerNotes: z
+    .string()
+    .max(1000, { message: "Les notes ne peuvent pas dépasser 1000 caractères" })
+    .optional()
+    .or(z.literal("")),
+});
+
+type OrderFormData = z.infer<typeof orderSchema>;
 
 interface OrderDialogProps {
   open: boolean;
@@ -26,16 +86,20 @@ export const OrderDialog = ({
   quizResponseId
 }: OrderDialogProps) => {
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    customerName: "",
-    customerEmail: "",
-    customerPhone: "",
-    addressLine1: "",
-    addressLine2: "",
-    city: "",
-    postalCode: "",
-    country: "France",
-    customerNotes: ""
+
+  const form = useForm<OrderFormData>({
+    resolver: zodResolver(orderSchema),
+    defaultValues: {
+      customerName: "",
+      customerEmail: "",
+      customerPhone: "",
+      addressLine1: "",
+      addressLine2: "",
+      city: "",
+      postalCode: "",
+      country: "Canada",
+      customerNotes: ""
+    },
   });
 
   const getSubscriptionType = (boxName: string): string => {
@@ -45,16 +109,7 @@ export const OrderDialog = ({
     return "mensuel";
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Validation
-    if (!formData.customerName || !formData.customerEmail || !formData.addressLine1 || 
-        !formData.city || !formData.postalCode) {
-      toast.error("Veuillez remplir tous les champs obligatoires");
-      return;
-    }
-
+  const onSubmit = async (data: OrderFormData) => {
     setLoading(true);
 
     try {
@@ -62,19 +117,19 @@ export const OrderDialog = ({
       const { data: orderData, error: orderError } = await supabase
         .from('orders')
         .insert([{
-          customer_name: formData.customerName,
-          customer_email: formData.customerEmail,
-          customer_phone: formData.customerPhone || null,
-          address_line1: formData.addressLine1,
-          address_line2: formData.addressLine2 || null,
-          city: formData.city,
-          postal_code: formData.postalCode,
-          country: formData.country,
+          customer_name: data.customerName,
+          customer_email: data.customerEmail,
+          customer_phone: data.customerPhone || null,
+          address_line1: data.addressLine1,
+          address_line2: data.addressLine2 || null,
+          city: data.city,
+          postal_code: data.postalCode,
+          country: data.country,
           box_name: boxName,
           box_price: boxPrice,
           subscription_type: getSubscriptionType(boxName),
           quiz_response_id: quizResponseId || null,
-          customer_notes: formData.customerNotes || null,
+          customer_notes: data.customerNotes || null,
           user_agent: navigator.userAgent,
           status: 'pending',
           payment_status: 'pending'
@@ -87,8 +142,8 @@ export const OrderDialog = ({
       // Send confirmation email
       const { error: emailError } = await supabase.functions.invoke('send-order-confirmation', {
         body: {
-          customerName: formData.customerName,
-          customerEmail: formData.customerEmail,
+          customerName: data.customerName,
+          customerEmail: data.customerEmail,
           boxName: boxName,
           boxPrice: boxPrice,
           boxDescription: boxDescription,
@@ -103,19 +158,7 @@ export const OrderDialog = ({
 
       toast.success("Commande enregistrée avec succès ! Vous allez recevoir un email de confirmation.");
       
-      // Reset form
-      setFormData({
-        customerName: "",
-        customerEmail: "",
-        customerPhone: "",
-        addressLine1: "",
-        addressLine2: "",
-        city: "",
-        postalCode: "",
-        country: "France",
-        customerNotes: ""
-      });
-      
+      form.reset();
       onOpenChange(false);
     } catch (error: any) {
       console.error('Order error:', error);
@@ -135,152 +178,186 @@ export const OrderDialog = ({
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Customer Information */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-lg flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-primary" />
-              Informations personnelles
-            </h3>
-            
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="customerName">Nom complet *</Label>
-                <Input
-                  id="customerName"
-                  value={formData.customerName}
-                  onChange={(e) => setFormData({...formData, customerName: e.target.value})}
-                  required
-                  placeholder="Jean Dupont"
-                />
-              </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* Customer Information */}
+            <div className="space-y-4">
+              <h3 className="font-semibold text-lg flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-primary" />
+                Informations personnelles
+              </h3>
               
-              <div className="space-y-2">
-                <Label htmlFor="customerEmail">Email *</Label>
-                <Input
-                  id="customerEmail"
-                  type="email"
-                  value={formData.customerEmail}
-                  onChange={(e) => setFormData({...formData, customerEmail: e.target.value})}
-                  required
-                  placeholder="jean.dupont@email.com"
+              <div className="grid gap-4 md:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="customerName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nom complet *</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Jean Dupont" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="customerEmail"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email *</FormLabel>
+                      <FormControl>
+                        <Input type="email" placeholder="jean.dupont@email.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="customerPhone">Téléphone</Label>
-              <Input
-                id="customerPhone"
-                type="tel"
-                value={formData.customerPhone}
-                onChange={(e) => setFormData({...formData, customerPhone: e.target.value})}
-                placeholder="+33 6 12 34 56 78"
-              />
-            </div>
-          </div>
-
-          {/* Delivery Address */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-lg flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-primary" />
-              Adresse de livraison
-            </h3>
-            
-            <div className="space-y-2">
-              <Label htmlFor="addressLine1">Adresse *</Label>
-              <Input
-                id="addressLine1"
-                value={formData.addressLine1}
-                onChange={(e) => setFormData({...formData, addressLine1: e.target.value})}
-                required
-                placeholder="12 Rue de la Ferme"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="addressLine2">Complément d'adresse</Label>
-              <Input
-                id="addressLine2"
-                value={formData.addressLine2}
-                onChange={(e) => setFormData({...formData, addressLine2: e.target.value})}
-                placeholder="Appartement, bâtiment, etc."
+              <FormField
+                control={form.control}
+                name="customerPhone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Téléphone</FormLabel>
+                    <FormControl>
+                      <Input type="tel" placeholder="+1 514 123 4567" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
 
-            <div className="grid gap-4 md:grid-cols-3">
-              <div className="space-y-2">
-                <Label htmlFor="city">Ville *</Label>
-                <Input
-                  id="city"
-                  value={formData.city}
-                  onChange={(e) => setFormData({...formData, city: e.target.value})}
-                  required
-                  placeholder="Paris"
-                />
-              </div>
+            {/* Delivery Address */}
+            <div className="space-y-4">
+              <h3 className="font-semibold text-lg flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-primary" />
+                Adresse de livraison
+              </h3>
+              
+              <FormField
+                control={form.control}
+                name="addressLine1"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Adresse *</FormLabel>
+                    <FormControl>
+                      <Input placeholder="12 Rue de la Ferme" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-              <div className="space-y-2">
-                <Label htmlFor="postalCode">Code postal *</Label>
-                <Input
-                  id="postalCode"
-                  value={formData.postalCode}
-                  onChange={(e) => setFormData({...formData, postalCode: e.target.value})}
-                  required
-                  placeholder="75001"
-                />
-              </div>
+              <FormField
+                control={form.control}
+                name="addressLine2"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Complément d'adresse</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Appartement, bâtiment, etc." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-              <div className="space-y-2">
-                <Label htmlFor="country">Pays *</Label>
-                <Input
-                  id="country"
-                  value={formData.country}
-                  onChange={(e) => setFormData({...formData, country: e.target.value})}
-                  required
+              <div className="grid gap-4 md:grid-cols-3">
+                <FormField
+                  control={form.control}
+                  name="city"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Ville *</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Montréal" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="postalCode"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Code postal *</FormLabel>
+                      <FormControl>
+                        <Input placeholder="H2X 1Y4" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="country"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Pays *</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
             </div>
-          </div>
 
-          {/* Customer Notes */}
-          <div className="space-y-2">
-            <Label htmlFor="customerNotes">Notes ou instructions spéciales</Label>
-            <Textarea
-              id="customerNotes"
-              value={formData.customerNotes}
-              onChange={(e) => setFormData({...formData, customerNotes: e.target.value})}
-              placeholder="Allergies, préférences de livraison, etc."
-              rows={3}
-            />
-          </div>
-
-          <DialogFooter className="flex-col sm:flex-row gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-              disabled={loading}
-            >
-              Annuler
-            </Button>
-            <Button type="submit" disabled={loading} className="w-full sm:w-auto">
-              {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Traitement...
-                </>
-              ) : (
-                "Confirmer la commande"
+            {/* Customer Notes */}
+            <FormField
+              control={form.control}
+              name="customerNotes"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Notes ou instructions spéciales</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Allergies, préférences de livraison, etc."
+                      rows={3}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
-            </Button>
-          </DialogFooter>
+            />
 
-          <p className="text-xs text-muted-foreground text-center">
-            En confirmant votre commande, vous acceptez nos conditions générales de vente.
-            Vous recevrez un email de confirmation avec les détails de paiement.
-          </p>
-        </form>
+            <DialogFooter className="flex-col sm:flex-row gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={loading}
+              >
+                Annuler
+              </Button>
+              <Button type="submit" disabled={loading} className="w-full sm:w-auto">
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Traitement...
+                  </>
+                ) : (
+                  "Confirmer la commande"
+                )}
+              </Button>
+            </DialogFooter>
+
+            <p className="text-xs text-muted-foreground text-center">
+              En confirmant votre commande, vous acceptez nos conditions générales de vente.
+              Vous recevrez un email de confirmation avec les détails de paiement.
+            </p>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
