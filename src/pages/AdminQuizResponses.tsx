@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -26,12 +27,39 @@ interface QuizResponse {
 }
 
 const AdminQuizResponses = () => {
+  const navigate = useNavigate();
   const [responses, setResponses] = useState<QuizResponse[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    fetchResponses();
+    checkAdmin();
   }, []);
+
+  const checkAdmin = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
+
+    const { data: role } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .maybeSingle();
+
+    if (!role) {
+      toast.error("Accès refusé. Vous n'êtes pas administrateur.");
+      navigate('/');
+      return;
+    }
+
+    setIsAdmin(true);
+    fetchResponses();
+  };
 
   const fetchResponses = async () => {
     try {
