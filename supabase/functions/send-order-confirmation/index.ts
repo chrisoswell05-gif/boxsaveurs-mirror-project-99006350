@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@4.0.0";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -9,14 +10,34 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-interface OrderConfirmationRequest {
-  customerName: string;
-  customerEmail: string;
-  boxName: string;
-  boxPrice: string;
-  boxDescription: string;
-  orderId: string;
-}
+// Validation schema for order confirmation request
+const orderConfirmationSchema = z.object({
+  customerName: z.string()
+    .min(2, "Le nom doit contenir au moins 2 caractères")
+    .max(100, "Le nom ne peut pas dépasser 100 caractères")
+    .trim(),
+  customerEmail: z.string()
+    .email("Adresse email invalide")
+    .max(255, "L'email ne peut pas dépasser 255 caractères")
+    .trim(),
+  boxName: z.string()
+    .min(1, "Le nom de la box est requis")
+    .max(200, "Le nom de la box ne peut pas dépasser 200 caractères")
+    .trim(),
+  boxPrice: z.string()
+    .min(1, "Le prix est requis")
+    .max(50, "Le prix ne peut pas dépasser 50 caractères")
+    .trim(),
+  boxDescription: z.string()
+    .max(1000, "La description ne peut pas dépasser 1000 caractères")
+    .trim()
+    .optional()
+    .default(""),
+  orderId: z.string()
+    .uuid("ID de commande invalide"),
+});
+
+type OrderConfirmationRequest = z.infer<typeof orderConfirmationSchema>;
 
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
@@ -25,7 +46,29 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { customerName, customerEmail, boxName, boxPrice, boxDescription, orderId }: OrderConfirmationRequest = await req.json();
+    const body = await req.json();
+    
+    // Validate input
+    const validationResult = orderConfirmationSchema.safeParse(body);
+    
+    if (!validationResult.success) {
+      console.error("Validation error:", validationResult.error.errors);
+      return new Response(
+        JSON.stringify({ 
+          error: "Données invalides", 
+          details: validationResult.error.errors.map(e => ({
+            field: e.path.join('.'),
+            message: e.message
+          }))
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
+    const { customerName, customerEmail, boxName, boxPrice, boxDescription, orderId } = validationResult.data;
 
     console.log("Sending order confirmation email to:", customerEmail);
 
@@ -98,7 +141,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send notification email to business
     const businessEmailResponse = await resend.emails.send({
       from: "Box Saveurs de Ferme <onboarding@resend.dev>",
-      to: ["contact@boxsaveursdeferme.com"], // Replace with actual business email
+      to: ["contact@boxsaveursdeferme.com"],
       subject: `Nouvelle commande - ${boxName}`,
       html: `
         <!DOCTYPE html>
