@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@4.0.0";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -10,13 +10,31 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-interface ReferralNotificationRequest {
-  referrerEmail: string;
-  referrerName: string;
-  referredName: string;
-  referralCode: string;
-  bonusAmount: number;
-}
+// Validation schema for referral notification request
+const referralNotificationSchema = z.object({
+  referrerEmail: z.string()
+    .email("Adresse email invalide")
+    .max(255, "L'email ne peut pas dépasser 255 caractères")
+    .trim(),
+  referrerName: z.string()
+    .min(2, "Le nom doit contenir au moins 2 caractères")
+    .max(100, "Le nom ne peut pas dépasser 100 caractères")
+    .trim(),
+  referredName: z.string()
+    .min(2, "Le nom du filleul doit contenir au moins 2 caractères")
+    .max(100, "Le nom du filleul ne peut pas dépasser 100 caractères")
+    .trim(),
+  referralCode: z.string()
+    .min(6, "Le code de parrainage doit contenir au moins 6 caractères")
+    .max(20, "Le code de parrainage ne peut pas dépasser 20 caractères")
+    .regex(/^[A-Z0-9]+$/, "Le code de parrainage doit contenir uniquement des lettres majuscules et des chiffres")
+    .trim(),
+  bonusAmount: z.number()
+    .min(0, "Le montant du bonus doit être positif")
+    .max(1000, "Le montant du bonus ne peut pas dépasser 1000$"),
+});
+
+type ReferralNotificationRequest = z.infer<typeof referralNotificationSchema>;
 
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
@@ -25,7 +43,29 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { referrerEmail, referrerName, referredName, referralCode, bonusAmount }: ReferralNotificationRequest = await req.json();
+    const body = await req.json();
+    
+    // Validate input
+    const validationResult = referralNotificationSchema.safeParse(body);
+    
+    if (!validationResult.success) {
+      console.error("Validation error:", validationResult.error.errors);
+      return new Response(
+        JSON.stringify({ 
+          error: "Données invalides", 
+          details: validationResult.error.errors.map(e => ({
+            field: e.path.join('.'),
+            message: e.message
+          }))
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
+    const { referrerEmail, referrerName, referredName, referralCode, bonusAmount } = validationResult.data;
 
     console.log("Sending referral notification to:", referrerEmail);
 
