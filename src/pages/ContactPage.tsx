@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useToast } from "@/components/ui/use-toast";
+import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnnouncementBar from "@/components/AnnouncementBar";
@@ -105,88 +106,136 @@ const ContactPage = () => {
       </div>
 
       <main className="flex-1 pt-8 pb-16" style={{ backgroundColor: "#EBE7A2" }}>
-        <div className="container mx-auto px-4 max-w-3xl">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            {/* Left Column - Form */}
+            <div className="lg:col-span-2">
+              {/* Form Section Title */}
+              <h2 className="text-lg font-normal mb-6" style={{ color: "#1a1a1a" }}>
+                Formulaire de contact
+              </h2>
 
-          {/* Form Section Title */}
-          <h2 className="text-lg font-normal mb-6" style={{ color: "#1a1a1a" }}>
-            Formulaire de contact
-          </h2>
+              {/* Contact Form */}
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                {/* Name and Email row */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Nom"
+                      {...register("name")}
+                      className="w-full px-4 py-3 bg-transparent border focus:outline-none focus:border-[#5C4A36]"
+                      style={{ 
+                        borderColor: "#8B7355",
+                        color: "#5C4A36",
+                        borderRadius: "4px"
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      placeholder="E-mail *"
+                      {...register("email")}
+                      className="w-full px-4 py-3 bg-transparent border focus:outline-none focus:border-[#5C4A36]"
+                      style={{ 
+                        borderColor: "#8B7355",
+                        color: "#5C4A36",
+                        borderRadius: "4px"
+                      }}
+                    />
+                    {errors.email && (
+                      <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>
+                    )}
+                  </div>
+                </div>
 
-          {/* Contact Form */}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* Name and Email row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Phone */}
+                <div>
+                  <input
+                    type="tel"
+                    placeholder="Numéro de téléphone"
+                    {...register("phone")}
+                    className="w-full px-4 py-3 bg-transparent border focus:outline-none focus:border-[#5C4A36]"
+                    style={{ 
+                      borderColor: "#8B7355",
+                      color: "#5C4A36",
+                      borderRadius: "4px"
+                    }}
+                  />
+                </div>
+
+                {/* Message */}
+                <div>
+                  <textarea
+                    placeholder="Commentaire"
+                    rows={5}
+                    {...register("message")}
+                    className="w-full px-4 py-3 bg-transparent border focus:outline-none focus:border-[#5C4A36] resize-none"
+                    style={{ 
+                      borderColor: "#8B7355",
+                      color: "#5C4A36",
+                      borderRadius: "4px"
+                    }}
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-8 py-3 rounded-full text-white font-medium transition-opacity hover:opacity-90 disabled:opacity-50"
+                  style={{ backgroundColor: "#5B7B5A" }}
+                >
+                  {isSubmitting ? "Envoi en cours..." : "Envoyer"}
+                </button>
+              </form>
+            </div>
+
+            {/* Right Column - Info */}
+            <div className="space-y-8">
+              {/* FAQ */}
               <div>
-                <input
-                  type="text"
-                  placeholder="Nom"
-                  {...register("name")}
-                  className="w-full px-4 py-3 bg-transparent border focus:outline-none focus:border-[#5C4A36]"
-                  style={{ 
-                    borderColor: "#8B7355",
-                    color: "#5C4A36",
-                    borderRadius: "4px"
-                  }}
-                />
+                <h3 className="text-xl font-semibold mb-2" style={{ color: "#1a1a1a" }}>
+                  FAQ
+                </h3>
+                <p className="mb-2" style={{ color: "#5C4A36" }}>
+                  Vous avez une question rapide ?
+                </p>
+                <Link 
+                  to="/faq" 
+                  className="underline hover:opacity-80 transition-opacity"
+                  style={{ color: "#5B7B5A" }}
+                >
+                  Consultez notre FAQ pour une réponse rapide
+                </Link>
               </div>
+
+              {/* Address */}
               <div>
-                <input
-                  type="email"
-                  placeholder="E-mail *"
-                  {...register("email")}
-                  className="w-full px-4 py-3 bg-transparent border focus:outline-none focus:border-[#5C4A36]"
-                  style={{ 
-                    borderColor: "#8B7355",
-                    color: "#5C4A36",
-                    borderRadius: "4px"
-                  }}
-                />
-                {errors.email && (
-                  <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>
-                )}
+                <h3 className="text-xl font-semibold mb-2" style={{ color: "#1a1a1a" }}>
+                  Adresse
+                </h3>
+                <p style={{ color: "#5C4A36" }}>
+                  377 Boulevards jacques cartier E, Longueuil QC, J4L1E1
+                </p>
+              </div>
+
+              {/* Email */}
+              <div>
+                <h3 className="text-xl font-semibold mb-2" style={{ color: "#1a1a1a" }}>
+                  Email
+                </h3>
+                <a 
+                  href="mailto:Contact@boxsaveursdeferme.ca"
+                  className="hover:opacity-80 transition-opacity"
+                  style={{ color: "#5C4A36" }}
+                >
+                  Contact@boxsaveursdeferme.ca
+                </a>
               </div>
             </div>
-
-            {/* Phone */}
-            <div>
-              <input
-                type="tel"
-                placeholder="Numéro de téléphone"
-                {...register("phone")}
-                className="w-full px-4 py-3 bg-transparent border focus:outline-none focus:border-[#5C4A36]"
-                style={{ 
-                  borderColor: "#8B7355",
-                  color: "#5C4A36",
-                  borderRadius: "4px"
-                }}
-              />
-            </div>
-
-            {/* Message */}
-            <div>
-              <textarea
-                placeholder="Commentaire"
-                rows={5}
-                {...register("message")}
-                className="w-full px-4 py-3 bg-transparent border focus:outline-none focus:border-[#5C4A36] resize-none"
-                style={{ 
-                  borderColor: "#8B7355",
-                  color: "#5C4A36",
-                  borderRadius: "4px"
-                }}
-              />
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="px-8 py-3 rounded-full text-white font-medium transition-opacity hover:opacity-90 disabled:opacity-50"
-              style={{ backgroundColor: "#5B7B5A" }}
-            >
-              {isSubmitting ? "Envoi en cours..." : "Envoyer"}
-            </button>
-          </form>
+          </div>
         </div>
       </main>
 
