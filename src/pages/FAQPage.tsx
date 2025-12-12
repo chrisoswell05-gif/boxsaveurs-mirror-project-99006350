@@ -10,44 +10,44 @@ import Footer from "@/components/Footer";
 
 const faqItems = [
   {
-    question: "Qu'est-ce que Box Saveurs de Ferme ?",
-    answer: "Box Saveurs de Ferme est un service d'abonnement mensuel qui vous livre des produits fermiers de qualité directement chez vous. Chaque box contient une sélection de yaourts aux saveurs variées, des fruits lyophilisés, du fromage artisanal, du lait frais et bien plus encore."
+    question: "Qu'est-ce que la box Saveurs de Ferme ?",
+    answer: "Chaque mois selon votre abonnement, vous recevez un assortiment fermier : yaourt, fromage, lait pasteurisé, fruits lyophilisés, guide de recette, une cuillère et une surprise exclusive."
   },
   {
-    question: "Quand ma box sera-t-elle livrée ?",
-    answer: "Les box sont expédiées au début de chaque mois. Vous recevrez un email de confirmation avec le numéro de suivi dès que votre box sera en route. La livraison prend généralement 2 à 5 jours ouvrables selon votre localisation."
+    question: "Comment fonctionne l'abonnement ?",
+    answer: "Vous choisissez la formule qui vous convient (bimensuel, mensuelle, annuelle). Le paiement se fait à l'avance, et votre box est livrée automatiquement chaque mois. L'abonnement se renouvelle automatiquement, mais vous pouvez le résilier à tout moment en respectant le type d'abonnement depuis votre compte ou en nous écrivant."
   },
   {
-    question: "Puis-je annuler mon abonnement à tout moment ?",
-    answer: "Oui, vous pouvez annuler votre abonnement à tout moment depuis votre espace client. Pour les formules avec engagement (3 mois ou 12 mois), des frais peuvent s'appliquer en cas d'annulation anticipée. La formule sans engagement peut être annulée sans frais."
+    question: "Quels types de produits vais-je recevoir ?",
+    answer: "Nos produits varient selon les saisons et la production fermière. Vous pouvez recevoir : différents yaourts (nature ou aux saveurs variées), fromages de caractère ou doux, fruits lyophilisés (pour grignoter sainement ou ajouter aux recettes), une bouteille de lait fermier pasteurisé (chocolat ou d'antan avec crème), et toujours une petite surprise gourmande ou utile."
   },
   {
-    question: "Les produits sont-ils adaptés aux personnes allergiques ?",
-    answer: "Nos produits contiennent du lait et peuvent contenir des traces de fruits à coque. Si vous avez des allergies spécifiques, nous vous recommandons de nous contacter avant de souscrire à un abonnement afin que nous puissions vous conseiller au mieux."
+    question: "Est-ce que les produits sont locaux ?",
+    answer: "Oui 90% de nos produits proviennent directement de producteurs québécois passionnés, en circuit court, afin de soutenir l'agriculture locale."
   },
   {
-    question: "Comment fonctionne le programme de parrainage ?",
-    answer: "Chaque client dispose d'un code de parrainage unique. Lorsqu'un ami utilise votre code pour s'abonner à une formule avec engagement, vous recevez tous les deux 10$ de crédit sur votre prochain paiement. Les crédits sont cumulables !"
+    question: "Puis-je personnaliser ma box ?",
+    answer: "Pour le moment, nos box sont pré-sélectionnées par notre équipe afin de vous faire découvrir de nouvelles saveurs chaque mois. Nous travaillons à proposer à l'avenir des options de personnalisation (sans lactose, choix de saveurs, etc.)."
+  },
+  {
+    question: "Comment se passe la livraison ?",
+    answer: "Nous livrons partout au Canada par transport réfrigéré ou colis protégé. Les délais de livraison varient entre 2 à 7 jours ouvrables selon la région. Vous recevez un numéro de suivi par courriel dès l'expédition."
+  },
+  {
+    question: "Et si je ne suis pas chez moi lors de la livraison ?",
+    answer: "Le transporteur laisse généralement un avis de passage avec instructions. Nos produits sont emballés pour conserver leur fraîcheur pendant le transport, mais nous recommandons de les récupérer rapidement."
   },
   {
     question: "Puis-je offrir une box en cadeau ?",
-    answer: "Absolument ! Nous proposons des options de box cadeau. Vous pouvez choisir la durée de l'abonnement et personnaliser un message pour le destinataire. La box sera envoyée directement à l'adresse de votre choix avec votre message personnalisé."
+    answer: "Oui 🎁 ! Vous pouvez offrir un abonnement cadeau en choisissant l'option \"Offrir\" lors de votre commande. Le destinataire recevra la box sans facture, accompagnée d'un petit mot personnalisé."
   },
   {
-    question: "Quels sont les moyens de paiement acceptés ?",
-    answer: "Nous acceptons les cartes de crédit (Visa, Mastercard, American Express), les cartes de débit et PayPal. Tous les paiements sont sécurisés et cryptés."
+    question: "Quelle est votre politique de retour ?",
+    answer: "Pour des raisons d'hygiène et de sécurité, les produits alimentaires ne peuvent être retournés. En cas de produit endommagé ou défectueux, contactez-nous dans les 48h suivant la réception afin que nous trouvions une solution (remplacement ou remboursement partiel)."
   },
   {
-    question: "D'où proviennent vos produits ?",
-    answer: "Tous nos produits proviennent de fermes locales et d'artisans de confiance. Nous travaillons en direct avec nos producteurs pour garantir la fraîcheur et la qualité de chaque produit. Découvrez nos producteurs partenaires dans la section 'À propos'."
-  },
-  {
-    question: "Comment conserver les produits de ma box ?",
-    answer: "Dès réception, nous vous recommandons de placer les produits laitiers (yaourts, lait, fromage) au réfrigérateur. Les fruits lyophilisés peuvent être conservés à température ambiante dans un endroit sec. Chaque produit est accompagné d'instructions de conservation spécifiques."
-  },
-  {
-    question: "Comment vous contacter ?",
-    answer: "Vous pouvez nous contacter via notre formulaire de contact sur le site, par email à contact@boxsaveursdeferme.ca, ou via nos réseaux sociaux. Notre équipe vous répondra dans les 24 à 48 heures ouvrables."
+    question: "Comment puis-je vous contacter ?",
+    answer: "Courriel : contact@boxsaveursdeferme.ca"
   }
 ];
 
@@ -63,9 +63,12 @@ const FAQPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-12">
-              FAQ
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+              Des questions ?
             </h1>
+            <p className="text-lg text-muted-foreground mb-12">
+              La réponse peut s'y trouver 👇🏻
+            </p>
 
             <Accordion type="single" collapsible className="space-y-4">
               {faqItems.map((item, index) => (
