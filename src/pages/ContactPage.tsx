@@ -154,16 +154,16 @@ const ContactPage = () => {
         </div>
       </div>
 
-      <main className="flex-1 pt-8 pb-16" style={{ backgroundColor: "#EBE7A2" }}>
+      <main className="flex-1 pt-8 pb-16 bg-cream">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Left Column - Form */}
             <div className="lg:col-span-2">
               {/* Form Section Title */}
-              <h2 className="text-2xl font-semibold mb-2" style={{ color: "#1a1a1a" }}>
+              <h2 className="text-2xl font-semibold mb-2 text-foreground">
                 Nous sommes heureux de vous aider !
               </h2>
-              <p className="mb-6" style={{ color: "#5C4A36" }}>
+              <p className="mb-6 text-muted-foreground">
                 Des questions ? Notre équipe répond en 24H.
               </p>
 
@@ -176,12 +176,7 @@ const ContactPage = () => {
                       type="text"
                       placeholder="Nom"
                       {...register("name")}
-                      className="w-full px-4 py-3 bg-transparent border focus:outline-none focus:border-[#5C4A36]"
-                      style={{ 
-                        borderColor: "#8B7355",
-                        color: "#5C4A36",
-                        borderRadius: "4px"
-                      }}
+                      className="w-full px-4 py-3 bg-white/50 border border-border rounded focus:outline-none focus:border-primary text-foreground placeholder:text-muted-foreground"
                     />
                   </div>
                   <div>
@@ -189,15 +184,10 @@ const ContactPage = () => {
                       type="email"
                       placeholder="E-mail *"
                       {...register("email")}
-                      className="w-full px-4 py-3 bg-transparent border focus:outline-none focus:border-[#5C4A36]"
-                      style={{ 
-                        borderColor: "#8B7355",
-                        color: "#5C4A36",
-                        borderRadius: "4px"
-                      }}
+                      className="w-full px-4 py-3 bg-white/50 border border-border rounded focus:outline-none focus:border-primary text-foreground placeholder:text-muted-foreground"
                     />
                     {errors.email && (
-                      <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>
+                      <p className="text-destructive text-sm mt-1">{errors.email.message}</p>
                     )}
                   </div>
                 </div>
@@ -208,12 +198,7 @@ const ContactPage = () => {
                     type="tel"
                     placeholder="Numéro de téléphone"
                     {...register("phone")}
-                    className="w-full px-4 py-3 bg-transparent border focus:outline-none focus:border-[#5C4A36]"
-                    style={{ 
-                      borderColor: "#8B7355",
-                      color: "#5C4A36",
-                      borderRadius: "4px"
-                    }}
+                    className="w-full px-4 py-3 bg-white/50 border border-border rounded focus:outline-none focus:border-primary text-foreground placeholder:text-muted-foreground"
                   />
                 </div>
 
@@ -223,12 +208,7 @@ const ContactPage = () => {
                     placeholder="Commentaire"
                     rows={5}
                     {...register("message")}
-                    className="w-full px-4 py-3 bg-transparent border focus:outline-none focus:border-[#5C4A36] resize-none"
-                    style={{ 
-                      borderColor: "#8B7355",
-                      color: "#5C4A36",
-                      borderRadius: "4px"
-                    }}
+                    className="w-full px-4 py-3 bg-white/50 border border-border rounded focus:outline-none focus:border-primary text-foreground placeholder:text-muted-foreground resize-none"
                   />
                 </div>
 
@@ -236,8 +216,7 @@ const ContactPage = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-8 py-3 rounded-full text-white font-medium transition-opacity hover:opacity-90 disabled:opacity-50"
-                  style={{ backgroundColor: "#5B7B5A" }}
+                  className="px-8 py-3 rounded-full bg-primary text-primary-foreground font-medium transition-opacity hover:opacity-90 disabled:opacity-50"
                 >
                   {isSubmitting ? "Envoi en cours..." : "Envoyer"}
                 </button>
@@ -245,7 +224,7 @@ const ContactPage = () => {
 
               {/* FAQ Section */}
               <div className="mt-12">
-                <h2 className="text-2xl font-semibold mb-6" style={{ color: "#1a1a1a" }}>
+                <h2 className="text-2xl font-semibold mb-6 text-foreground">
                   Questions fréquentes
                 </h2>
                 <Accordion type="single" collapsible className="space-y-3">
@@ -253,19 +232,12 @@ const ContactPage = () => {
                     <AccordionItem 
                       key={index} 
                       value={`item-${index}`}
-                      className="border rounded-lg px-4"
-                      style={{ borderColor: "#8B7355", backgroundColor: "rgba(255,255,255,0.3)" }}
+                      className="border border-border rounded-lg px-4 bg-white/50"
                     >
-                      <AccordionTrigger 
-                        className="text-left py-4 hover:no-underline"
-                        style={{ color: "#1a1a1a" }}
-                      >
+                      <AccordionTrigger className="text-left py-4 hover:no-underline text-foreground">
                         {item.question}
                       </AccordionTrigger>
-                      <AccordionContent 
-                        className="pb-4"
-                        style={{ color: "#5C4A36" }}
-                      >
+                      <AccordionContent className="pb-4 text-muted-foreground">
                         {item.answer}
                       </AccordionContent>
                     </AccordionItem>
@@ -278,16 +250,15 @@ const ContactPage = () => {
             <div className="space-y-8">
               {/* FAQ */}
               <div>
-                <h3 className="text-xl font-semibold mb-2" style={{ color: "#1a1a1a" }}>
+                <h3 className="text-xl font-semibold mb-2 text-foreground">
                   FAQ
                 </h3>
-                <p className="mb-2" style={{ color: "#5C4A36" }}>
+                <p className="mb-2 text-muted-foreground">
                   Vous avez une question rapide ?
                 </p>
                 <Link 
                   to="/faq" 
-                  className="underline hover:opacity-80 transition-opacity"
-                  style={{ color: "#5B7B5A" }}
+                  className="underline hover:opacity-80 transition-opacity text-primary"
                 >
                   Consultez notre FAQ pour une réponse rapide
                 </Link>
@@ -295,23 +266,22 @@ const ContactPage = () => {
 
               {/* Address */}
               <div>
-                <h3 className="text-xl font-semibold mb-2" style={{ color: "#1a1a1a" }}>
+                <h3 className="text-xl font-semibold mb-2 text-foreground">
                   Adresse
                 </h3>
-                <p style={{ color: "#5C4A36" }}>
+                <p className="text-muted-foreground">
                   377 Boulevards jacques cartier E, Longueuil QC, J4L1E1
                 </p>
               </div>
 
               {/* Email */}
               <div>
-                <h3 className="text-xl font-semibold mb-2" style={{ color: "#1a1a1a" }}>
+                <h3 className="text-xl font-semibold mb-2 text-foreground">
                   Email
                 </h3>
                 <a 
                   href="mailto:Contact@boxsaveursdeferme.ca"
-                  className="hover:opacity-80 transition-opacity"
-                  style={{ color: "#5C4A36" }}
+                  className="hover:opacity-80 transition-opacity text-muted-foreground hover:text-primary"
                 >
                   Contact@boxsaveursdeferme.ca
                 </a>
