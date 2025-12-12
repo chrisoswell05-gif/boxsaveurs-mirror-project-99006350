@@ -2,40 +2,16 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import AnnouncementBar from "@/components/AnnouncementBar";
 
 const contactSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .max(100, { message: "Le nom ne peut pas dépasser 100 caractères" })
-    .optional(),
-  email: z
-    .string()
-    .trim()
-    .email({ message: "Veuillez entrer une adresse email valide" })
-    .max(255, { message: "L'email ne peut pas dépasser 255 caractères" }),
-  phone: z
-    .string()
-    .trim()
-    .optional(),
-  message: z
-    .string()
-    .trim()
-    .max(2000, { message: "Le commentaire ne peut pas dépasser 2000 caractères" })
-    .optional(),
+  name: z.string().trim().max(100).optional(),
+  email: z.string().trim().email({ message: "Veuillez entrer une adresse email valide" }).max(255),
+  phone: z.string().trim().optional(),
+  message: z.string().trim().max(2000).optional(),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
@@ -44,7 +20,12 @@ const ContactPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const form = useForm<ContactFormData>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
       name: "",
@@ -84,7 +65,7 @@ const ContactPage = () => {
         description: "Nous avons bien reçu votre message et vous répondrons dans les plus brefs délais.",
       });
 
-      form.reset();
+      reset();
     } catch (error) {
       console.error("Erreur:", error);
       toast({
@@ -99,104 +80,99 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#EBE7A2" }}>
+      <AnnouncementBar />
       <Navigation />
       
-      <main className="flex-1 pt-32 pb-16 px-6">
-        <div className="container mx-auto max-w-2xl">
-          <h1 className="text-5xl md:text-6xl font-normal text-foreground mb-12">
+      <main className="flex-1 pt-8 pb-16">
+        <div className="container mx-auto px-4 max-w-3xl">
+          {/* Page Title */}
+          <h1 
+            className="text-5xl font-normal mb-10"
+            style={{ fontFamily: "serif", color: "#1a1a1a" }}
+          >
             Contact
           </h1>
 
-          <h2 className="text-lg font-normal text-foreground mb-8">Formulaire de contact</h2>
+          {/* Form Section Title */}
+          <h2 className="text-lg font-normal mb-6" style={{ color: "#1a1a1a" }}>
+            Formulaire de contact
+          </h2>
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          placeholder="Nom"
-                          {...field}
-                          className="bg-transparent border border-foreground/40 rounded-none h-12 placeholder:text-foreground/60 focus:border-foreground"
-                          style={{ backgroundColor: "transparent" }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          type="email"
-                          placeholder="E-mail *"
-                          {...field}
-                          className="bg-transparent border border-foreground/40 rounded-none h-12 placeholder:text-foreground/60 focus:border-foreground"
-                          style={{ backgroundColor: "transparent" }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+          {/* Contact Form */}
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Name and Email row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <input
+                  type="text"
+                  placeholder="Nom"
+                  {...register("name")}
+                  className="w-full px-4 py-3 bg-transparent border focus:outline-none focus:border-[#5C4A36]"
+                  style={{ 
+                    borderColor: "#8B7355",
+                    color: "#5C4A36",
+                    borderRadius: "4px"
+                  }}
                 />
               </div>
-
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        type="tel"
-                        placeholder="Numéro de téléphone"
-                        {...field}
-                        className="bg-transparent border border-foreground/40 rounded-none h-12 placeholder:text-foreground/60 focus:border-foreground"
-                        style={{ backgroundColor: "transparent" }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+              <div>
+                <input
+                  type="email"
+                  placeholder="E-mail *"
+                  {...register("email")}
+                  className="w-full px-4 py-3 bg-transparent border focus:outline-none focus:border-[#5C4A36]"
+                  style={{ 
+                    borderColor: "#8B7355",
+                    color: "#5C4A36",
+                    borderRadius: "4px"
+                  }}
+                />
+                {errors.email && (
+                  <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>
                 )}
-              />
+              </div>
+            </div>
 
-              <FormField
-                control={form.control}
-                name="message"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Commentaire"
-                        rows={4}
-                        {...field}
-                        className="bg-transparent border border-foreground/40 rounded-none placeholder:text-foreground/60 focus:border-foreground resize-none"
-                        style={{ backgroundColor: "transparent" }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+            {/* Phone */}
+            <div>
+              <input
+                type="tel"
+                placeholder="Numéro de téléphone"
+                {...register("phone")}
+                className="w-full px-4 py-3 bg-transparent border focus:outline-none focus:border-[#5C4A36]"
+                style={{ 
+                  borderColor: "#8B7355",
+                  color: "#5C4A36",
+                  borderRadius: "4px"
+                }}
               />
+            </div>
 
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="bg-[#5B7B5A] hover:bg-[#4A6A49] text-white rounded-full px-8 py-3 h-auto font-normal"
-              >
-                {isSubmitting ? "Envoi en cours..." : "Envoyer"}
-              </Button>
-            </form>
-          </Form>
+            {/* Message */}
+            <div>
+              <textarea
+                placeholder="Commentaire"
+                rows={5}
+                {...register("message")}
+                className="w-full px-4 py-3 bg-transparent border focus:outline-none focus:border-[#5C4A36] resize-none"
+                style={{ 
+                  borderColor: "#8B7355",
+                  color: "#5C4A36",
+                  borderRadius: "4px"
+                }}
+              />
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="px-8 py-3 rounded-full text-white font-medium transition-opacity hover:opacity-90 disabled:opacity-50"
+              style={{ backgroundColor: "#5B7B5A" }}
+            >
+              {isSubmitting ? "Envoi en cours..." : "Envoyer"}
+            </button>
+          </form>
         </div>
       </main>
 
