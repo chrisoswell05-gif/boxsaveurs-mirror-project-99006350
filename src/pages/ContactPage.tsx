@@ -6,6 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnnouncementBar from "@/components/AnnouncementBar";
+import contactHeaderImage from "@/assets/contact-header.jpg";
 
 const contactSchema = z.object({
   name: z.string().trim().max(100).optional(),
@@ -79,19 +80,29 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#EBE7A2" }}>
+    <div className="min-h-screen flex flex-col">
       <AnnouncementBar />
       <Navigation />
       
-      <main className="flex-1 pt-8 pb-16">
-        <div className="container mx-auto px-4 max-w-3xl">
-          {/* Page Title */}
+      {/* Header with Image */}
+      <div className="relative h-64 md:h-80 w-full overflow-hidden">
+        <img 
+          src={contactHeaderImage} 
+          alt="Service client Box Saveurs de Ferme" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
           <h1 
-            className="text-5xl font-normal mb-10"
-            style={{ fontFamily: "serif", color: "#1a1a1a" }}
+            className="text-4xl md:text-5xl font-normal text-white"
+            style={{ fontFamily: "serif" }}
           >
             Contact
           </h1>
+        </div>
+      </div>
+
+      <main className="flex-1 pt-8 pb-16" style={{ backgroundColor: "#EBE7A2" }}>
+        <div className="container mx-auto px-4 max-w-3xl">
 
           {/* Form Section Title */}
           <h2 className="text-lg font-normal mb-6" style={{ color: "#1a1a1a" }}>
