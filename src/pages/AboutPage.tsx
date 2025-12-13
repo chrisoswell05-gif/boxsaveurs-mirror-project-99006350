@@ -79,8 +79,37 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Founder Section */}
+      {/* Introduction Section */}
       <section className="py-20 px-6">
+        <div className="container mx-auto">
+          <ScrollReveal>
+            <div className="max-w-4xl mx-auto text-center space-y-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+                Salut, ravi de vous rencontrer!!!
+              </h2>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                Vous êtes-vous déjà demandé d'où viennent les saveurs authentiques que nous mettons dans votre box ?
+                Nous aimerions vous partager quelques secrets.
+              </p>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                De la terre riche qui nourrit nos cultures aux soins attentifs donnés à chaque animal, 
+                chaque produit que nous sélectionnons raconte une histoire de patience et de passion. 
+                Derrière chaque pot de yaourt, chaque bouteille de lait ou chaque fromage affiné, 
+                il y a le savoir-faire de producteurs locaux du Québec qui perpétuent des traditions 
+                avec amour et respect de la nature.
+              </p>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                Notre mission est simple : vous offrir, chez vous, le goût vrai et sincère de la ferme, 
+                tel qu'il devrait toujours être. Parce que savourer des produits fermiers, ce n'est pas 
+                seulement manger, c'est aussi redécouvrir un lien avec la terre et avec ceux qui la cultivent.
+              </p>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* Founder Section */}
+      <section className="py-20 px-6 bg-muted/30">
         <div className="container mx-auto">
           <ScrollReveal>
             <div className="flex flex-col lg:flex-row items-center gap-12 max-w-5xl mx-auto">
@@ -92,7 +121,7 @@ const AboutPage = () => {
                 <div className="relative">
                   <div className="absolute -inset-4 bg-gradient-to-br from-yellow/30 to-primary/20 rounded-full blur-xl" />
                   <img 
-                    alt="Chris Oswell - Fondateur" 
+                    alt="Chris Oswell - CEO" 
                     className="relative w-56 h-56 rounded-full object-cover shadow-2xl border-4 border-yellow" 
                     src="/lovable-uploads/8fc08bef-2fdf-489e-aa15-7eafd90e318b.jpg" 
                   />
@@ -102,21 +131,16 @@ const AboutPage = () => {
               <div className="space-y-6">
                 <div>
                   <h2 className="text-3xl font-bold text-foreground mb-2">Chris Oswell</h2>
-                  <p className="text-primary font-medium">Fondateur & Passionné</p>
+                  <p className="text-primary font-medium">CEO</p>
                 </div>
                 
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
-                  <p className="text-lg">
-                    Passionné par le goût authentique et les produits artisanaux, j'ai créé 
-                    Box Saveurs de Ferme pour partager ma passion avec vous.
+                  <p className="text-lg italic border-l-4 border-yellow pl-4">
+                    "Chez Saveurs de Ferme, nous croyons que chaque produit doit raconter une histoire : 
+                    celle d'un terroir, d'un savoir-faire et d'un engagement pour la qualité."
                   </p>
-                  <p className="text-lg">
-                    Mon objectif ? Faire découvrir des saveurs uniques et naturelles tout en 
-                    soutenant nos producteurs locaux qui perpétuent des savoir-faire ancestraux.
-                  </p>
-                  <p className="text-lg">
-                    Avec chaque box, j'offre une expérience gourmande qui allie plaisir, 
-                    qualité et authenticité. 🧀🥛🍓
+                  <p className="text-lg font-medium text-foreground">
+                    Notre promesse : du goût, de l'authenticité et une petite dose de bonheur dans chaque box.
                   </p>
                 </div>
                 
