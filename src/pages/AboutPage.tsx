@@ -83,26 +83,47 @@ const AboutPage = () => {
       <section className="py-20 px-6">
         <div className="container mx-auto">
           <ScrollReveal>
-            <div className="max-w-4xl mx-auto text-center space-y-6">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-                Salut, ravi de vous rencontrer!!!
-              </h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Vous êtes-vous déjà demandé d'où viennent les saveurs authentiques que nous mettons dans votre box ?
-                Nous aimerions vous partager quelques secrets.
-              </p>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                De la terre riche qui nourrit nos cultures aux soins attentifs donnés à chaque animal, 
-                chaque produit que nous sélectionnons raconte une histoire de patience et de passion. 
-                Derrière chaque pot de yaourt, chaque bouteille de lait ou chaque fromage affiné, 
-                il y a le savoir-faire de producteurs locaux du Québec qui perpétuent des traditions 
-                avec amour et respect de la nature.
-              </p>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Notre mission est simple : vous offrir, chez vous, le goût vrai et sincère de la ferme, 
-                tel qu'il devrait toujours être. Parce que savourer des produits fermiers, ce n'est pas 
-                seulement manger, c'est aussi redécouvrir un lien avec la terre et avec ceux qui la cultivent.
-              </p>
+            <div className="flex flex-col lg:flex-row items-center gap-12 max-w-6xl mx-auto">
+              {/* Image à gauche */}
+              <motion.div 
+                className="lg:w-1/2 flex-shrink-0"
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="relative">
+                  <div className="absolute -inset-4 bg-gradient-to-br from-yellow/20 to-primary/10 rounded-3xl blur-2xl" />
+                  <img 
+                    src="/lovable-uploads/d4a2d19b-b96d-4e98-88f9-c6ece042edc2.jpg"
+                    alt="Produits de la ferme"
+                    className="relative w-full h-[500px] object-cover rounded-3xl shadow-2xl"
+                  />
+                </div>
+              </motion.div>
+
+              {/* Texte à droite */}
+              <div className="lg:w-1/2 space-y-6">
+                <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+                  Salut, ravi de vous rencontrer!!!
+                </h2>
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  Vous êtes-vous déjà demandé d'où viennent les saveurs authentiques que nous mettons dans votre box ?
+                  Nous aimerions vous partager quelques secrets.
+                </p>
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  De la terre riche qui nourrit nos cultures aux soins attentifs donnés à chaque animal, 
+                  chaque produit que nous sélectionnons raconte une histoire de patience et de passion. 
+                  Derrière chaque pot de yaourt, chaque bouteille de lait ou chaque fromage affiné, 
+                  il y a le savoir-faire de producteurs locaux du Québec qui perpétuent des traditions 
+                  avec amour et respect de la nature.
+                </p>
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  Notre mission est simple : vous offrir, chez vous, le goût vrai et sincère de la ferme, 
+                  tel qu'il devrait toujours être. Parce que savourer des produits fermiers, ce n'est pas 
+                  seulement manger, c'est aussi redécouvrir un lien avec la terre et avec ceux qui la cultivent.
+                </p>
+              </div>
             </div>
           </ScrollReveal>
         </div>
