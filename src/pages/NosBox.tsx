@@ -10,9 +10,33 @@ const NosBox = () => {
   const location = useLocation();
   const isGiftPage = location.pathname.includes("/cadeau");
 
+  const bannerItems = [
+    "contact@boxsaveursdeferme.ca",
+    "+30 avis",
+    "Fraîcheur garantie"
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
+      
+      {/* Scrolling Banner */}
+      <div className="bg-yellow text-yellow-foreground py-2 overflow-hidden">
+        <div className="relative flex">
+          <div className="flex animate-marquee whitespace-nowrap">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="flex items-center">
+                {bannerItems.map((item, index) => (
+                  <span key={index} className="flex items-center">
+                    <span className="px-8 text-sm font-medium">{item}</span>
+                    <span className="text-yellow-foreground/60">•</span>
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
       
       {/* Hero Banner Section */}
       <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden">
