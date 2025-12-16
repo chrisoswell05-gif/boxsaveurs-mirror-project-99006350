@@ -3,6 +3,7 @@ import { Heart, Leaf, Users, Award, MapPin, Sparkles } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
+import quebecFarmImage from "@/assets/quebec-farm.jpg";
 
 const AboutPage = () => {
   const values = [
@@ -95,8 +96,8 @@ const AboutPage = () => {
                 <div className="relative">
                   <div className="absolute -inset-4 bg-gradient-to-br from-yellow/20 to-primary/10 rounded-3xl blur-2xl" />
                   <img 
-                    src="/lovable-uploads/d4a2d19b-b96d-4e98-88f9-c6ece042edc2.jpg"
-                    alt="Produits de la ferme"
+                    src={quebecFarmImage}
+                    alt="Ferme québécoise avec vaches et récoltes fraîches"
                     className="relative w-full h-[500px] object-cover rounded-3xl shadow-2xl"
                   />
                 </div>
