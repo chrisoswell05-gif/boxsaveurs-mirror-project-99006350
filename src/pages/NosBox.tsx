@@ -1,7 +1,7 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { Gift, Package, Sparkles } from "lucide-react";
+import { Gift, Package, Sparkles, Mail, Star, Snowflake } from "lucide-react";
 import heroBox from "@/assets/hero-box.jpg";
 import ScrollReveal from "@/components/ScrollReveal";
 import { motion } from "framer-motion";
@@ -11,9 +11,9 @@ const NosBox = () => {
   const isGiftPage = location.pathname.includes("/cadeau");
 
   const bannerItems = [
-    "contact@boxsaveursdeferme.ca",
-    "+30 avis",
-    "Fraîcheur garantie"
+    { text: "contact@boxsaveursdeferme.ca", icon: Mail },
+    { text: "+30 avis", icon: Star },
+    { text: "Fraîcheur garantie", icon: Snowflake }
   ];
 
   return (
@@ -26,12 +26,18 @@ const NosBox = () => {
           <div className="flex animate-marquee whitespace-nowrap">
             {[...Array(4)].map((_, i) => (
               <div key={i} className="flex items-center">
-                {bannerItems.map((item, index) => (
-                  <span key={index} className="flex items-center">
-                    <span className="px-8 text-sm font-medium">{item}</span>
-                    <span className="text-yellow-foreground/60">•</span>
-                  </span>
-                ))}
+                {bannerItems.map((item, index) => {
+                  const IconComponent = item.icon;
+                  return (
+                    <span key={index} className="flex items-center">
+                      <span className="px-8 text-sm font-medium flex items-center gap-2">
+                        <IconComponent className="w-4 h-4" />
+                        {item.text}
+                      </span>
+                      <span className="text-yellow-foreground/60">•</span>
+                    </span>
+                  );
+                })}
               </div>
             ))}
           </div>
