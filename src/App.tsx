@@ -10,6 +10,9 @@ import GiftOrderPage from "./pages/GiftOrderPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import FAQPage from "./pages/FAQPage";
+import CGVPage from "./pages/CGVPage";
+import PrivacyPage from "./pages/PrivacyPage";
+import LegalPage from "./pages/LegalPage";
 import AdminQuizResponses from "./pages/AdminQuizResponses";
 import AdminReferrals from "./pages/AdminReferrals";
 import Auth from "./pages/Auth";
@@ -34,6 +37,9 @@ const App = () => (
           <Route path="/a-propos" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/faq" element={<FAQPage />} />
+          <Route path="/cgv" element={<CGVPage />} />
+          <Route path="/confidentialite" element={<PrivacyPage />} />
+          <Route path="/mentions-legales" element={<LegalPage />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/admin/quiz-responses" element={<AdminQuizResponses />} />

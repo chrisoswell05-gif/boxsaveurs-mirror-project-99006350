@@ -123,16 +123,16 @@ const Footer = () => {
             </a>
           </div>
           <div className="space-y-3 text-navy-foreground">
-            <a href="/faq" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
+            <a href="/cgv" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
               Conditions générales de vente
             </a>
-            <a href="/faq" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
+            <a href="/confidentialite" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
               Politique de confidentialité
             </a>
             <a href="/faq" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
               Conditions de Livraison
             </a>
-            <a href="/faq" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
+            <a href="/mentions-legales" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
               Mentions légales
             </a>
             <a href="/faq" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
