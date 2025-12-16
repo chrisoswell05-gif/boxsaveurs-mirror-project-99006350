@@ -29,13 +29,6 @@ const AboutPage = () => {
     }
   ];
 
-  const timeline = [
-    { year: "2020", event: "Naissance de l'idée lors d'une visite à la ferme" },
-    { year: "2021", event: "Partenariats avec nos premiers producteurs locaux" },
-    { year: "2022", event: "Lancement officiel de Box Saveurs de Ferme" },
-    { year: "2023", event: "Plus de 1000 familles satisfaites" },
-    { year: "2024", event: "Expansion et nouveaux produits artisanaux" }
-  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -207,41 +200,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Timeline Section */}
-      <section className="py-20 px-6">
-        <div className="container mx-auto">
-          <ScrollReveal>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-foreground mb-4">Notre Parcours</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Les étapes clés de notre aventure
-              </p>
-            </div>
-          </ScrollReveal>
-          
-          <div className="max-w-3xl mx-auto">
-            {timeline.map((item, index) => (
-              <ScrollReveal key={index}>
-                <motion.div
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="flex items-center gap-6 mb-8"
-                >
-                  <div className="flex-shrink-0 w-20 text-right">
-                    <span className="text-xl font-bold text-primary">{item.year}</span>
-                  </div>
-                  <div className="w-4 h-4 bg-primary rounded-full ring-4 ring-primary/20 flex-shrink-0" />
-                  <div className="flex-1 bg-card p-4 rounded-xl shadow-md border border-border">
-                    <p className="text-foreground">{item.event}</p>
-                  </div>
-                </motion.div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Mission Section */}
       <section className="py-20 px-6 bg-navy">
