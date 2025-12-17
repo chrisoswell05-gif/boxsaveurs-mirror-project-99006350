@@ -102,8 +102,10 @@ const NosBox = () => {
             <div className="flex justify-center mt-10">
               <div className="bg-background/10 backdrop-blur-md rounded-2xl p-2 border border-white/10 shadow-xl">
                 <div className="flex gap-2">
-                  <Link
-                    to="/nos-box/commande"
+                  <a
+                    href="https://boxsaveursdeferme.com/products/box-par-abonnement"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className={`group relative flex items-center gap-3 px-8 py-4 rounded-xl font-semibold transition-all duration-300 ${
                       !isGiftPage
                         ? "bg-yellow text-yellow-foreground shadow-yellow"
@@ -119,7 +121,7 @@ const NosBox = () => {
                         transition={{ duration: 2, repeat: Infinity }}
                       />
                     )}
-                  </Link>
+                  </a>
                   <Link
                     to="/nos-box/cadeau"
                     className={`group relative flex items-center gap-3 px-8 py-4 rounded-xl font-semibold transition-all duration-300 ${
