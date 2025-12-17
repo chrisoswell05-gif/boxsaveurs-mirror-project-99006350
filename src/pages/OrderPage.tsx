@@ -20,6 +20,12 @@ const OrderPage = () => {
   } | null>(null);
 
   const handleSelectPlan = (plan: typeof plans[0]) => {
+    // If plan has a Shopify checkout URL, redirect directly
+    if (plan.checkoutUrl) {
+      window.open(plan.checkoutUrl, '_blank');
+      return;
+    }
+    
     const finalPrice = appliedPromo 
       ? calculateDiscountedPrice(parseFloat(plan.price.replace('$', '')), plan.title).toFixed(2) + '$'
       : plan.price;
@@ -52,6 +58,7 @@ const OrderPage = () => {
       badgeColor: "bg-muted text-muted-foreground",
       gradientFrom: "from-slate-50",
       gradientTo: "to-slate-100",
+      checkoutUrl: undefined as string | undefined,
     },
     {
       title: "SAVEURS CACHÉES",
@@ -73,6 +80,7 @@ const OrderPage = () => {
       badgeColor: "bg-primary text-primary-foreground",
       gradientFrom: "from-primary/5",
       gradientTo: "to-primary/10",
+      checkoutUrl: "https://boxsaveursdeferme.com/checkouts/cn/hWN6WcLmZk9MiV8JgJM89KAD/fr-ca?_r=AQAB2aMwGbpPoS54GsDsyz1w4k3ObkBbz6imGmYi3hZAUK0&channel=online_store",
     },
     {
       title: "L'ANNÉE GOURMANDE",
@@ -95,6 +103,7 @@ const OrderPage = () => {
       badgeColor: "bg-yellow text-yellow-foreground",
       gradientFrom: "from-yellow/5",
       gradientTo: "to-yellow/15",
+      checkoutUrl: undefined as string | undefined,
     },
   ];
 
