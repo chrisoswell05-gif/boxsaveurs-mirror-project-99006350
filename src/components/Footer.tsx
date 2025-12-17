@@ -129,7 +129,7 @@ const Footer = () => {
             <a href="/confidentialite" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
               Politique de confidentialité
             </a>
-            <a href="/faq" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
+            <a href="/livraison" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
               Conditions de Livraison
             </a>
             <a href="/mentions-legales" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">

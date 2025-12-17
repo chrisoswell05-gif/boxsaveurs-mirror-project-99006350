@@ -14,6 +14,7 @@ import CGVPage from "./pages/CGVPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import LegalPage from "./pages/LegalPage";
 import RefundPage from "./pages/RefundPage";
+import DeliveryPage from "./pages/DeliveryPage";
 import AdminQuizResponses from "./pages/AdminQuizResponses";
 import AdminReferrals from "./pages/AdminReferrals";
 import Auth from "./pages/Auth";
@@ -42,6 +43,7 @@ const App = () => (
           <Route path="/confidentialite" element={<PrivacyPage />} />
           <Route path="/mentions-legales" element={<LegalPage />} />
           <Route path="/remboursement" element={<RefundPage />} />
+          <Route path="/livraison" element={<DeliveryPage />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/admin/quiz-responses" element={<AdminQuizResponses />} />
