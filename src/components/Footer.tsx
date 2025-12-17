@@ -135,7 +135,7 @@ const Footer = () => {
             <a href="/mentions-legales" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
               Mentions légales
             </a>
-            <a href="/faq" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
+            <a href="/remboursement" className="block hover:text-yellow transition-all duration-300 hover:translate-x-2">
               Remboursement
             </a>
           </div>
