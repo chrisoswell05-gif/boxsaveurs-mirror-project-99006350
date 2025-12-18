@@ -58,7 +58,7 @@ const OrderPage = () => {
       badgeColor: "bg-muted text-muted-foreground",
       gradientFrom: "from-slate-50",
       gradientTo: "to-slate-100",
-      checkoutUrl: undefined as string | undefined,
+      checkoutUrl: "https://boxsaveursdeferme.com/products/box-par-abonnement",
     },
     {
       title: "SAVEURS CACHÉES",
