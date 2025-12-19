@@ -20,6 +20,7 @@ import AdminReferrals from "./pages/AdminReferrals";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import ShopifyTest from "./pages/ShopifyTest";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/profile" element={<Profile />} />
           <Route path="/admin/quiz-responses" element={<AdminQuizResponses />} />
           <Route path="/admin/referrals" element={<AdminReferrals />} />
+          <Route path="/shopify-test" element={<ShopifyTest />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
