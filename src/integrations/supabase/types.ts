@@ -323,6 +323,13 @@ export type Database = {
         Returns: undefined
       }
       generate_referral_code: { Args: never; Returns: string }
+      get_referrer_by_code: {
+        Args: { referrer_code: string }
+        Returns: {
+          email: string
+          full_name: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
