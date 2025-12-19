@@ -1,9 +1,10 @@
-import { Search, User, ShoppingCart, Shield } from "lucide-react";
+import { Search, User, Shield } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User as SupabaseUser } from "@supabase/supabase-js";
 import logo from "@/assets/logo.png";
+import CartDrawer from "@/components/CartDrawer";
 
 const Navigation = () => {
   const [user, setUser] = useState<SupabaseUser | null>(null);
@@ -83,9 +84,7 @@ const Navigation = () => {
           >
             <User className="w-5 h-5 text-foreground" />
           </button>
-          <button className="p-2 hover:bg-muted rounded-full transition-all duration-300 hover:scale-110 active:scale-95">
-            <ShoppingCart className="w-5 h-5 text-foreground" />
-          </button>
+          <CartDrawer />
         </div>
       </div>
     </nav>
