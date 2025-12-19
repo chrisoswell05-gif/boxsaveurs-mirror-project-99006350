@@ -6,9 +6,11 @@ import SavingsCalculator from "@/components/SavingsCalculator";
 import PromoCodeInput from "@/components/PromoCodeInput";
 import { OrderDialog } from "@/components/OrderDialog";
 import { usePromoCode } from "@/hooks/usePromoCode";
-import { Star, Check, Truck, Shield, RefreshCw, Loader2 } from "lucide-react";
+import { Star, Check, Truck, Shield, RefreshCw, Loader2, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 import { fetchProducts, ShopifyProduct } from "@/lib/shopify";
+import { useCartStore } from "@/stores/cartStore";
+import { toast } from "sonner";
 
 interface Plan {
   title: string;
@@ -25,6 +27,7 @@ interface Plan {
   checkoutUrl?: string;
   imageUrl?: string;
   variantId?: string;
+  product?: ShopifyProduct;
 }
 
 const OrderPage = () => {
@@ -37,6 +40,7 @@ const OrderPage = () => {
   } | null>(null);
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(true);
+  const { addItem } = useCartStore();
 
   // Fallback plans in case Shopify fails
   const fallbackPlans: Plan[] = [
@@ -59,7 +63,6 @@ const OrderPage = () => {
       badgeColor: "bg-muted text-muted-foreground",
       gradientFrom: "from-slate-50",
       gradientTo: "to-slate-100",
-      checkoutUrl: "https://boxsaveursdeferme.com/products/box-par-abonnement",
     },
     {
       title: "SAVEURS CACHÉES",
@@ -81,7 +84,6 @@ const OrderPage = () => {
       badgeColor: "bg-primary text-primary-foreground",
       gradientFrom: "from-primary/5",
       gradientTo: "to-primary/10",
-      checkoutUrl: "https://boxsaveursdeferme.com/checkouts/cn/hWN6WcLmZk9MiV8JgJM89KAD/fr-ca",
     },
     {
       title: "L'ANNÉE GOURMANDE",
@@ -166,9 +168,9 @@ const OrderPage = () => {
             badgeColor,
             gradientFrom,
             gradientTo,
-            checkoutUrl: `https://boxsaveursdeferme.com/products/${node.handle}`,
             imageUrl,
             variantId: firstVariant?.id,
+            product,
           };
         });
 
@@ -184,23 +186,40 @@ const OrderPage = () => {
     loadProducts();
   }, []);
 
-  const handleSelectPlan = (plan: Plan) => {
-    // If plan has a checkout URL, redirect directly
-    if (plan.checkoutUrl) {
-      window.open(plan.checkoutUrl, '_blank');
+  const handleAddToCart = (plan: Plan) => {
+    if (!plan.product || !plan.variantId) {
+      // Fallback plan without Shopify data - open dialog
+      const finalPrice = appliedPromo 
+        ? calculateDiscountedPrice(parseFloat(plan.price.replace('$', '')), plan.title).toFixed(2) + '$'
+        : plan.price;
+      
+      setSelectedPlan({
+        title: plan.title,
+        price: finalPrice,
+        features: plan.features
+      });
+      setOrderDialogOpen(true);
       return;
     }
-    
-    const finalPrice = appliedPromo 
-      ? calculateDiscountedPrice(parseFloat(plan.price.replace('$', '')), plan.title).toFixed(2) + '$'
-      : plan.price;
-    
-    setSelectedPlan({
-      title: plan.title,
-      price: finalPrice,
-      features: plan.features
+
+    const variant = plan.product.node.variants.edges[0]?.node;
+    if (!variant) {
+      toast.error("Produit non disponible");
+      return;
+    }
+
+    addItem({
+      product: plan.product,
+      variantId: variant.id,
+      variantTitle: variant.title,
+      price: variant.price,
+      quantity: 1,
+      selectedOptions: variant.selectedOptions || [],
     });
-    setOrderDialogOpen(true);
+
+    toast.success("Ajouté au panier", {
+      description: `${plan.title} a été ajouté à votre panier.`,
+    });
   };
 
   const benefits = [
@@ -365,13 +384,10 @@ const OrderPage = () => {
                       variant={plan.isBestOffer ? "premium" : "default"}
                       className={`w-full mt-6 ${plan.isBestOffer ? '' : 'bg-primary hover:bg-primary/90'}`}
                       size="lg"
-                      onClick={() => handleSelectPlan(plan)}
+                      onClick={() => handleAddToCart(plan)}
                     >
-                      {plan.engagement === "sans engagement" 
-                        ? "Commander sans engagement" 
-                        : plan.engagement === "3 mois"
-                        ? "S'abonner 3 mois"
-                        : "S'abonner maintenant"}
+                      <ShoppingCart className="w-4 h-4 mr-2" />
+                      Ajouter au panier
                     </Button>
                   </div>
                 </Card>
