@@ -163,13 +163,11 @@ const Auth = () => {
               // Send notification email to referrer
               setTimeout(async () => {
                 try {
-                  // Fetch referrer profile
-                  const { data: referrerProfile } = await supabase
-                    .from('profiles')
-                    .select('email, full_name')
-                    .eq('referral_code', referralCode.toUpperCase())
-                    .single();
+                  // Fetch referrer profile using secure RPC function
+                  const { data: referrerData } = await supabase
+                    .rpc('get_referrer_by_code', { referrer_code: referralCode.toUpperCase() });
 
+                  const referrerProfile = referrerData?.[0];
                   if (referrerProfile) {
                     await supabase.functions.invoke('send-referral-notification', {
                       body: {
