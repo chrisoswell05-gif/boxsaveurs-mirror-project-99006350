@@ -1,8 +1,13 @@
 import { toast } from "sonner";
 
-const SHOPIFY_API_VERSION = '2025-07';
-const SHOPIFY_STORE_DOMAIN = 'lovable-project-7b8sw.myshopify.com';
-const SHOPIFY_STOREFRONT_TOKEN = '504f59583f34c839a71fabd4e17fe0d0';
+const SHOPIFY_API_VERSION = import.meta.env.VITE_SHOPIFY_API_VERSION;
+const SHOPIFY_STORE_DOMAIN = import.meta.env.VITE_SHOPIFY_STORE_DOMAIN;
+const SHOPIFY_STOREFRONT_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+
+if (!SHOPIFY_STORE_DOMAIN || !SHOPIFY_STOREFRONT_TOKEN) {
+  throw new Error("Shopify environment variables are missing");
+}
+
 const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
 
 export interface ShopifyProduct {
