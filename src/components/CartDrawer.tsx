@@ -196,6 +196,19 @@ export const CartDrawer = () => {
                   )}
                 </Button>
                 
+                <Button 
+                  onClick={() => {
+                    clearCart();
+                    toast.success("Panier vidé");
+                  }}
+                  variant="outline"
+                  className="w-full"
+                  size="sm"
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Vider le panier
+                </Button>
+                
                 <p className="text-xs text-center text-muted-foreground">
                   Paiement sécurisé via Shopify
                 </p>
