@@ -21,6 +21,7 @@ import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import ShopifyTest from "./pages/ShopifyTest";
+import ProductDetail from "./pages/ProductDetail";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
             <Route path="commande" element={<OrderPage />} />
             <Route path="cadeau" element={<GiftOrderPage />} />
           </Route>
+          <Route path="/product/:handle" element={<ProductDetail />} />
           <Route path="/a-propos" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/faq" element={<FAQPage />} />
