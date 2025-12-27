@@ -2,7 +2,6 @@ import AnnouncementBar from "@/components/AnnouncementBar";
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
-import ReviewsSection from "@/components/ReviewsSection";
 import ConceptSection from "@/components/ConceptSection";
 import ProducersSection from "@/components/ProducersSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
@@ -24,10 +23,6 @@ const Index = () => {
       
       <ScrollReveal variant="fadeUp" delay={0.1}>
         <AboutSection />
-      </ScrollReveal>
-      
-      <ScrollReveal variant="fadeLeft" delay={0.1}>
-        <ReviewsSection />
       </ScrollReveal>
       
       <ScrollReveal variant="fadeRight" delay={0.1}>
