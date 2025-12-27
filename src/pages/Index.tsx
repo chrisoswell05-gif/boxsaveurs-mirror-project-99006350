@@ -13,6 +13,7 @@ import ContactSection from "@/components/ContactSection";
 import HighlightBar from "@/components/HighlightBar";
 import Footer from "@/components/Footer";
 import ProductGrid from "@/components/ProductGrid";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const Index = () => {
   return (
@@ -20,17 +21,51 @@ const Index = () => {
       <AnnouncementBar />
       <Navigation />
       <HeroSection />
-      <ProductGrid />
-      <AboutSection />
-      <ReviewsSection />
-      <ConceptSection />
-      <ProducersSection />
-      <HowItWorksSection />
-      <GallerySection />
-      <VideoTestimonialsSection />
-      <PricingSection />
-      <HighlightBar />
-      <ContactSection />
+      
+      <ScrollReveal variant="fadeUp">
+        <ProductGrid />
+      </ScrollReveal>
+      
+      <ScrollReveal variant="fadeUp" delay={0.1}>
+        <AboutSection />
+      </ScrollReveal>
+      
+      <ScrollReveal variant="fadeLeft" delay={0.1}>
+        <ReviewsSection />
+      </ScrollReveal>
+      
+      <ScrollReveal variant="fadeRight" delay={0.1}>
+        <ConceptSection />
+      </ScrollReveal>
+      
+      <ScrollReveal variant="fadeUp" delay={0.1}>
+        <ProducersSection />
+      </ScrollReveal>
+      
+      <ScrollReveal variant="scale" delay={0.1}>
+        <HowItWorksSection />
+      </ScrollReveal>
+      
+      <ScrollReveal variant="fadeUp" delay={0.1}>
+        <GallerySection />
+      </ScrollReveal>
+      
+      <ScrollReveal variant="fadeLeft" delay={0.1}>
+        <VideoTestimonialsSection />
+      </ScrollReveal>
+      
+      <ScrollReveal variant="fadeUp" delay={0.1}>
+        <PricingSection />
+      </ScrollReveal>
+      
+      <ScrollReveal variant="scale" delay={0.1}>
+        <HighlightBar />
+      </ScrollReveal>
+      
+      <ScrollReveal variant="fadeUp" delay={0.1}>
+        <ContactSection />
+      </ScrollReveal>
+      
       <Footer />
     </div>
   );
