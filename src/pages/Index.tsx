@@ -12,6 +12,7 @@ import VideoTestimonialsSection from "@/components/VideoTestimonialsSection";
 import ContactSection from "@/components/ContactSection";
 import HighlightBar from "@/components/HighlightBar";
 import Footer from "@/components/Footer";
+import ProductGrid from "@/components/ProductGrid";
 
 const Index = () => {
   return (
@@ -19,6 +20,7 @@ const Index = () => {
       <AnnouncementBar />
       <Navigation />
       <HeroSection />
+      <ProductGrid />
       <AboutSection />
       <ReviewsSection />
       <ConceptSection />
