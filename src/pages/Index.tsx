@@ -9,6 +9,7 @@ import HowItWorksSection from "@/components/HowItWorksSection";
 import PricingSection from "@/components/PricingSection";
 import GallerySection from "@/components/GallerySection";
 import VideoTestimonialsSection from "@/components/VideoTestimonialsSection";
+import CustomerTestimonialsSection from "@/components/CustomerTestimonialsSection";
 import ContactSection from "@/components/ContactSection";
 import HighlightBar from "@/components/HighlightBar";
 import Footer from "@/components/Footer";
@@ -47,6 +48,10 @@ const Index = () => {
       
       <ScrollReveal variant="fadeLeft" delay={0.1}>
         <VideoTestimonialsSection />
+      </ScrollReveal>
+
+      <ScrollReveal variant="fadeRight" delay={0.1}>
+        <CustomerTestimonialsSection />
       </ScrollReveal>
       
       <ScrollReveal variant="fadeUp" delay={0.1}>
