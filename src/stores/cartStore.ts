@@ -15,6 +15,7 @@ export interface CartItem {
     name: string;
     value: string;
   }>;
+  sellingPlanId?: string; // Required for subscription products
 }
 
 interface CartStore {

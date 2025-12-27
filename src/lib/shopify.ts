@@ -10,6 +10,16 @@ if (!SHOPIFY_STORE_DOMAIN || !SHOPIFY_STOREFRONT_TOKEN) {
 
 const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
 
+export interface SellingPlan {
+  id: string;
+  name: string;
+  description: string | null;
+  options: Array<{
+    name: string;
+    value: string;
+  }>;
+}
+
 export interface ShopifyProduct {
   node: {
     id: string;
@@ -51,6 +61,19 @@ export interface ShopifyProduct {
       name: string;
       values: string[];
     }>;
+    sellingPlanGroups?: {
+      edges: Array<{
+        node: {
+          name: string;
+          sellingPlans: {
+            edges: Array<{
+              node: SellingPlan;
+            }>;
+          };
+        };
+      }>;
+    };
+    requiresSellingPlan?: boolean;
   };
 }
 
@@ -131,6 +154,46 @@ const PRODUCTS_QUERY = `
             name
             values
           }
+          sellingPlanGroups(first: 5) {
+            edges {
+              node {
+                name
+                sellingPlans(first: 5) {
+                  edges {
+                    node {
+                      id
+                      name
+                      description
+                      options {
+                        name
+                        value
+                      }
+                      priceAdjustments {
+                        adjustmentValue {
+                          ... on SellingPlanPercentagePriceAdjustment {
+                            adjustmentPercentage
+                          }
+                          ... on SellingPlanFixedAmountPriceAdjustment {
+                            adjustmentAmount {
+                              amount
+                              currencyCode
+                            }
+                          }
+                          ... on SellingPlanFixedPriceAdjustment {
+                            price {
+                              amount
+                              currencyCode
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          requiresSellingPlan
         }
       }
     }
@@ -203,14 +266,36 @@ export interface CartItem {
     name: string;
     value: string;
   }>;
+  sellingPlanId?: string; // Required for subscription products
 }
 
 export async function createStorefrontCheckout(items: CartItem[]): Promise<string> {
   try {
-    const lines = items.map(item => ({
-      quantity: item.quantity,
-      merchandiseId: item.variantId,
-    }));
+    const lines = items.map(item => {
+      const line: {
+        quantity: number;
+        merchandiseId: string;
+        sellingPlanId?: string;
+      } = {
+        quantity: item.quantity,
+        merchandiseId: item.variantId,
+      };
+      
+      // Include selling plan if product requires subscription
+      if (item.sellingPlanId) {
+        line.sellingPlanId = item.sellingPlanId;
+      } else if (item.product.node.requiresSellingPlan) {
+        // Auto-select first selling plan if product requires it
+        const firstSellingPlan = item.product.node.sellingPlanGroups?.edges?.[0]?.node?.sellingPlans?.edges?.[0]?.node;
+        if (firstSellingPlan) {
+          line.sellingPlanId = firstSellingPlan.id;
+        }
+      }
+      
+      return line;
+    });
+
+    console.log('Creating cart with lines:', JSON.stringify(lines, null, 2));
 
     const cartData = await storefrontApiRequest(CART_CREATE_MUTATION, {
       input: {
@@ -223,12 +308,14 @@ export async function createStorefrontCheckout(items: CartItem[]): Promise<strin
     }
 
     if (cartData.data.cartCreate.userErrors.length > 0) {
-      throw new Error(`Cart creation failed: ${cartData.data.cartCreate.userErrors.map((e: { message: string }) => e.message).join(', ')}`);
+      const errorMessages = cartData.data.cartCreate.userErrors.map((e: { message: string }) => e.message).join(', ');
+      console.error('Cart creation userErrors:', cartData.data.cartCreate.userErrors);
+      throw new Error(`Cart creation failed: ${errorMessages}`);
     }
 
     const cart = cartData.data.cartCreate.cart;
     
-    if (!cart.checkoutUrl) {
+    if (!cart?.checkoutUrl) {
       throw new Error('No checkout URL returned from Shopify');
     }
 
