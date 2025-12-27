@@ -28,15 +28,37 @@ export const CartDrawer = () => {
   const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
 
   const handleCheckout = async () => {
+    if (items.length === 0) {
+      toast.error("Panier vide", {
+        description: "Ajoutez des articles à votre panier avant de passer à la caisse.",
+      });
+      return;
+    }
+
     try {
       const checkoutUrl = await createCheckout();
+      console.log('Checkout URL received:', checkoutUrl);
+      
       if (checkoutUrl) {
-        window.open(checkoutUrl, '_blank');
-        setIsOpen(false);
-        clearCart();
-        toast.success("Redirection vers le paiement", {
-          description: "Une nouvelle fenêtre s'est ouverte pour finaliser votre commande.",
-        });
+        // Open in new tab
+        const newWindow = window.open(checkoutUrl, '_blank');
+        
+        if (newWindow) {
+          setIsOpen(false);
+          clearCart();
+          toast.success("Redirection vers le paiement", {
+            description: "Une nouvelle fenêtre s'est ouverte pour finaliser votre commande.",
+          });
+        } else {
+          // Popup blocked - provide direct link
+          toast.error("Fenêtre bloquée par le navigateur", {
+            description: "Veuillez autoriser les popups ou cliquez sur le lien ci-dessous.",
+            action: {
+              label: "Ouvrir",
+              onClick: () => window.location.href = checkoutUrl,
+            },
+          });
+        }
       } else {
         toast.error("Erreur lors de la création du panier", {
           description: "Veuillez réessayer ou nous contacter si le problème persiste.",
@@ -45,7 +67,7 @@ export const CartDrawer = () => {
     } catch (error) {
       console.error('Checkout failed:', error);
       toast.error("Erreur lors du paiement", {
-        description: "Veuillez réessayer ou nous contacter si le problème persiste.",
+        description: error instanceof Error ? error.message : "Veuillez réessayer ou nous contacter.",
       });
     }
   };
