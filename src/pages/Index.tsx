@@ -12,7 +12,6 @@ import VideoTestimonialsSection from "@/components/VideoTestimonialsSection";
 import ContactSection from "@/components/ContactSection";
 import HighlightBar from "@/components/HighlightBar";
 import Footer from "@/components/Footer";
-import ProductGrid from "@/components/ProductGrid";
 import ScrollReveal from "@/components/ScrollReveal";
 
 const Index = () => {
@@ -21,10 +20,6 @@ const Index = () => {
       <AnnouncementBar />
       <Navigation />
       <HeroSection />
-      
-      <ScrollReveal variant="fadeUp">
-        <ProductGrid />
-      </ScrollReveal>
       
       <ScrollReveal variant="fadeUp" delay={0.1}>
         <AboutSection />
