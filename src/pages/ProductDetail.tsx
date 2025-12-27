@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import PricingSection from "@/components/PricingSection";
 import { storefrontApiRequest, ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { toast } from "sonner";
@@ -378,6 +379,9 @@ const ProductDetail = () => {
             )}
           </div>
         </div>
+
+        {/* Subscription Plans */}
+        <PricingSection />
       </main>
 
       <Footer />
