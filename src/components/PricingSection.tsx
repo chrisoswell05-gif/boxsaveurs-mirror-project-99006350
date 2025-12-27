@@ -78,7 +78,7 @@ const PricingSection = () => {
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
-            <Link to="/product/box-saveurs-de-ferme-lauthenticite-livree-chez-vous">
+            <Link to="/nos-box/cadeau">
               <Button variant="outline" size="lg" className="gap-2 border-yellow text-yellow hover:bg-yellow/10">
                 <Gift className="w-5 h-5" />
                 Offrir une box
