@@ -1,5 +1,6 @@
 import ScrollReveal from "@/components/ScrollReveal";
 import GiftMessageForm from "@/components/GiftMessageForm";
+import PricingSection from "@/components/PricingSection";
 import { Gift, Heart, Package, Truck } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -80,6 +81,9 @@ const GiftOrderPage = () => {
           ))}
         </div>
       </ScrollReveal>
+
+      {/* Pricing Section */}
+      <PricingSection />
 
       {/* Form Section */}
       <ScrollReveal delay={0.2} className="max-w-2xl mx-auto">
