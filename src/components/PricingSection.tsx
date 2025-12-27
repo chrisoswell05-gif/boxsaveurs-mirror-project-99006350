@@ -71,14 +71,14 @@ const PricingSection = () => {
 
         <ScrollReveal delay={0.3}>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to="/nos-box/commande">
+            <Link to="/product/box-saveurs-de-ferme-lauthenticite-livree-chez-vous">
               <Button variant="premium" size="lg" className="gap-2">
                 <Package className="w-5 h-5" />
                 S'abonner
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
-            <Link to="/nos-box/cadeau">
+            <Link to="/product/box-saveurs-de-ferme-lauthenticite-livree-chez-vous">
               <Button variant="outline" size="lg" className="gap-2 border-yellow text-yellow hover:bg-yellow/10">
                 <Gift className="w-5 h-5" />
                 Offrir une box
