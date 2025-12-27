@@ -1,6 +1,7 @@
 import ScrollReveal from "@/components/ScrollReveal";
 import GiftMessageForm from "@/components/GiftMessageForm";
 import PricingSection from "@/components/PricingSection";
+import ShopifyProductsSection from "@/components/ShopifyProductsSection";
 import { Gift, Heart, Package, Truck } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -84,6 +85,12 @@ const GiftOrderPage = () => {
 
       {/* Pricing Section */}
       <PricingSection />
+
+      {/* Shopify Products Section */}
+      <ShopifyProductsSection 
+        title="Nos box à offrir" 
+        subtitle="Choisissez le coffret parfait pour votre proche"
+      />
 
       {/* Form Section */}
       <ScrollReveal delay={0.2} className="max-w-2xl mx-auto">
