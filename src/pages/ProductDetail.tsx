@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, ShoppingCart, Loader2, Minus, Plus } from "lucide-react";
+import { ArrowLeft, ShoppingCart, Loader2, Minus, Plus, RefreshCw, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import PricingSection from "@/components/PricingSection";
 import { storefrontApiRequest, ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { toast } from "sonner";
@@ -53,9 +54,72 @@ const PRODUCT_BY_HANDLE_QUERY = `
         name
         values
       }
+      sellingPlanGroups(first: 10) {
+        edges {
+          node {
+            name
+            sellingPlans(first: 10) {
+              edges {
+                node {
+                  id
+                  name
+                  description
+                  options {
+                    name
+                    value
+                  }
+                  priceAdjustments {
+                    adjustmentValue {
+                      ... on SellingPlanPercentagePriceAdjustment {
+                        adjustmentPercentage
+                      }
+                      ... on SellingPlanFixedAmountPriceAdjustment {
+                        adjustmentAmount {
+                          amount
+                          currencyCode
+                        }
+                      }
+                      ... on SellingPlanFixedPriceAdjustment {
+                        price {
+                          amount
+                          currencyCode
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      requiresSellingPlan
     }
   }
 `;
+
+interface SellingPlan {
+  id: string;
+  name: string;
+  description: string | null;
+  options: Array<{
+    name: string;
+    value: string;
+  }>;
+  priceAdjustments?: Array<{
+    adjustmentValue: {
+      adjustmentPercentage?: number;
+      adjustmentAmount?: {
+        amount: string;
+        currencyCode: string;
+      };
+      price?: {
+        amount: string;
+        currencyCode: string;
+      };
+    };
+  }>;
+}
 
 interface ProductData {
   id: string;
@@ -98,6 +162,19 @@ interface ProductData {
     name: string;
     values: string[];
   }>;
+  sellingPlanGroups?: {
+    edges: Array<{
+      node: {
+        name: string;
+        sellingPlans: {
+          edges: Array<{
+            node: SellingPlan;
+          }>;
+        };
+      };
+    }>;
+  };
+  requiresSellingPlan?: boolean;
 }
 
 const ProductDetail = () => {
@@ -109,7 +186,27 @@ const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
   const [quantity, setQuantity] = useState(1);
+  const [selectedSellingPlanId, setSelectedSellingPlanId] = useState<string | null>(null);
   const addItem = useCartStore((state) => state.addItem);
+
+  // Extract all selling plans from the product
+  const sellingPlans = useMemo(() => {
+    if (!product?.sellingPlanGroups?.edges) return [];
+    
+    const plans: SellingPlan[] = [];
+    product.sellingPlanGroups.edges.forEach((group) => {
+      group.node.sellingPlans.edges.forEach((plan) => {
+        plans.push(plan.node);
+      });
+    });
+    return plans;
+  }, [product]);
+
+  // Check if product requires a selling plan (subscription only)
+  const requiresSubscription = product?.requiresSellingPlan ?? false;
+  
+  // Check if product has selling plans available
+  const hasSellingPlans = sellingPlans.length > 0;
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -168,6 +265,12 @@ const ProductDetail = () => {
       return;
     }
 
+    // Validate subscription requirement
+    if (requiresSubscription && !selectedSellingPlanId) {
+      toast.error("Veuillez sélectionner un plan d'abonnement");
+      return;
+    }
+
     const cartItem = {
       product: { node: product } as ShopifyProduct,
       variantId: variant.id,
@@ -175,12 +278,38 @@ const ProductDetail = () => {
       price: variant.price,
       quantity,
       selectedOptions: variant.selectedOptions,
+      sellingPlanId: selectedSellingPlanId || undefined, // Include selling plan if selected
     };
 
     addItem(cartItem);
-    toast.success("Produit ajouté au panier", {
+    
+    const message = selectedSellingPlanId 
+      ? "Abonnement ajouté au panier" 
+      : "Produit ajouté au panier";
+    
+    toast.success(message, {
       position: "top-center",
     });
+  };
+
+  // Get the selected selling plan details
+  const selectedSellingPlan = sellingPlans.find(plan => plan.id === selectedSellingPlanId);
+
+  // Calculate adjusted price for selling plan
+  const getAdjustedPrice = (plan: SellingPlan, basePrice: number): number => {
+    const adjustment = plan.priceAdjustments?.[0]?.adjustmentValue;
+    if (!adjustment) return basePrice;
+
+    if (adjustment.adjustmentPercentage) {
+      return basePrice * (1 - adjustment.adjustmentPercentage / 100);
+    }
+    if (adjustment.adjustmentAmount?.amount) {
+      return basePrice - parseFloat(adjustment.adjustmentAmount.amount);
+    }
+    if (adjustment.price?.amount) {
+      return parseFloat(adjustment.price.amount);
+    }
+    return basePrice;
   };
 
   const selectedVariant = getSelectedVariant();
@@ -310,6 +439,87 @@ const ProductDetail = () => {
               </div>
             )}
 
+            {/* Purchase Type Selection - Achat unique vs Abonnement */}
+            {hasSellingPlans && (
+              <div className="space-y-4 p-4 border border-border rounded-xl bg-muted/30">
+                <label className="block text-sm font-medium text-foreground">
+                  Mode d'achat
+                </label>
+                <RadioGroup 
+                  value={selectedSellingPlanId || "one-time"} 
+                  onValueChange={(value) => setSelectedSellingPlanId(value === "one-time" ? null : value)}
+                  className="space-y-3"
+                >
+                  {/* One-time purchase option (only if not required to subscribe) */}
+                  {!requiresSubscription && (
+                    <div className="flex items-center space-x-3 p-3 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors">
+                      <RadioGroupItem value="one-time" id="one-time" />
+                      <Label htmlFor="one-time" className="flex-1 cursor-pointer">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Package className="w-4 h-4 text-muted-foreground" />
+                            <span className="font-medium">Achat unique</span>
+                          </div>
+                          <span className="font-semibold">
+                            {parseFloat(selectedVariant?.price.amount || product.priceRange.minVariantPrice.amount).toFixed(2)}$
+                          </span>
+                        </div>
+                      </Label>
+                    </div>
+                  )}
+                  
+                  {/* Subscription options from Subi */}
+                  {sellingPlans.map((plan) => {
+                    const basePrice = parseFloat(selectedVariant?.price.amount || product.priceRange.minVariantPrice.amount);
+                    const adjustedPrice = getAdjustedPrice(plan, basePrice);
+                    const hasDiscount = adjustedPrice < basePrice;
+                    const discountPercent = hasDiscount ? Math.round((1 - adjustedPrice / basePrice) * 100) : 0;
+                    
+                    return (
+                      <div 
+                        key={plan.id} 
+                        className="flex items-center space-x-3 p-3 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors"
+                      >
+                        <RadioGroupItem value={plan.id} id={plan.id} />
+                        <Label htmlFor={plan.id} className="flex-1 cursor-pointer">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <RefreshCw className="w-4 h-4 text-primary" />
+                              <div>
+                                <span className="font-medium">{plan.name}</span>
+                                {plan.options?.map((opt, i) => (
+                                  <span key={i} className="text-xs text-muted-foreground ml-2">
+                                    {opt.value}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <span className="font-semibold">{adjustedPrice.toFixed(2)}$</span>
+                              {hasDiscount && (
+                                <Badge variant="secondary" className="ml-2 bg-green-100 text-green-800 text-xs">
+                                  -{discountPercent}%
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                          {plan.description && (
+                            <p className="text-xs text-muted-foreground mt-1">{plan.description}</p>
+                          )}
+                        </Label>
+                      </div>
+                    );
+                  })}
+                </RadioGroup>
+                
+                {requiresSubscription && (
+                  <p className="text-xs text-muted-foreground">
+                    Ce produit est disponible uniquement en abonnement.
+                  </p>
+                )}
+              </div>
+            )}
+
             {/* Availability */}
             {selectedVariant && (
               <div>
@@ -355,10 +565,10 @@ const ProductDetail = () => {
               onClick={handleAddToCart}
               size="lg"
               className="w-full"
-              disabled={!selectedVariant?.availableForSale}
+              disabled={!selectedVariant?.availableForSale || (requiresSubscription && !selectedSellingPlanId)}
             >
               <ShoppingCart className="w-5 h-5 mr-2" />
-              Ajouter au panier
+              {selectedSellingPlanId ? "S'abonner" : "Ajouter au panier"}
             </Button>
 
             {/* Description */}
@@ -379,9 +589,6 @@ const ProductDetail = () => {
             )}
           </div>
         </div>
-
-        {/* Subscription Plans */}
-        <PricingSection />
       </main>
 
       <Footer />

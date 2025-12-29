@@ -9,7 +9,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2 } from "lucide-react";
+import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2, RefreshCw } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { toast } from "sonner";
 
@@ -110,7 +110,7 @@ export const CartDrawer = () => {
               <div className="flex-1 overflow-y-auto pr-2 min-h-0">
                 <div className="space-y-4">
                   {items.map((item) => (
-                    <div key={item.variantId} className="flex gap-4 p-3 bg-muted/30 rounded-lg">
+                    <div key={`${item.variantId}-${item.sellingPlanId || 'one-time'}`} className="flex gap-4 p-3 bg-muted/30 rounded-lg">
                       <div className="w-16 h-16 bg-secondary/20 rounded-md overflow-hidden flex-shrink-0">
                         {item.product.node.images?.edges?.[0]?.node && (
                           <img
@@ -128,8 +128,15 @@ export const CartDrawer = () => {
                             {item.variantTitle}
                           </p>
                         )}
+                        {item.sellingPlanId && (
+                          <Badge variant="secondary" className="text-xs bg-primary/10 text-primary mt-1 flex items-center gap-1 w-fit">
+                            <RefreshCw className="w-3 h-3" />
+                            Abonnement
+                          </Badge>
+                        )}
                         <p className="font-semibold text-primary mt-1">
                           {parseFloat(item.price.amount).toFixed(2)} {item.price.currencyCode === 'CAD' ? '$' : item.price.currencyCode}
+                          {item.sellingPlanId && <span className="text-xs font-normal">/mois</span>}
                         </p>
                       </div>
                       

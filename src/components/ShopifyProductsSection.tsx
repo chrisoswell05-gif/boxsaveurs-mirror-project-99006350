@@ -3,9 +3,8 @@ import { fetchProducts, ShopifyProduct } from "@/lib/shopify";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useCartStore } from "@/stores/cartStore";
-import { toast } from "sonner";
-import { ShoppingCart, Package } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ShoppingCart, Package, RefreshCw } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Link } from "react-router-dom";
 
@@ -23,7 +22,6 @@ const ShopifyProductsSection = ({
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const addItem = useCartStore((state) => state.addItem);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -41,31 +39,6 @@ const ShopifyProductsSection = ({
 
     loadProducts();
   }, [limit]);
-
-  const handleAddToCart = (product: ShopifyProduct) => {
-    const variant = product.node.variants.edges[0]?.node;
-    if (!variant) {
-      toast.error("Produit non disponible");
-      return;
-    }
-
-    // Get selling plan if product requires subscription
-    const sellingPlan = product.node.sellingPlanGroups?.edges?.[0]?.node?.sellingPlans?.edges?.[0]?.node;
-
-    addItem({
-      product,
-      variantId: variant.id,
-      variantTitle: variant.title,
-      price: variant.price,
-      quantity: 1,
-      selectedOptions: variant.selectedOptions || [],
-      sellingPlanId: sellingPlan?.id,
-    });
-
-    toast.success("Ajouté au panier", {
-      description: product.node.title,
-    });
-  };
 
   if (error) {
     return (
@@ -110,8 +83,12 @@ const ShopifyProductsSection = ({
             {products.map((product, index) => {
               const image = product.node.images.edges[0]?.node;
               const price = product.node.priceRange.minVariantPrice;
-              const isSubscription = product.node.requiresSellingPlan;
-
+              const requiresSubscription = product.node.requiresSellingPlan;
+              const hasSellingPlans = (product.node.sellingPlanGroups?.edges?.length ?? 0) > 0;
+              
+              // Get first selling plan info for display
+              const firstSellingPlan = product.node.sellingPlanGroups?.edges?.[0]?.node?.sellingPlans?.edges?.[0]?.node;
+              
               return (
                 <ScrollReveal key={product.node.id} delay={index * 0.1}>
                   <Card className="overflow-hidden hover-lift border-border/50 h-full flex flex-col">
@@ -147,25 +124,34 @@ const ShopifyProductsSection = ({
                           <span className="text-xl font-bold text-foreground">
                             {parseFloat(price.amount).toFixed(2)}$
                           </span>
-                          {isSubscription && (
+                          {hasSellingPlans && (
                             <span className="text-sm text-muted-foreground">/mois</span>
                           )}
                         </div>
-                        {isSubscription && (
-                          <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
-                            Abonnement
-                          </span>
-                        )}
+                        <div className="flex gap-1">
+                          {hasSellingPlans && (
+                            <Badge variant="secondary" className="text-xs bg-primary/10 text-primary flex items-center gap-1">
+                              <RefreshCw className="w-3 h-3" />
+                              Abonnement
+                            </Badge>
+                          )}
+                          {requiresSubscription && (
+                            <Badge variant="outline" className="text-xs">
+                              Abo. requis
+                            </Badge>
+                          )}
+                        </div>
                       </div>
                       
-                      <Button
-                        onClick={() => handleAddToCart(product)}
-                        className="w-full gap-2"
-                        variant="premium"
-                      >
-                        <ShoppingCart className="w-4 h-4" />
-                        Ajouter au panier
-                      </Button>
+                      <Link to={`/product/${product.node.handle}`} className="w-full">
+                        <Button
+                          className="w-full gap-2"
+                          variant="premium"
+                        >
+                          <ShoppingCart className="w-4 h-4" />
+                          {hasSellingPlans ? "Voir les options" : "Ajouter au panier"}
+                        </Button>
+                      </Link>
                     </div>
                   </Card>
                 </ScrollReveal>
