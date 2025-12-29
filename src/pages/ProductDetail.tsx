@@ -452,7 +452,11 @@ const ProductDetail = () => {
                 >
                   {/* One-time purchase option (only if not required to subscribe) */}
                   {!requiresSubscription && (
-                    <div className="flex items-center space-x-3 p-3 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors">
+                    <div className={`flex items-center space-x-3 p-3 rounded-lg border transition-colors ${
+                      !selectedSellingPlanId 
+                        ? "border-primary bg-primary/5" 
+                        : "border-border bg-background hover:border-primary/50"
+                    }`}>
                       <RadioGroupItem value="one-time" id="one-time" />
                       <Label htmlFor="one-time" className="flex-1 cursor-pointer">
                         <div className="flex items-center justify-between">
@@ -474,39 +478,80 @@ const ProductDetail = () => {
                     const adjustedPrice = getAdjustedPrice(plan, basePrice);
                     const hasDiscount = adjustedPrice < basePrice;
                     const discountPercent = hasDiscount ? Math.round((1 - adjustedPrice / basePrice) * 100) : 0;
+                    const savingsPerMonth = hasDiscount ? basePrice - adjustedPrice : 0;
+                    const savingsPerYear = savingsPerMonth * 12;
+                    const isSelected = selectedSellingPlanId === plan.id;
                     
                     return (
                       <div 
                         key={plan.id} 
-                        className="flex items-center space-x-3 p-3 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors"
+                        className={`relative p-3 rounded-lg border transition-colors ${
+                          isSelected 
+                            ? "border-primary bg-primary/5" 
+                            : "border-border bg-background hover:border-primary/50"
+                        }`}
                       >
-                        <RadioGroupItem value={plan.id} id={plan.id} />
-                        <Label htmlFor={plan.id} className="flex-1 cursor-pointer">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <RefreshCw className="w-4 h-4 text-primary" />
-                              <div>
-                                <span className="font-medium">{plan.name}</span>
-                                {plan.options?.map((opt, i) => (
-                                  <span key={i} className="text-xs text-muted-foreground ml-2">
-                                    {opt.value}
-                                  </span>
-                                ))}
+                        {/* Best value badge */}
+                        {hasDiscount && discountPercent >= 10 && (
+                          <div className="absolute -top-2 right-3">
+                            <Badge className="bg-green-600 text-white text-xs px-2 py-0.5 shadow-sm">
+                              Meilleure valeur
+                            </Badge>
+                          </div>
+                        )}
+                        
+                        <div className="flex items-center space-x-3">
+                          <RadioGroupItem value={plan.id} id={plan.id} />
+                          <Label htmlFor={plan.id} className="flex-1 cursor-pointer">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <RefreshCw className="w-4 h-4 text-primary" />
+                                <div>
+                                  <span className="font-medium">{plan.name}</span>
+                                  {plan.options?.map((opt, i) => (
+                                    <span key={i} className="text-xs text-muted-foreground ml-2">
+                                      {opt.value}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <div className="flex items-center gap-2">
+                                  {hasDiscount && (
+                                    <span className="text-sm text-muted-foreground line-through">
+                                      {basePrice.toFixed(2)}$
+                                    </span>
+                                  )}
+                                  <span className="font-semibold text-lg">{adjustedPrice.toFixed(2)}$</span>
+                                </div>
+                                {hasDiscount && (
+                                  <Badge variant="secondary" className="bg-green-100 text-green-800 text-xs">
+                                    -{discountPercent}%
+                                  </Badge>
+                                )}
                               </div>
                             </div>
-                            <div className="text-right">
-                              <span className="font-semibold">{adjustedPrice.toFixed(2)}$</span>
-                              {hasDiscount && (
-                                <Badge variant="secondary" className="ml-2 bg-green-100 text-green-800 text-xs">
-                                  -{discountPercent}%
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-                          {plan.description && (
-                            <p className="text-xs text-muted-foreground mt-1">{plan.description}</p>
-                          )}
-                        </Label>
+                            
+                            {/* Savings highlight */}
+                            {hasDiscount && (
+                              <div className="mt-2 p-2 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-200 dark:border-green-800">
+                                <p className="text-xs text-green-700 dark:text-green-400 font-medium flex items-center gap-1">
+                                  <span className="inline-block w-4 h-4 bg-green-600 text-white rounded-full text-center leading-4 text-[10px]">✓</span>
+                                  Économisez {savingsPerMonth.toFixed(2)}$/mois
+                                  {savingsPerYear >= 10 && (
+                                    <span className="ml-1">
+                                      — soit <strong>{savingsPerYear.toFixed(0)}$/an</strong>
+                                    </span>
+                                  )}
+                                </p>
+                              </div>
+                            )}
+                            
+                            {plan.description && (
+                              <p className="text-xs text-muted-foreground mt-2">{plan.description}</p>
+                            )}
+                          </Label>
+                        </div>
                       </div>
                     );
                   })}
